@@ -6,8 +6,6 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NV
         window.dinamikKategoriler = { gider: [], gelir: [], hareketTurleri: [], odemeTurleri: [], borcTurleri: [], varlikKategorileri: [] };
 
         const gunler = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-        const EYE_OPEN = `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>`;
-        const EYE_CLOSED = `<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/>`;
 
                 function switchTab(tabId, el) {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
@@ -31,10 +29,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NV
 
         function vibe() { /* iOS PWA uyumsuzluğu nedeniyle iptal edildi */ }
 
-        function checkPrivacyState() { if (localStorage.getItem('privacyMode') === "1") { document.body.classList.add('privacy-mode'); document.getElementById('privacy-icon').innerHTML = EYE_CLOSED; } }
-        function togglePrivacy(e) { if(e) e.stopPropagation(); vibe(); const body = document.body; body.classList.toggle('privacy-mode'); const isPrivacy = body.classList.contains('privacy-mode'); 
-                                    localStorage.setItem('privacyMode', isPrivacy ? "1" : "0"); document.getElementById('privacy-icon').innerHTML = isPrivacy ? EYE_CLOSED : EYE_OPEN; }
-        function initAccordions() { document.querySelectorAll('.accordion').forEach(el => { if (el.id && localStorage.getItem(el.id) === "1") el.classList.add("collapsed"); }); checkPrivacyState(); }
+        function initAccordions() { document.querySelectorAll('.accordion').forEach(el => { if (el.id && localStorage.getItem(el.id) === "1") el.classList.add("collapsed"); }); }
 
         document.addEventListener("DOMContentLoaded", () => { initAccordions(); });
 
