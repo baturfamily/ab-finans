@@ -1753,7 +1753,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         } else {
             fHtml = `<div class="list-row" style="border:none; padding:8px 0;"><span class="list-label" style="font-size:13px; color:var(--text-muted);">Bu ay gerçekleşen faiz yok.</span></div>`;
         }
-                            faizHtml += `
+                            fHtml += `
         <div style="margin-top:15px;">
             <button onclick="triggerFaizOde(this)" style="width:100%; height:36px; background:rgba(244, 63, 94, 0.12); border:1px solid rgba(244, 63, 94, 0.25); color:var(--rose); border-radius:10px; font-size:11px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
                 <i class="fas fa-money-bill-trend-up" style="font-size:13px;"></i> FAİZ ÖDEMESİ GİR
