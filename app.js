@@ -1753,6 +1753,12 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         } else {
             fHtml = `<div class="list-row" style="border:none; padding:8px 0;"><span class="list-label" style="font-size:13px; color:var(--text-muted);">Bu ay gerçekleşen faiz yok.</span></div>`;
         }
+                    fHtml += `
+        <div style="margin-top:15px;">
+            <button onclick="triggerFaizOde(this)" style="width:100%; height:34px; background:rgba(244, 63, 94, 0.1); border:1px solid rgba(244, 63, 94, 0.2); color:var(--rose); border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">
+                <i class="fas fa-percent"></i> FAİZ ÖDEMESİ GİR
+            </button>
+        </div>`;
         fListe.innerHTML = fHtml;
 
                         const vListe = document.getElementById('varlik-listesi');
@@ -1813,6 +1819,13 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
           let p = data.toplamBorc > 0 ? Math.round((val / data.toplamBorc) * 100) : 0;
           bHtml += `<div class="t-row"><div class="t-details"><div class="t-name">${b.isim}</div><div class="progress-container" style="height:4px; margin-top:6px; background:rgba(255,255,255,0.05);"><div class="progress-bar" style="width:${p}%; background:var(--rose);"></div></div></div><div class="t-amt text-red">${formatTL(val)}</div></div>`;
         });
+
+                    bHtml += `
+        <div style="margin-top:15px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
+            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('ozel-borc-islemleri-screen', 'ozel-secim', 'Şahıs & Özel Borçlar').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); toggleOzelTab('ode'); this.style.pointerEvents='auto'; });" class="btn-ozel-borclar" style="width:100%; height:38px; border-radius:10px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; border:none; cursor:pointer;">
+                <i class="fas fa-hand-holding-dollar"></i> ÖZEL BORÇ ÖDE
+            </button>
+        </div>`;
         
         // Alt kısımdaki gereksiz toplam satırı tamamen SİLİNDİ
         bListe.innerHTML = bHtml;
@@ -2136,6 +2149,15 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             });
             sKategoriHtml += html + `</div>`; globalSira++;
         }
+                    sKategoriHtml += `
+        <div style="margin-top:15px; display:flex; gap:10px;">
+            <button onclick="if(!document.getElementById('action-modal').classList.contains('active')) toggleModal(); showSection('section-duzenli', '📅 Yeni Düzenli Kayıt');" style="flex:1; height:36px; background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.3); color:var(--emerald); border-radius:10px; font-size:11px; font-weight:800; cursor:pointer;">
+                <i class="fas fa-plus"></i> YENİ EKLE
+            </button>
+            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('section-sabit-guncelle', 'sg-kural', 'Düzenli Kayıtları Yönet').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); this.style.pointerEvents='auto'; });" style="flex:1; height:36px; background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.3); color:var(--blue); border-radius:10px; font-size:11px; font-weight:800; cursor:pointer;">
+                <i class="fas fa-pen-to-square"></i> GÜNCELLE
+            </button>
+        </div>`;
         sKategoriContainer.innerHTML = sKategoriHtml;
 
         document.getElementById('sabit-genel-toplam').innerHTML = formatTL(sOdenenGider + sKalanGider);
@@ -2218,6 +2240,12 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             data.ilerlemeBarlari.forEach(kb => {
                 krHtml += `<div style="margin-bottom: 16px;"><div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:13px; font-weight:600; color:#e2e8f0;">${kb.isim}</span><span style="font-size:13px; font-weight:800; color:var(--blue);">%${kb.yuzde}</span></div><div class="progress-container" style="height:8px; background:rgba(0,0,0,0.3);"><div class="progress-bar" style="width:${kb.yuzde}%; background:var(--blue); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div></div><div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text-muted);"><span>Kalan: ${formatTLTam(kb.kalanTutar)}</span><span>Başlangıç: ${formatTLTam(kb.baslangicTutar)}</span></div></div>`;
             });
+                        krHtml += `
+        <div style="margin-top:15px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.1);">
+            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Kredi Taksidi Onayla').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); this.style.pointerEvents='auto'; });" style="width:100%; height:36px; background:rgba(245, 158, 11, 0.15); border:1px solid rgba(245, 158, 11, 0.3); color:var(--amber); border-radius:10px; font-size:12px; font-weight:800; cursor:pointer;">
+                <i class="fas fa-landmark"></i> KREDİ ÖDE
+            </button>
+        </div>`;
             krediListe.innerHTML = krHtml;
         } else {
             krediListe.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size: 13px; padding: 10px 0;">Aktif kredi ilerlemesi bulunamadı.</div>`;
