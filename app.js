@@ -1932,6 +1932,18 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         const kboYontem = document.getElementById('kbo-yontem'); if(kboYontem) { kboYontem.innerHTML = window.hesapOptions; refreshCustomSelect(kboYontem); }
         const boYontem = document.getElementById('bo-yontem'); if(boYontem) { boYontem.innerHTML = window.hesapOptions; refreshCustomSelect(boYontem); }
 
+                    // --- TRANSFER LİSTELERİNİ DOLDURUR ---
+        const tCikis = document.getElementById('t-cikis');
+        const tGiris = document.getElementById('t-giris');
+        if (tCikis && tGiris) {
+            tCikis.innerHTML = window.vadesizOptions;
+            tGiris.innerHTML = window.vadesizOptions;
+            if(typeof refreshCustomSelect === 'function') {
+                refreshCustomSelect(tCikis);
+                refreshCustomSelect(tGiris);
+            }
+        }
+
                     // --- YENİ: HESAP İŞLEMLERİ LİSTESİNİ DOLDURUR ---
         let hiOptions = `<option value="" disabled selected>-- Hesap Seçin --</option>`;
         if (data.bankalar) {
@@ -2461,6 +2473,37 @@ function submitKartBorcDuzelt() {
     }, 'btn-submit-kart-borc-duzelt');
 }
 
+function updateTransferOptions() {
+    const cikisEl = document.getElementById('t-cikis');
+    const girisEl = document.getElementById('t-giris');
+    if(!cikisEl || !girisEl) return;
+
+    const seciliCikis = cikisEl.value; 
+    const seciliGiris = girisEl.value;
+    
+    const tempDiv = document.createElement('div'); 
+    tempDiv.innerHTML = window.vadesizOptions;
+    const tumSecenekler = Array.from(tempDiv.querySelectorAll('option')).filter(o => o.value !== "");
+    
+    let yeniCikisHTML = `<option value="">Seçiniz...</option>`;
+    tumSecenekler.forEach(opt => { 
+        if (opt.value !== seciliGiris) { 
+            yeniCikisHTML += `<option value="${opt.value}" ${opt.value === seciliCikis ? 'selected' : ''}>${opt.text}</option>`; 
+        } 
+    });
+    cikisEl.innerHTML = yeniCikisHTML; 
+    refreshCustomSelect(cikisEl);
+    
+    let yeniGirisHTML = `<option value="">Seçiniz...</option>`;
+    tumSecenekler.forEach(opt => { 
+        if (opt.value !== seciliCikis) { 
+            yeniGirisHTML += `<option value="${opt.value}" ${opt.value === seciliGiris ? 'selected' : ''}>${opt.text}</option>`; 
+        } 
+    });
+    girisEl.innerHTML = yeniGirisHTML; 
+    refreshCustomSelect(girisEl);
+}
+
     window.onload = () => { verileriCek(); };
 
 // --- SADECE İSTENEN LİSTELERİ DÜZELTEN NOKTA ATIŞI KOD ---
@@ -2476,7 +2519,9 @@ function submitKartBorcDuzelt() {
             'ozel-odeme-sekli',
             'ozel-guncelle-secim',
             'hi-hesap-secim',
-            'kbd-kart-secim'
+            'kbd-kart-secim',
+            't-cikis',
+            't-giris'
         ];
 
         hedefler.forEach(function(id) {
