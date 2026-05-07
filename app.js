@@ -2238,7 +2238,22 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         if (data.ilerlemeBarlari && data.ilerlemeBarlari.length > 0) {
             let krHtml = "";
             data.ilerlemeBarlari.forEach(kb => {
-                krHtml += `<div style="margin-bottom: 16px;"><div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="font-size:13px; font-weight:600; color:#e2e8f0;">${kb.isim}</span><span style="font-size:13px; font-weight:800; color:var(--blue);">%${kb.yuzde}</span></div><div class="progress-container" style="height:8px; background:rgba(0,0,0,0.3);"><div class="progress-bar" style="width:${kb.yuzde}%; background:var(--blue); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div></div><div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text-muted);"><span>Kalan: ${formatTLTam(kb.kalanTutar)}</span><span>Başlangıç: ${formatTLTam(kb.baslangicTutar)}</span></div></div>`;
+                krHtml += `
+                <div style="margin-bottom: 16px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <span style="font-size:13px; font-weight:600; color:#e2e8f0; display:flex; align-items:center; flex-wrap:wrap;">
+                            ${kb.isim}${getKalanAyBadge(kb.vade)}
+                        </span>
+                        <span style="font-size:13px; font-weight:800; color:var(--blue);">%${kb.yuzde}</span>
+                    </div>
+                    <div class="progress-container" style="height:8px; background:rgba(0,0,0,0.3);">
+                        <div class="progress-bar" style="width:${kb.yuzde}%; background:var(--blue); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text-muted);">
+                        <span>Kalan: ${formatTLTam(kb.kalanTutar)}</span>
+                        <span>Başlangıç: ${formatTLTam(kb.baslangicTutar)}</span>
+                    </div>
+                </div>`;
             });
                         krHtml += `
         <div style="margin-top:15px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.1);">
