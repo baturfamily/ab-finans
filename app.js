@@ -296,7 +296,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NV
             const konteyner = document.getElementById('an-ek-input-konteyner');
             check.checked = !check.checked;
             konteyner.style.display = check.checked ? 'block' : 'none';
-            if(check.checked) document.getElementById('an-ek-input').focus();
+            // DÜZELTME: Focus işlemi silindi, böylece klavye sadece sen kutuya dokununca açılacak.
         }
 
         function setAnlikFilter(type, btn) {
