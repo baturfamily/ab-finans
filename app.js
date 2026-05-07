@@ -2619,3 +2619,35 @@ async function submitTransfer() {
             }
         });
     }, 500); // PWA ekranı tam çizdikten yarım saniye sonra sessizce çalışır
+
+function triggerFaizOde(btn) {
+    btn.style.pointerEvents = 'none';
+    const oldText = btn.innerHTML;
+    btn.innerHTML = '<div class="premium-loader"><span></span><span></span><span></span></div>';
+
+    setTimeout(() => {
+        if(!document.getElementById('action-modal').classList.contains('active')) toggleModal();
+        showSection('section-anlik', '⚡ Anlık Harcama / Gelir');
+        
+        // Gider Segmentini Tetikle
+        const segmentBtns = document.querySelectorAll('#anlik-segment .segment-btn');
+        if(segmentBtns.length > 0) setAnlikFilter('Gider', segmentBtns[0]);
+
+        // Banka Faizi Kategorisini Bul ve Seç
+        setTimeout(() => {
+            const katEl = document.getElementById('an-kalem');
+            if(katEl) {
+                for (let i = 0; i < katEl.options.length; i++) {
+                    if (katEl.options[i].text.includes("Faiz")) {
+                        katEl.selectedIndex = i;
+                        break;
+                    }
+                }
+                if(typeof refreshCustomSelect === 'function') refreshCustomSelect(katEl);
+                if(typeof checkAnlikKalem === 'function') checkAnlikKalem();
+            }
+            btn.innerHTML = oldText;
+            btn.style.pointerEvents = 'auto';
+        }, 400);
+    }, 500);
+}
