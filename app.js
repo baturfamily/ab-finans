@@ -2171,20 +2171,22 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             });
             // ------------------------------------------------------------------------------------------------
 
-                                    siraliYaklasanlar.forEach(y => {
+                            siraliYaklasanlar.forEach(y => {
                 const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
                 const isOtomatik = otoLogListesi.includes(y.tur);
 
-                // Kategori Metni Hazırlığı (Eğer kategori yoksa veya kalemle aynıysa tekrar etmesin)
-                const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) ? `<span style="opacity:0.7; font-weight:400;">${y.tur}</span> - ` : "";
+                // --- KUSURSUZ SİMETRİ ZIRHI ---
+                // &nbsp; kullanarak tarayıcıya "burada mutlaka boşluk bırak" diyoruz.
+                const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) 
+                    ? `<span style="opacity:0.7; font-weight:400;">${y.tur}</span>&nbsp;-&nbsp;` 
+                    : "";
 
-                // Rozet Tasarımı
                 const badge = isOtomatik 
                     ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.12); color:#60a5fa; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(59, 130, 246, 0.2); font-weight:700;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
-                    : `<span style="font-size:9px; background:rgba(245, 158, 11, 0.12); color:#fbbf24; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.2); font-weight:700;"><i class="fas fa-hand-pointer" style="margin-right:3px;"></i>ONAY BEKLEYOR</span>`;
+                    : `<button onclick="if(!document.getElementById('action-modal').classList.contains('active')) toggleModal(); loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla'); event.stopPropagation();" style="border:none; cursor:pointer; font-size:9px; background:rgba(245, 158, 11, 0.15); color:#fbbf24; padding:3px 8px; border-radius:6px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.3); font-weight:800; display:inline-flex; align-items:center; transition:0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"><i class="fas fa-hand-pointer" style="margin-right:4px;"></i>ONAYLA</button>`;
 
                 yHtml += `
-                <div class="t-row" style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="t-row" style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 14px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05);">
                     <div class="t-details">
                         <div class="t-name" style="font-size: 13px; font-weight:600; color: #fff; display:flex; align-items:center; flex-wrap:wrap;">
                             ${kategoriMetni}${y.kalem} ${badge}
