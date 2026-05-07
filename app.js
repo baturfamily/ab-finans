@@ -1924,6 +1924,19 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         const kboYontem = document.getElementById('kbo-yontem'); if(kboYontem) { kboYontem.innerHTML = window.hesapOptions; refreshCustomSelect(kboYontem); }
         const boYontem = document.getElementById('bo-yontem'); if(boYontem) { boYontem.innerHTML = window.hesapOptions; refreshCustomSelect(boYontem); }
 
+                    // --- YENİ: HESAP İŞLEMLERİ LİSTESİNİ DOLDURUR ---
+        let hiOptions = `<option value="" disabled selected>-- Hesap Seçin --</option>`;
+        if (data.bankalar) {
+            data.bankalar.forEach(b => {
+                hiOptions += `<option value="${b.isim}">${b.isim} (${formatTLTam(b.bakiye)})</option>`;
+            });
+        }
+        const hiSecim = document.getElementById('hi-hesap-secim');
+        if (hiSecim) {
+            hiSecim.innerHTML = hiOptions;
+            if(typeof refreshCustomSelect === 'function') refreshCustomSelect(hiSecim);
+        }
+
         const islemListesi = document.getElementById('islem-listesi');
         if (islemListesi) {
             let islemHtml = "";
@@ -2419,6 +2432,7 @@ function submitKMHGuncelle() {
             'ozel-secim',
             'ozel-odeme-sekli',
             'ozel-guncelle-secim'
+            'hi-hesap-secim'
         ];
 
         hedefler.forEach(function(id) {
