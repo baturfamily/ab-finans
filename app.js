@@ -2193,36 +2193,44 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             });
             // ------------------------------------------------------------------------------------------------
 
-                        siraliYaklasanlar.forEach(y => {
+                                    siraliYaklasanlar.forEach(y => {
                 const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
                 const isOtomatik = otoLogListesi.includes(y.tur);
 
-                // --- KUSURSUZ SİMETRİ VE BELİRGİN YAZI ---
+                // --- MANTIK KORUNDU: Kategori Metni Hazırlığı ---
                 const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) 
                     ? `<span style="opacity:0.85; font-weight:500;">${y.tur}</span>&nbsp;-&nbsp;` 
                     : "";
 
-                // Rozet / Buton Tasarımı
-                // YENİ AKIŞ: Önce buton yükleniyor moduna girer, veri gelince modal açılır.
+                // --- MANTIK KORUNDU: Badge / Onayla Butonu Fonksiyonu ---
                 const badge = isOtomatik 
-                    ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.15); color:#60a5fa; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(59, 130, 246, 0.3); font-weight:800; display:inline-flex; align-items:center;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
-                    : `<button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); if(!m.classList.contains('active')) { m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); } this.style.pointerEvents='auto'; }); event.stopPropagation();" style="border:none; cursor:pointer; min-width:60px; height:22px; font-size:9px; background:rgba(245, 158, 11, 0.2); color:#fbbf24; padding:0 8px; border-radius:6px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.4); font-weight:900; display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">ONAYLA</button>`;
+                    ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.15); color:#60a5fa; padding:2px 6px; border-radius:4px; border:1px solid rgba(59, 130, 246, 0.3); font-weight:800; display:inline-flex; align-items:center;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
+                    : `<button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); if(!m.classList.contains('active')) { m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); } this.style.pointerEvents='auto'; }); event.stopPropagation();" style="border:none; cursor:pointer; min-width:64px; height:22px; font-size:9px; background:rgba(245, 158, 11, 0.2); color:#fbbf24; padding:0 8px; border-radius:6px; border:1px solid rgba(245, 158, 11, 0.4); font-weight:900; display:inline-flex; align-items:center; justify-content:center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">ONAYLA</button>`;
 
+                // --- YENİ TASARIM: 3 Katmanlı Standart Yapı ---
                 yHtml += `
-                <div class="t-row" style="background: rgba(245, 158, 11, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px dashed rgba(245, 158, 11, 0.25); align-items: center;">
-                    <div class="t-details" style="flex: 1;">
-                        <div class="t-name" style="font-size: 14px; color: var(--amber); font-weight:700; line-height:1.4; display:flex; align-items:center; flex-wrap:wrap;">
-                            ${kategoriMetni}${y.kalem} ${badge}
+                <div class="t-row" style="background: rgba(245, 158, 11, 0.05); padding: 14px 12px; border-radius: 12px; margin-bottom: 8px; border: 1px dashed rgba(245, 158, 11, 0.25); align-items: center;">
+                    <div class="t-details" style="flex: 1; display: flex; flex-direction: column; gap: 7px;">
+                        <div style="font-size: 14px; color: var(--amber); font-weight:700; line-height:1.2; word-break: break-word;">
+                            ${kategoriMetni}${y.kalem}
                         </div>
-                        <div class="t-meta" style="font-size: 11px; margin-top:4px; color:rgba(255,255,255,0.5);">
+                        
+                        <div style="display: flex;">
+                            ${badge}
+                        </div>
+                        
+                        <div style="font-size: 10px; color:rgba(255,255,255,0.4); font-weight:500;">
                             Ayın ${y.gun}. Günü • ${y.yontem}
                         </div>
                     </div>
-                    <div class="t-amt text-red" style="font-size: 16px; font-weight: 800; margin-left:10px;">${formatTL(y.tutar)}</div>
+                    
+                    <div class="t-amt text-red" style="font-size: 16px; font-weight: 800; margin-left:10px; flex-shrink: 0;">
+                        ${formatTL(y.tutar)}
+                    </div>
                 </div>`;
             });
 
-            // Toplam Satırı
+            // --- MANTIK KORUNDU: Toplam Satırı ---
             yHtml += `
             <div class="t-row" style="border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 10px; padding-top: 12px; padding-right: 4px; display:flex; justify-content:flex-end; align-items:center;">
                 <div style="font-weight: 800; text-align: right; color: var(--text-muted); margin-right:10px; font-size:13px;">7 Günlük Toplam:</div>
