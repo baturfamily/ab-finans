@@ -2344,6 +2344,67 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
 
     // ----------------------------------------------
 
+// =========================================================================
+// 🌟 HESAP İŞLEMLERİ (BAKİYE EŞİTLEME & KMH GÜNCELLEME)
+// =========================================================================
+
+function updateHesapIslemBilgi() {
+    const secilen = getCustomVal('hi-hesap-secim');
+    const infoKutu = document.getElementById('hi-mevcut-bilgi');
+    if(!secilen || secilen.includes("Seçin")) { infoKutu.style.display = 'none'; return; }
+    
+    const hesap = window.currentStats.bankalar.find(b => b.isim === secilen);
+    if(hesap) {
+        document.getElementById('hi-mevcut-bakiye').innerHTML = formatTL(hesap.bakiye);
+        document.getElementById('hi-mevcut-kmh').innerHTML = formatTL(hesap.limit);
+        infoKutu.style.display = 'block';
+        document.getElementById('hi-yeni-bakiye').value = '';
+        document.getElementById('hi-yeni-kmh').value = '';
+    } else {
+        infoKutu.style.display = 'none';
+    }
+}
+
+function toggleHesapIslemTab(tab) {
+    vibe();
+    document.getElementById('tab-hi-bakiye').style.display = tab === 'bakiye' ? 'block' : 'none';
+    document.getElementById('tab-hi-kmh').style.display = tab === 'kmh' ? 'block' : 'none';
+    document.getElementById('btn-hi-bakiye').classList.toggle('active', tab === 'bakiye');
+    document.getElementById('btn-hi-kmh').classList.toggle('active', tab === 'kmh');
+}
+
+function submitBakiyeDuzelt() {
+    const hesap = getCustomVal('hi-hesap-secim');
+    const yeniTutarStr = document.getElementById('hi-yeni-bakiye').value;
+    
+    if(!hesap || hesap.includes("Seçin")) return markError('hi-hesap-secim');
+    if(yeniTutarStr === "") return markError('hi-yeni-bakiye');
+    
+    const yeniTutar = parseSaha(yeniTutarStr);
+    
+    apiIstekAt({ 
+        action: "hesap_bakiyesi_duzelt", 
+        hesap_adi: hesap, 
+        yeni_tutar: yeniTutar 
+    }, 'btn-submit-bakiye-duzelt');
+}
+
+function submitKMHGuncelle() {
+    const hesap = getCustomVal('hi-hesap-secim');
+    const yeniLimitStr = document.getElementById('hi-yeni-kmh').value;
+    
+    if(!hesap || hesap.includes("Seçin")) return markError('hi-hesap-secim');
+    if(yeniLimitStr === "") return markError('hi-yeni-kmh');
+    
+    const yeniLimit = parseSaha(yeniLimitStr);
+    
+    apiIstekAt({ 
+        action: "kmh_limiti_guncelle", 
+        hesap_adi: hesap, 
+        yeni_limit: yeniLimit 
+    }, 'btn-submit-kmh-guncelle');
+}
+
     window.onload = () => { verileriCek(); };
 
 // --- SADECE İSTENEN LİSTELERİ DÜZELTEN NOKTA ATIŞI KOD ---
