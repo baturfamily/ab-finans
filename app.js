@@ -233,6 +233,8 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NV
                     else if (b.id === 'btn-submit-kart-borc-ode') b.innerHTML = 'Kart Borcunu Öde';
                     else if (b.id === 'btn-submit-limit-guncelle') b.innerHTML = 'Limiti Güncelle';
                     else if (b.id === 'btn-submit-ekstre-guncelle') b.innerHTML = 'Ekstreyi Güncelle';
+                    else if (b.id === 'btn-submit-bakiye-duzelt') b.innerHTML = 'Bakiyeyi Eşitle';
+                    else if (b.id === 'btn-submit-kmh-guncelle') b.innerHTML = 'KMH Limitini Güncelle';
                 });
                 
                 const undoBtn = document.querySelector('.undo-btn');
