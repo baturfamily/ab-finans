@@ -308,6 +308,11 @@
                             <span id="lbl-kart-gelecek" style="font-size:13px; color:var(--text-muted); font-weight:500;">Gelecek Dönem</span>
                             <span id="val-kart-gelecek" class="tabular-nums" style="font-size:16px; font-weight:700; color:var(--amber);">₺0,00</span>
                         </div>
+                    <div style="margin-top:12px; padding: 0 14px 14px 14px;">
+    <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('section-kart-borc-ode', 'kbo-secim', 'Kart Borcu Öde').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); this.style.pointerEvents='auto'; });" style="width:100%; height:38px; background:rgba(244, 63, 94, 0.15); border:1px solid rgba(244, 63, 94, 0.3); color:var(--rose); border-radius:12px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
+        <i class="fas fa-credit-card"></i> KART BORCU ÖDE
+    </button>
+</div>
                     </div> </div> <div class="card accordion" id="acc-bankalar">
                 <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">
                     <h3><svg class="card-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Banka Hesaplarım</h3>
