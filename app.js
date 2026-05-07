@@ -2504,6 +2504,36 @@ function updateTransferOptions() {
     refreshCustomSelect(girisEl);
 }
 
+async function submitTransfer() {
+    const tutarStr = document.getElementById('t-tutar').value;
+    const cikis = getCustomVal('t-cikis');
+    const giris = getCustomVal('t-giris');
+    const tarih = document.getElementById('t-tarih').value;
+
+    let err = false;
+    // Validasyonlar
+    if (!tutarStr || parseSaha(tutarStr) <= 0) { markError('t-tutar'); err = true; }
+    if (!cikis || cikis.includes("Seçin")) { markError('t-cikis'); err = true; }
+    if (!giris || giris.includes("Seçin")) { markError('t-giris'); err = true; }
+    if (!tarih) { markError('t-tarih'); err = true; }
+
+    if (err) return;
+
+    // Tarih formatlama (dd.MM.yyyy HH:mm)
+    const simdi = new Date();
+    const tParca = tarih.split('-');
+    const tamTarih = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2, '0')}:${String(simdi.getMinutes()).padStart(2, '0')}`;
+
+    // Backend'e gönderim
+    apiIstekAt({
+        action: "transfer_yap",
+        yontem: cikis,         // Çıkan Hesap
+        transfer_yeri: giris,  // Giren Hesap
+        tutar: parseSaha(tutarStr),
+        tarih: tamTarih
+    }, 'btn-submit-transfer');
+}
+
     window.onload = () => { verileriCek(); };
 
 // --- SADECE İSTENEN LİSTELERİ DÜZELTEN NOKTA ATIŞI KOD ---
