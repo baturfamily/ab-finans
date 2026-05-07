@@ -2145,7 +2145,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             g.liste.forEach(s => {
                 let durumIcon = s.odendiMi ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>` : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
                 let op = s.odendiMi ? 'opacity: 0.6;' : 'opacity: 1;'; let tClass = s.odendiMi ? 'text-gray' : 'text-red';
-                html += `<div class="t-row" style="${op} padding: 12px 10px; border-bottom: 1px dashed rgba(255,255,255,0.05);"><div style="margin-right: 12px; display:flex; align-items:center;">${durumIcon}</div><div class="t-details"><div class="t-name" style="font-size:13px;">${s.kalem}</div><div class="t-meta" style="font-size:10px;">Ayın ${s.gun}. Günü • ${s.yontem}</div></div><div class="t-amt ${tClass}" style="font-size:14px;">${formatTL(s.tutar)}</div></div>`;
+                html += `<div class="t-row" style="${op} padding: 12px 10px; border-bottom: 1px dashed rgba(255,255,255,0.05);"><div style="margin-right: 12px; display:flex; align-items:center;">${durumIcon}</div><div class="t-details"><div class="t-name" style="font-size:13px; display:flex; align-items:center; flex-wrap:wrap;">${s.kalem}${getKalanAyBadge(s.kalanAy)}</div><div class="t-meta" style="font-size:10px;">Ayın ${s.gun}. Günü • ${s.yontem}</div></div><div class="t-amt ${tClass}" style="font-size:14px;">${formatTL(s.tutar)}</div></div>`;
             });
             sKategoriHtml += html + `</div>`; globalSira++;
         }
@@ -2650,4 +2650,34 @@ function triggerFaizOde(btn) {
             btn.style.pointerEvents = 'auto';
         }, 400);
     }, 500);
+}
+
+function getKalanAyBadge(kalan) {
+    if (kalan === undefined || kalan === null || kalan === "-" || kalan === "" || kalan === 0 || kalan === "0") return "";
+    
+    let text = "";
+    let bgColor, textColor;
+
+    if (kalan === "Süresiz") {
+        text = "Süresiz";
+        bgColor = "rgba(148, 163, 184, 0.12)"; // Gri
+        textColor = "#94a3b8";
+    } else {
+        let n = parseInt(kalan);
+        if (isNaN(n)) return "";
+        text = `Kalan: ${n} Ay`;
+
+        if (n <= 3) {
+            bgColor = "rgba(16, 185, 129, 0.12)"; // Yeşil
+            textColor = "var(--emerald)";
+        } else if (n <= 6) {
+            bgColor = "rgba(245, 158, 11, 0.12)"; // Turuncu
+            textColor = "var(--amber)";
+        } else {
+            bgColor = "rgba(244, 63, 94, 0.12)"; // Kırmızı
+            textColor = "var(--rose)";
+        }
+    }
+
+    return `<span style="font-size:9px; background:${bgColor}; color:${textColor}; padding:2px 6px; border-radius:4px; margin-left:8px; font-weight:700; border:1px solid ${bgColor.replace('0.12', '0.25')}; white-space:nowrap; display:inline-flex; align-items:center; vertical-align:middle;">${text}</span>`;
 }
