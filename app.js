@@ -2436,6 +2436,31 @@ function submitKMHGuncelle() {
     }, 'btn-submit-kmh-guncelle');
 }
 
+function updateKartBorcIslemBilgi() {
+    const secilen = getCustomVal('kbd-kart-secim');
+    const infoKutu = document.getElementById('kbd-mevcut-bilgi');
+    if(!secilen || secilen.includes("Seçin")) { infoKutu.style.display = 'none'; return; }
+    
+    const kart = window.currentStats.kartlarDetayli.find(k => k.isim === secilen);
+    if(kart) {
+        document.getElementById('kbd-mevcut-borc').innerHTML = formatTL(kart.borc);
+        infoKutu.style.display = 'block';
+    }
+}
+
+function submitKartBorcDuzelt() {
+    const kart = getCustomVal('kbd-kart-secim');
+    const yeniTutarStr = document.getElementById('kbd-yeni-borc').value;
+    if(!kart || kart.includes("Seçin")) return markError('kbd-kart-secim');
+    if(yeniTutarStr === "") return markError('hi-yeni-borc');
+    
+    apiIstekAt({ 
+        action: "kart_bakiyesi_duzelt", 
+        kart_adi: kart, 
+        yeni_tutar: parseSaha(yeniTutarStr) 
+    }, 'btn-submit-kart-borc-duzelt');
+}
+
     window.onload = () => { verileriCek(); };
 
 // --- SADECE İSTENEN LİSTELERİ DÜZELTEN NOKTA ATIŞI KOD ---
@@ -2450,7 +2475,8 @@ function submitKMHGuncelle() {
             'ozel-secim',
             'ozel-odeme-sekli',
             'ozel-guncelle-secim',
-            'hi-hesap-secim'
+            'hi-hesap-secim',
+            'kbd-kart-secim'
         ];
 
         hedefler.forEach(function(id) {
