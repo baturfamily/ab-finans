@@ -2431,7 +2431,7 @@ function submitKMHGuncelle() {
             'kredi-yeni-hesap',
             'ozel-secim',
             'ozel-odeme-sekli',
-            'ozel-guncelle-secim'
+            'ozel-guncelle-secim',
             'hi-hesap-secim'
         ];
 
