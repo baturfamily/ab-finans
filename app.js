@@ -2171,13 +2171,39 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             });
             // ------------------------------------------------------------------------------------------------
 
-            // Ekrana basarken de ana veriyi değil, bizim sıraladığımız bu klon listeyi kullanıyoruz
-            siraliYaklasanlar.forEach(y => {
-                let kural = data.tumSabitlerListe.find(k => k.kalem === y.kalem);
-                let kategoriMetni = (kural && kural.tur && kural.tur !== "-") ? `${kural.tur} - ` : "";
-                yHtml += `<div class="t-row" style="background: rgba(245, 158, 11, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px dashed rgba(245, 158, 11, 0.2);"><div class="t-details"><div class="t-name" style="font-size: 14px; color: var(--amber);"><i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>${(kategoriMetni && !y.kalem.startsWith(kategoriMetni.replace(' - ', ''))) ? kategoriMetni : ""}${y.kalem}</div><div class="t-meta" style="font-size: 11px;">Ayın ${y.gun}. Günü • ${y.yontem}</div></div><div class="t-amt text-red" style="font-size: 15px;">${formatTL(y.tutar)}</div></div>`;
+                        siraliYaklasanlar.forEach(y => {
+                // Ayarlar sayfasındaki "Oto-Log" whitelist listesini alıyoruz
+                const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
+                
+                // Eğer işlemin kategorisi (tur) bu listede varsa otomatiktir
+                const isOtomatik = otoLogListesi.includes(y.tur);
+
+                // Mimar Tasarımı Rozetler
+                const badge = isOtomatik 
+                    ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.12); color:#60a5fa; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(59, 130, 246, 0.2); font-weight:700;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
+                    : `<span style="font-size:9px; background:rgba(245, 158, 11, 0.12); color:#fbbf24; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.2); font-weight:700;"><i class="fas fa-hand-pointer" style="margin-right:3px;"></i>ONAY BEKLEYOR</span>`;
+
+                yHtml += `
+                <div class="t-row" style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="t-details">
+                        <div class="t-name" style="font-size: 13px; font-weight:600; color: #fff; display:flex; align-items:center; flex-wrap:wrap;">
+                            ${y.kalem} ${badge}
+                        </div>
+                        <div class="t-meta" style="font-size: 10px; margin-top:4px; opacity:0.6;">
+                            Ayın ${y.gun}. Günü • ${y.yontem}
+                        </div>
+                    </div>
+                    <div class="t-amt text-red" style="font-size: 14px; font-weight:800;">${formatTL(y.tutar)}</div>
+                </div>`;
             });
-            yHtml += `<div class="t-row" style="border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 10px; padding-top: 12px; padding-right: 4px;"><div class="t-details"><div class="t-name" style="font-weight: 800; text-align: right; color: var(--text-muted);">7 Günlük Toplam:</div></div><div class="t-amt text-red" style="font-size: 17px; font-weight: 800;">${formatTL(data.yaklasanToplam)}</div></div>`;
+            
+            // Toplam satırı (Olduğu gibi bıraktık, tasarım uyumu için hafif makyajladık)
+            yHtml += `
+            <div class="t-row" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding: 12px 4px 4px 4px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">7 Günlük Toplam</div>
+                <div class="text-red" style="font-size: 18px; font-weight:900; letter-spacing:-0.5px;">${formatTL(data.yaklasanToplam)}</div>
+            </div>`;
+            
             yListe.innerHTML = yHtml;
         } else {
             yListe.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size: 14px; padding: 10px 0;"><i class="fas fa-check-circle" style="color:var(--emerald); font-size:24px; display:block; margin-bottom:10px;"></i>Önümüzdeki 7 gün için bekleyen ödeme yok.</div>`;
