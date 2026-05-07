@@ -2171,7 +2171,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             });
             // ------------------------------------------------------------------------------------------------
 
-                            siraliYaklasanlar.forEach(y => {
+            siraliYaklasanlar.forEach(y => {
                 const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
                 const isOtomatik = otoLogListesi.includes(y.tur);
 
@@ -2180,10 +2180,11 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                     ? `<span style="opacity:0.85; font-weight:500;">${y.tur}</span>&nbsp;-&nbsp;` 
                     : "";
 
-                // Rozet / Buton Tasarımı (Ortalı kayma için d-flex eklendi)
+                // Rozet / Buton Tasarımı
+                // DÜZELTME: toggleModal() yerine modalı manuel açıp direkt onay ekranını hedefliyoruz.
                 const badge = isOtomatik 
                     ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.15); color:#60a5fa; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(59, 130, 246, 0.3); font-weight:800; display:inline-flex; align-items:center;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
-                    : `<button onclick="if(!document.getElementById('action-modal').classList.contains('active')) toggleModal(); loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla'); event.stopPropagation();" style="border:none; cursor:pointer; font-size:9px; background:rgba(245, 158, 11, 0.2); color:#fbbf24; padding:3px 8px; border-radius:6px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.4); font-weight:900; display:inline-flex; align-items:center; vertical-align:middle; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">ONAYLA</button>`;
+                    : `<button onclick="const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); showSection('section-sabit-onayla', 'Bekleyen İşlemi Onayla'); loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla'); event.stopPropagation();" style="border:none; cursor:pointer; font-size:9px; background:rgba(245, 158, 11, 0.2); color:#fbbf24; padding:3px 8px; border-radius:6px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.4); font-weight:900; display:inline-flex; align-items:center; vertical-align:middle; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">ONAYLA</button>`;
 
                 yHtml += `
                 <div class="t-row" style="background: rgba(245, 158, 11, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px dashed rgba(245, 158, 11, 0.25); align-items: center;">
@@ -2198,13 +2199,6 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                     <div class="t-amt text-red" style="font-size: 16px; font-weight: 800; margin-left:10px;">${formatTL(y.tutar)}</div>
                 </div>`;
             });
-            
-            // --- ESKİ TARZ TOPLAM SATIRI (GERİ GELDİ) ---
-            yHtml += `
-            <div class="t-row" style="border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 10px; padding-top: 12px; padding-right: 4px; display:flex; justify-content:flex-end; align-items:center;">
-                <div style="font-weight: 800; text-align: right; color: var(--text-muted); margin-right:10px; font-size:13px;">7 Günlük Toplam:</div>
-                <div class="t-amt text-red" style="font-size: 18px; font-weight: 900;">${formatTL(data.yaklasanToplam)}</div>
-            </div>`;
             
             yListe.innerHTML = yHtml;
         } else {
