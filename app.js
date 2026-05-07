@@ -1753,10 +1753,10 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         } else {
             fHtml = `<div class="list-row" style="border:none; padding:8px 0;"><span class="list-label" style="font-size:13px; color:var(--text-muted);">Bu ay gerçekleşen faiz yok.</span></div>`;
         }
-                            fHtml += `
+                    fHtml += `
         <div style="margin-top:15px;">
-            <button onclick="triggerFaizOde(this)" style="width:100%; height:36px; background:rgba(244, 63, 94, 0.12); border:1px solid rgba(244, 63, 94, 0.25); color:var(--rose); border-radius:10px; font-size:11px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-                <i class="fas fa-money-bill-trend-up" style="font-size:13px;"></i> FAİZ ÖDEMESİ GİR
+            <button onclick="triggerFaizOde(this)" style="width:100%; height:34px; background:rgba(244, 63, 94, 0.1); border:1px solid rgba(244, 63, 94, 0.2); color:var(--rose); border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">
+                <i class="fas fa-percent"></i> FAİZ ÖDEMESİ GİR
             </button>
         </div>`;
         fListe.innerHTML = fHtml;
@@ -1828,12 +1828,6 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         </div>`;
         
         // Alt kısımdaki gereksiz toplam satırı tamamen SİLİNDİ
-                    bHtml += `
-        <div style="margin-top:15px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
-            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('ozel-borc-islemleri-screen', 'ozel-secim', 'Şahıs & Özel Borçlar').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); toggleOzelTab('ode'); this.style.pointerEvents='auto'; });" class="btn-ozel-borclar" style="width:100%; height:40px; border-radius:12px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:10px; border:none; cursor:pointer; color:#fff;">
-                <i class="fas fa-hand-holding-dollar" style="font-size:14px;"></i> ÖZEL BORÇ ÖDE
-            </button>
-        </div>`;
         bListe.innerHTML = bHtml;
 
         // BAŞLIĞA TOPLAM BORCU YAZDIRMA
