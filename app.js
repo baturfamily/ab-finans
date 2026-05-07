@@ -235,6 +235,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NV
                     else if (b.id === 'btn-submit-ekstre-guncelle') b.innerHTML = 'Ekstreyi Güncelle';
                     else if (b.id === 'btn-submit-bakiye-duzelt') b.innerHTML = 'Bakiyeyi Eşitle';
                     else if (b.id === 'btn-submit-kmh-guncelle') b.innerHTML = 'KMH Limitini Güncelle';
+                    else if (b.id === 'btn-submit-kart-borc-duzelt') b.innerHTML = 'Borcu Eşitle';
                 });
                 
                 const undoBtn = document.querySelector('.undo-btn');
@@ -721,6 +722,13 @@ function submitVarlikSil() {
                 // Sekmeyi varsayılan olarak "Bakiye" kısmına al
                 toggleHesapIslemTab('bakiye');
             }
+
+                                if(id === 'section-kart-borc-duzelt') {
+                    document.getElementById('kbd-kart-secim').value = '';
+                    document.getElementById('kbd-mevcut-bilgi').style.display = 'none';
+                    document.getElementById('kbd-yeni-borc').value = '';
+                    if(typeof refreshCustomSelect === 'function') refreshCustomSelect(document.getElementById('kbd-kart-secim'));
+                }
         }
 
         function fillInput(id, text) { vibe(); document.getElementById(id).value = text; }
@@ -1936,6 +1944,16 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             hiSecim.innerHTML = hiOptions;
             if(typeof refreshCustomSelect === 'function') refreshCustomSelect(hiSecim);
         }
+
+                    // --- YENİ: Kredi Kartı Borç Düzeltme Listesi ---
+        let kbdOptions = `<option value="" disabled selected>-- Kart Seçin --</option>`;
+        if (data.kartlarDetayli) {
+            data.kartlarDetayli.forEach(k => {
+                kbdOptions += `<option value="${k.isim}">${k.isim} (${formatTLTam(k.borc)})</option>`;
+            });
+        }
+        const kbdSecim = document.getElementById('kbd-kart-secim');
+        if (kbdSecim) { kbdSecim.innerHTML = kbdOptions; if(typeof refreshCustomSelect === 'function') refreshCustomSelect(kbdSecim); }
 
         const islemListesi = document.getElementById('islem-listesi');
         if (islemListesi) {
