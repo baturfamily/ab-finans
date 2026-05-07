@@ -2176,7 +2176,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 const isOtomatik = otoLogListesi.includes(y.tur);
 
                 // Kategori Metni Hazırlığı (Eğer kategori yoksa veya kalemle aynıysa tekrar etmesin)
-                const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) ? `<span style="opacity:0.7; font-weight:400;">${y.tur} - </span>` : "";
+                const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) ? `<span style="opacity:0.7; font-weight:400;">${y.tur}</span> - ` : "";
 
                 // Rozet Tasarımı
                 const badge = isOtomatik 
