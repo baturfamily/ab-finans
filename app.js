@@ -709,6 +709,18 @@ function submitVarlikSil() {
   document.getElementById('kl-mevcut-limit-grup').style.display = 'none';
   document.getElementById('kl-yeni-limit').value = '';
 }
+                if(id === 'section-hesap-islemleri') {
+                document.getElementById('hi-hesap-secim').value = '';
+                document.getElementById('hi-mevcut-bilgi').style.display = 'none';
+                document.getElementById('hi-yeni-bakiye').value = '';
+                document.getElementById('hi-yeni-kmh').value = '';
+                // Siyah premium select stilini sıfırla
+                if(typeof refreshCustomSelect === 'function') {
+                    refreshCustomSelect(document.getElementById('hi-hesap-secim'));
+                }
+                // Sekmeyi varsayılan olarak "Bakiye" kısmına al
+                toggleHesapIslemTab('bakiye');
+            }
         }
 
         function fillInput(id, text) { vibe(); document.getElementById(id).value = text; }
