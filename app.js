@@ -2171,14 +2171,14 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             });
             // ------------------------------------------------------------------------------------------------
 
-                        siraliYaklasanlar.forEach(y => {
-                // Ayarlar sayfasındaki "Oto-Log" whitelist listesini alıyoruz
+                                    siraliYaklasanlar.forEach(y => {
                 const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
-                
-                // Eğer işlemin kategorisi (tur) bu listede varsa otomatiktir
                 const isOtomatik = otoLogListesi.includes(y.tur);
 
-                // Mimar Tasarımı Rozetler
+                // Kategori Metni Hazırlığı (Eğer kategori yoksa veya kalemle aynıysa tekrar etmesin)
+                const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) ? `<span style="opacity:0.7; font-weight:400;">${y.tur} - </span>` : "";
+
+                // Rozet Tasarımı
                 const badge = isOtomatik 
                     ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.12); color:#60a5fa; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(59, 130, 246, 0.2); font-weight:700;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
                     : `<span style="font-size:9px; background:rgba(245, 158, 11, 0.12); color:#fbbf24; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.2); font-weight:700;"><i class="fas fa-hand-pointer" style="margin-right:3px;"></i>ONAY BEKLEYOR</span>`;
@@ -2187,7 +2187,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 <div class="t-row" style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05);">
                     <div class="t-details">
                         <div class="t-name" style="font-size: 13px; font-weight:600; color: #fff; display:flex; align-items:center; flex-wrap:wrap;">
-                            ${y.kalem} ${badge}
+                            ${kategoriMetni}${y.kalem} ${badge}
                         </div>
                         <div class="t-meta" style="font-size: 10px; margin-top:4px; opacity:0.6;">
                             Ayın ${y.gun}. Günü • ${y.yontem}
@@ -2196,13 +2196,6 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                     <div class="t-amt text-red" style="font-size: 14px; font-weight:800;">${formatTL(y.tutar)}</div>
                 </div>`;
             });
-            
-            // Toplam satırı (Olduğu gibi bıraktık, tasarım uyumu için hafif makyajladık)
-            yHtml += `
-            <div class="t-row" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding: 12px 4px 4px 4px; display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">7 Günlük Toplam</div>
-                <div class="text-red" style="font-size: 18px; font-weight:900; letter-spacing:-0.5px;">${formatTL(data.yaklasanToplam)}</div>
-            </div>`;
             
             yListe.innerHTML = yHtml;
         } else {
