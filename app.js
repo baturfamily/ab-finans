@@ -2175,29 +2175,36 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
                 const isOtomatik = otoLogListesi.includes(y.tur);
 
-                // --- KUSURSUZ SİMETRİ ZIRHI ---
-                // &nbsp; kullanarak tarayıcıya "burada mutlaka boşluk bırak" diyoruz.
+                // --- KUSURSUZ SİMETRİ VE BELİRGİN YAZI ---
                 const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) 
-                    ? `<span style="opacity:0.7; font-weight:400;">${y.tur}</span>&nbsp;-&nbsp;` 
+                    ? `<span style="opacity:0.85; font-weight:500;">${y.tur}</span>&nbsp;-&nbsp;` 
                     : "";
 
+                // Rozet / Buton Tasarımı (Ortalı kayma için d-flex eklendi)
                 const badge = isOtomatik 
-                    ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.12); color:#60a5fa; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(59, 130, 246, 0.2); font-weight:700;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
-                    : `<button onclick="if(!document.getElementById('action-modal').classList.contains('active')) toggleModal(); loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla'); event.stopPropagation();" style="border:none; cursor:pointer; font-size:9px; background:rgba(245, 158, 11, 0.15); color:#fbbf24; padding:3px 8px; border-radius:6px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.3); font-weight:800; display:inline-flex; align-items:center; transition:0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"><i class="fas fa-hand-pointer" style="margin-right:4px;"></i>ONAYLA</button>`;
+                    ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.15); color:#60a5fa; padding:2px 6px; border-radius:4px; margin-left:8px; border:1px solid rgba(59, 130, 246, 0.3); font-weight:800; display:inline-flex; align-items:center;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
+                    : `<button onclick="if(!document.getElementById('action-modal').classList.contains('active')) toggleModal(); loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla'); event.stopPropagation();" style="border:none; cursor:pointer; font-size:9px; background:rgba(245, 158, 11, 0.2); color:#fbbf24; padding:3px 8px; border-radius:6px; margin-left:8px; border:1px solid rgba(245, 158, 11, 0.4); font-weight:900; display:inline-flex; align-items:center; vertical-align:middle; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">ONAYLA</button>`;
 
                 yHtml += `
-                <div class="t-row" style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 14px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div class="t-details">
-                        <div class="t-name" style="font-size: 13px; font-weight:600; color: #fff; display:flex; align-items:center; flex-wrap:wrap;">
+                <div class="t-row" style="background: rgba(245, 158, 11, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px dashed rgba(245, 158, 11, 0.25); align-items: center;">
+                    <div class="t-details" style="flex: 1;">
+                        <div class="t-name" style="font-size: 14px; color: var(--amber); font-weight:700; line-height:1.4; display:flex; align-items:center; flex-wrap:wrap;">
                             ${kategoriMetni}${y.kalem} ${badge}
                         </div>
-                        <div class="t-meta" style="font-size: 10px; margin-top:4px; opacity:0.6;">
+                        <div class="t-meta" style="font-size: 11px; margin-top:4px; color:rgba(255,255,255,0.5);">
                             Ayın ${y.gun}. Günü • ${y.yontem}
                         </div>
                     </div>
-                    <div class="t-amt text-red" style="font-size: 14px; font-weight:800;">${formatTL(y.tutar)}</div>
+                    <div class="t-amt text-red" style="font-size: 16px; font-weight: 800; margin-left:10px;">${formatTL(y.tutar)}</div>
                 </div>`;
             });
+            
+            // --- ESKİ TARZ TOPLAM SATIRI (GERİ GELDİ) ---
+            yHtml += `
+            <div class="t-row" style="border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 10px; padding-top: 12px; padding-right: 4px; display:flex; justify-content:flex-end; align-items:center;">
+                <div style="font-weight: 800; text-align: right; color: var(--text-muted); margin-right:10px; font-size:13px;">7 Günlük Toplam:</div>
+                <div class="t-amt text-red" style="font-size: 18px; font-weight: 900;">${formatTL(data.yaklasanToplam)}</div>
+            </div>`;
             
             yListe.innerHTML = yHtml;
         } else {
