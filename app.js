@@ -1755,8 +1755,8 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         }
                     fHtml += `
         <div style="margin-top:15px;">
-            <button onclick="triggerFaizOde(this)" style="width:100%; height:34px; background:rgba(244, 63, 94, 0.1); border:1px solid rgba(244, 63, 94, 0.2); color:var(--rose); border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">
-                <i class="fas fa-percent"></i> FAİZ ÖDEMESİ GİR
+            <button onclick="triggerFaizOde(this)" style="width:100%; height:36px; background:rgba(244, 63, 94, 0.12); border:1px solid rgba(244, 63, 94, 0.25); color:var(--rose); border-radius:10px; font-size:11px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                <i class="fas fa-money-bill-trend-up" style="font-size:13px;"></i> FAİZ ÖDEMESİ GİR
             </button>
         </div>`;
         fListe.innerHTML = fHtml;
