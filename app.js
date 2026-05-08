@@ -2863,3 +2863,47 @@ function hesaplaKalanParcaliAnlik() {
         kalanEl.style.color = "var(--amber)";
     }
 }
+
+function resetAnlikForm() {
+    // 1. Yazı alanlarını temizle
+    const inputlar = ['an-tutar', 'an-kalem-diger', 'an-ek-input'];
+    inputlar.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.value = '';
+    });
+
+    // 2. Checkbox'ı kapat ve ek alanları gizle
+    const ekCheck = document.getElementById('an-ek-check');
+    if(ekCheck) ekCheck.checked = false;
+    
+    const gizlenecekler = ['an-ek-input-konteyner', 'an-diger-konteyner', 'an-faiz-grubu', 'an-parcali-hesap-alani'];
+    gizlenecekler.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.style.display = 'none';
+    });
+
+    // 3. Ödeme şeklini "Tek"e döndür ve görünürlüğü ayarla
+    const odemeSekli = document.getElementById('an-odeme-sekli');
+    if(odemeSekli) {
+        odemeSekli.value = 'tek';
+        document.getElementById('an-tek-hesap-alani').style.display = 'block';
+    }
+
+    // 4. Parçalı ödeme konteynerini boşalt
+    const parcaKapsayici = document.getElementById('an-parcalar-container');
+    if(parcaKapsayici) parcaKapsayici.innerHTML = '';
+
+    // 5. Tarihi bugüne çek
+    document.getElementById('an-tarih').valueAsDate = new Date();
+
+    // 6. PREMIUM MAKYAJ: Seçim kutularını (Custom Select) görsel olarak sıfırla
+    // Bu kısım çok önemli, yoksa görsel olarak eski isimler kalır.
+    const selects = ['an-kalem', 'an-odeme-sekli', 'an-yontem', 'an-faiz-detay'];
+    selects.forEach(id => {
+        const sel = document.getElementById(id);
+        if(sel) {
+            sel.selectedIndex = 0;
+            if(typeof refreshCustomSelect === 'function') refreshCustomSelect(sel);
+        }
+    });
+}
