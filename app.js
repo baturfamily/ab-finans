@@ -1791,9 +1791,11 @@ function tutarFormatla(input) {
         animateValue('val-net-servet', data.netServet, aSure);
         animateValueUSD('val-net-servet-usd', data.netServetUSD, aSure);
 
-            const kurEl = document.getElementById('usd-kur-bilgisi');
-        if (kurEl && data.usdRate) {
-            kurEl.innerText = `(Güncel Kur: ₺${data.usdRate.toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2})})`;
+                    // --- MİMAR DOKUNUŞU: Kur Bilgisini Ekrana Bas (Zırhlı) ---
+        const kurEl = document.getElementById('usd-kur-bilgisi');
+        let guncelKur = parseSaha(data.usdRate); // Backendden ne gelirse gelsin rakama çevirir
+        if (kurEl && guncelKur > 0) {
+            kurEl.innerText = `(Güncel Kur: ₺${guncelKur.toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2})})`;
         }
 
         // Net Varlık Dinamik Renk Zırhı
@@ -2178,60 +2180,56 @@ function tutarFormatla(input) {
         animateValue('val-nakit-cikis', (nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam + nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam), aSure);
         animateValue('val-net-nakit', netAkis, aSure);
 
-        const kutuNet = document.getElementById('kutu-net-nakit'); const valNet = document.getElementById('val-net-nakit');
+                // 1. Kutu Rengini Ayarla (Sadece BİR KERE tanımlıyoruz)
+        const kutuNet = document.getElementById('kutu-net-nakit'); 
+        const valNet = document.getElementById('val-net-nakit');
         if (kutuNet && valNet) {
             if (netAkis < 0) {
-                kutuNet.style.background = 'rgba(244, 63, 94, 0.1)'; kutuNet.style.borderColor = 'rgba(244, 63, 94, 0.3)'; valNet.style.color = 'var(--rose)';
+                kutuNet.style.background = 'rgba(244, 63, 94, 0.1)'; 
+                kutuNet.style.borderColor = 'rgba(244, 63, 94, 0.3)'; 
+                valNet.style.color = 'var(--rose)';
             } else {
-                kutuNet.style.background = 'rgba(16, 185, 129, 0.1)'; kutuNet.style.borderColor = 'rgba(16, 185, 129, 0.3)'; valNet.style.color = 'var(--emerald)';
+                kutuNet.style.background = 'rgba(16, 185, 129, 0.1)'; 
+                kutuNet.style.borderColor = 'rgba(16, 185, 129, 0.3)'; 
+                valNet.style.color = 'var(--emerald)';
             }
         }
 
-                    const kutuNet = document.getElementById('kutu-net-nakit'); const valNet = document.getElementById('val-net-nakit');
-        if (kutuNet && valNet) {
-            if (netAkis < 0) {
-                kutuNet.style.background = 'rgba(244, 63, 94, 0.1)'; kutuNet.style.borderColor = 'rgba(244, 63, 94, 0.3)'; valNet.style.color = 'var(--rose)';
-            } else {
-                kutuNet.style.background = 'rgba(16, 185, 129, 0.1)'; kutuNet.style.borderColor = 'rgba(16, 185, 129, 0.3)'; valNet.style.color = 'var(--emerald)';
-            }
-        }
-
-        // --- MİMAR DOKUNUŞU: Akıllı Tüketim Barı Motoru ---
-        const tuketimKapsayici = document.getElementById('tuketim-bari-kapsayici');
-        const tuketimYuzdeEl = document.getElementById('tuketim-yuzdesi');
-        const tuketimBarDoluluk = document.getElementById('tuketim-bari-doluluk');
-        
-        if (tuketimKapsayici && tuketimYuzdeEl && tuketimBarDoluluk) {
-            let toplamGelir = nakitAkisiGruplar["Toplam Gelirler"].toplam || 0;
-            let toplamGider = (nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam || 0) + (nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam || 0);
+        // 2. Akıllı Tüketim Barı Motoru
+        try {
+            const tuketimKapsayici = document.getElementById('tuketim-bari-kapsayici');
+            const tuketimYuzdeEl = document.getElementById('tuketim-yuzdesi');
+            const tuketimBarDoluluk = document.getElementById('tuketim-bari-doluluk');
             
-            // Sadece bu ay gelir kaydedilmişse barı göster
-            if (toplamGelir > 0) {
-                tuketimKapsayici.style.display = 'block';
-                let yuzdeHesap = (toplamGider / toplamGelir) * 100;
-                let barYuzdesi = Math.min(yuzdeHesap, 100); // Bar taşmasın diye %100'e sabitler
+            if (tuketimKapsayici && tuketimYuzdeEl && tuketimBarDoluluk) {
+                let toplamGelir = nakitAkisiGruplar["Toplam Gelirler"].toplam || 0;
+                let toplamGider = (nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam || 0) + (nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam || 0);
                 
-                setTimeout(() => {
-                    tuketimBarDoluluk.style.width = barYuzdesi + '%';
+                if (toplamGelir > 0) {
+                    tuketimKapsayici.style.display = 'block';
+                    let yuzdeHesap = (toplamGider / toplamGelir) * 100;
+                    let barYuzdesi = Math.min(yuzdeHesap, 100); 
                     
-                    // Renk Sensörleri ("Frene Bas" mesajı)
-                    if (yuzdeHesap >= 90) {
-                        tuketimBarDoluluk.style.backgroundColor = 'var(--rose)';
-                        tuketimYuzdeEl.style.color = 'var(--rose)';
-                    } else if (yuzdeHesap >= 75) {
-                        tuketimBarDoluluk.style.backgroundColor = 'var(--amber)';
-                        tuketimYuzdeEl.style.color = 'var(--amber)';
-                    } else {
-                        tuketimBarDoluluk.style.backgroundColor = 'var(--emerald)';
-                        tuketimYuzdeEl.style.color = 'var(--text-muted)';
-                    }
-                    
-                    // Küsuratsız temiz yüzde gösterimi
-                    tuketimYuzdeEl.innerText = '%' + yuzdeHesap.toFixed(0);
-                }, 100); // CSS animasyonunun devreye girmesi için ufak bir bekleme
-            } else {
-                tuketimKapsayici.style.display = 'none'; // Gelir yoksa bar gizli kalır
+                    setTimeout(() => {
+                        tuketimBarDoluluk.style.width = barYuzdesi + '%';
+                        if (yuzdeHesap >= 90) {
+                            tuketimBarDoluluk.style.backgroundColor = 'var(--rose)';
+                            tuketimYuzdeEl.style.color = 'var(--rose)';
+                        } else if (yuzdeHesap >= 75) {
+                            tuketimBarDoluluk.style.backgroundColor = 'var(--amber)';
+                            tuketimYuzdeEl.style.color = 'var(--amber)';
+                        } else {
+                            tuketimBarDoluluk.style.backgroundColor = 'var(--emerald)';
+                            tuketimYuzdeEl.style.color = 'var(--text-muted)';
+                        }
+                        tuketimYuzdeEl.innerText = '%' + yuzdeHesap.toFixed(0);
+                    }, 100); 
+                } else {
+                    tuketimKapsayici.style.display = 'none'; 
+                }
             }
+        } catch (e) {
+            console.error("Bar cizim hatasi:", e);
         }
 
         const sKategoriContainer = document.getElementById('sabitler-kategori-container');
