@@ -2302,27 +2302,57 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
 
                         if (values.length > 0) {
                 const premiumColors = ['#f43f5e', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6', '#ec4899', '#64748b'];
-                try {
+                                try {
                     expenseChartInstance = new Chart(cCtx, {
                         type: 'doughnut',
                         data: {
                             labels: labels,
-                            datasets: [{ data: values, backgroundColor: labels.map((label, index) => label === "Diğer" ? '#64748b' : premiumColors[index]), borderWidth: 0, hoverOffset: 8 }]
+                            datasets: [{ 
+                                data: values, 
+                                backgroundColor: labels.map((label, index) => label === "Diğer" ? '#64748b' : premiumColors[index]), 
+                                borderWidth: 0, 
+                                hoverOffset: 12 // Dilimlere basınca biraz daha dışarı çıksın, premium hissettirir
+                            }]
                         },
                         options: {
-                            responsive: true, maintainAspectRatio: false, cutout: '75%', 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            cutout: '75%', 
                             plugins: {
                                 legend: { display: false }, 
-                                tooltip: { backgroundColor: '#1e2128', titleColor: '#94a3b8', bodyColor: '#fff', bodyFont: { weight: 'bold' }, padding: 12, cornerRadius: 8, displayColors: true,
-                                    callbacks: { label: function(context) { let val = context.raw || 0; let perc = ((val / pastaSafToplam) * 100).toFixed(1); return ` ₺${val.toLocaleString('tr-TR', {minimumFractionDigits: 2})} (%${perc})`; } }
+                                tooltip: { enabled: false } // Siyah kutuyu iptal ettik, çakışma bitti
+                            },
+                            // --- DİNAMİK MERKEZ YAZIM MANTIĞI ---
+                            onHover: (event, chartElement) => {
+                                const mBaslik = document.getElementById('pasta-merkez-baslik');
+                                const mDeger = document.getElementById('pasta-toplam-rakam');
+                                if(!mBaslik || !mDeger) return;
+
+                                if (chartElement.length > 0) {
+                                    // BİR DİLİME DOKUNULDUĞUNDA:
+                                    const index = chartElement[0].index;
+                                    const label = labels[index];
+                                    const val = values[index];
+                                    const yuzde = pastaSafToplam > 0 ? ((val / pastaSafToplam) * 100).toFixed(1) : 0;
+                                    
+                                    mBaslik.innerText = label + " (%" + yuzde + ")";
+                                    mBaslik.style.color = "var(--amber)"; // Dokunulan kategoriyi vurgula
+                                    mDeger.innerHTML = formatTL(val); // O kategorinin tutarını yaz
+                                } else {
+                                    // PARMAK ÇEKİLDİĞİNDE (VARSAYILAN DURUM):
+                                    mBaslik.innerText = "Saf Harcama";
+                                    mBaslik.style.color = "var(--text-muted)";
+                                    mDeger.innerHTML = formatTL(pastaSafToplam); // Toplam aylık saf harcamayı yaz
                                 }
                             }
                         }
                     });
                 } catch(e) { console.error("Grafik çizim hatası:", e); }
 
-                const pastaToplamEl = document.getElementById('pasta-toplam-rakam'); if(pastaToplamEl) pastaToplamEl.innerHTML = formatTL(pastaSafToplam);
-
+                // --- İLK AÇILIŞTA TOPLAMI MERKEZE YAZDIRMA ---
+                // Bu satır, sayfa ilk yüklendiğinde merkezin boş kalmamasını sağlar
+                const pastaToplamEl = document.getElementById('pasta-toplam-rakam'); 
+                if(pastaToplamEl) pastaToplamEl.innerHTML = formatTL(pastaSafToplam);
                 const top5Container = document.getElementById('pasta-ozet-grid');
                 if (top5Container) {
                     let top5Html = "";
