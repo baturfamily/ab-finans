@@ -2390,30 +2390,55 @@ function tutarFormatla(input) {
             });
             // ------------------------------------------------------------------------------------------------
 
-                                    siraliYaklasanlar.forEach(y => {
+                            siraliYaklasanlar.forEach(y => {
                 const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
                 const isOtomatik = otoLogListesi.includes(y.tur);
 
-                // --- MANTIK KORUNDU: Kategori Metni Hazırlığı ---
                 const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) 
                     ? `<span style="opacity:0.85; font-weight:500;">${y.tur}</span>&nbsp;-&nbsp;` 
                     : "";
 
-                // --- MANTIK KORUNDU: Badge / Onayla Butonu Fonksiyonu ---
                 const badge = isOtomatik 
                     ? `<span style="font-size:9px; background:rgba(59, 130, 246, 0.15); color:#60a5fa; padding:2px 6px; border-radius:4px; border:1px solid rgba(59, 130, 246, 0.3); font-weight:800; display:inline-flex; align-items:center;"><i class="fas fa-robot" style="margin-right:3px;"></i>OTOMATİK</span>`
                     : `<button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Bekleyen İşlemi Onayla').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); if(!m.classList.contains('active')) { m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); } this.style.pointerEvents='auto'; }); event.stopPropagation();" style="border:none; cursor:pointer; min-width:64px; height:22px; font-size:9px; background:rgba(245, 158, 11, 0.2); color:#fbbf24; padding:0 8px; border-radius:6px; border:1px solid rgba(245, 158, 11, 0.4); font-weight:900; display:inline-flex; align-items:center; justify-content:center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">ONAYLA</button>`;
 
-                // --- YENİ TASARIM: 3 Katmanlı Standart Yapı ---
+                // --- MİMAR DOKUNUŞU: Zaman Sensörü ve "Nabız" (Pulse) Efekti ---
+                let fark = y.gun - bugunGunu;
+                if (fark < 0) fark += buAyKacGun; // Ay devretme koruması
+
+                let geriSayimBadge = "";
+                let rowStyleEk = "";
+                
+                if (fark === 0) {
+                    // BUGÜN: Tüm satır kırmızıya çalar ve nabız gibi atar
+                    geriSayimBadge = `<span style="font-size:9px; background:rgba(244, 63, 94, 0.15); color:var(--rose); padding:2px 6px; border-radius:4px; font-weight:800; border:1px solid rgba(244, 63, 94, 0.3); margin-left:6px; animation: textPulse 1s infinite;"><i class="fas fa-exclamation-triangle" style="margin-right:3px;"></i>BUGÜN</span>`;
+                    rowStyleEk = `background: rgba(244, 63, 94, 0.08); border-color: rgba(244, 63, 94, 0.4); animation: bugunPulse 1.5s infinite;`;
+                    
+                    if (!document.getElementById('bugun-pulse-style')) {
+                        const s = document.createElement('style'); s.id = 'bugun-pulse-style';
+                        s.innerHTML = `@keyframes bugunPulse { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.3); } 70% { box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } } @keyframes textPulse { 0% { opacity:1; } 50% { opacity:0.6; } 100% { opacity:1; } }`;
+                        document.head.appendChild(s);
+                    }
+                } else if (fark === 1) {
+                    // YARIN: Satır turuncu (amber) olur
+                    geriSayimBadge = `<span style="font-size:9px; background:rgba(245, 158, 11, 0.15); color:var(--amber); padding:2px 6px; border-radius:4px; font-weight:800; border:1px solid rgba(245, 158, 11, 0.3); margin-left:6px;"><i class="fas fa-clock" style="margin-right:3px;"></i>YARIN</span>`;
+                    rowStyleEk = `background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.3);`;
+                } else {
+                    // DİĞER GÜNLER: Klasik görünüm, sadece gün sayar
+                    geriSayimBadge = `<span style="font-size:9px; background:rgba(255, 255, 255, 0.05); color:var(--text-muted); padding:2px 6px; border-radius:4px; font-weight:700; border:1px solid rgba(255, 255, 255, 0.1); margin-left:6px;">${fark} GÜN KALDI</span>`;
+                    rowStyleEk = `background: rgba(245, 158, 11, 0.03); border-color: rgba(245, 158, 11, 0.15);`;
+                }
+
+                // YENİ TASARIM
                 yHtml += `
-                <div class="t-row" style="background: rgba(245, 158, 11, 0.05); padding: 14px 12px; border-radius: 12px; margin-bottom: 8px; border: 1px dashed rgba(245, 158, 11, 0.25); align-items: center;">
+                <div class="t-row" style="padding: 14px 12px; border-radius: 12px; margin-bottom: 8px; border: 1px dashed; align-items: center; transition: 0.3s; ${rowStyleEk}">
                     <div class="t-details" style="flex: 1; display: flex; flex-direction: column; gap: 7px;">
-                        <div style="font-size: 14px; color: var(--amber); font-weight:700; line-height:1.2; word-break: break-word;">
+                        <div style="font-size: 14px; color: #fff; font-weight:700; line-height:1.2; word-break: break-word;">
                             ${kategoriMetni}${y.kalem}
                         </div>
                         
-                        <div style="display: flex;">
-                            ${badge}
+                        <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                            ${badge}${geriSayimBadge}
                         </div>
                         
                         <div style="font-size: 10px; color:rgba(255,255,255,0.4); font-weight:500;">
