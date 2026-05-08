@@ -2838,23 +2838,28 @@ function addParcaAnlik() {
 }
 
 function hesaplaKalanParcaliAnlik() {
-    const hedefTutar = parseSaha(document.getElementById('an-tutar').value) || 0;
-    let girilenToplam = 0;
-    document.querySelectorAll('.an-parca-tutar').forEach(inp => girilenToplam += parseSaha(inp.value) || 0);
-    const kalan = hedefTutar - girilenToplam;
-
-    // --- MİMAR DÜZELTMESİ: .innerText yerine .innerHTML kullanıldı ---
-    document.getElementById('an-hedef-tutar-info').innerHTML = "Hedef: " + formatTLTam(hedefTutar);
-    const kalanEl = document.getElementById('an-kalan-tutar-info');
+    const anaTutarRaw = document.getElementById('an-tutar').value;
+    const hedefTutar = parseSaha(anaTutarRaw) || 0;
     
-    if(kalan === 0) { 
-        kalanEl.style.color = "var(--emerald)"; 
-        kalanEl.innerHTML = "₺0,00"; 
-    } else if (kalan < 0) { 
-        kalanEl.style.color = "var(--rose)"; 
-        kalanEl.innerHTML = "Fazla: " + formatTL(Math.abs(kalan)); 
-    } else { 
-        kalanEl.style.color = "var(--amber)"; 
-        kalanEl.innerHTML = "Kalan: " + formatTL(kalan); 
+    let girilenToplam = 0;
+    document.querySelectorAll('.an-parca-tutar').forEach(inp => {
+        girilenToplam += parseSaha(inp.value) || 0;
+    });
+    
+    const kalan = hedefTutar - girilenToplam;
+    
+    // MİMAR DÜZELTMESİ: HTML içeriği koruyarak merkeze yazdırıyoruz
+    document.getElementById('an-hedef-tutar').innerHTML = formatTL(hedefTutar);
+    const kalanEl = document.getElementById('an-kalan-tutar');
+    
+    if (kalan === 0) {
+        kalanEl.innerHTML = "₺0,00";
+        kalanEl.style.color = "var(--emerald)";
+    } else if (kalan < 0) {
+        kalanEl.innerHTML = "Fazla: " + formatTL(Math.abs(kalan));
+        kalanEl.style.color = "var(--rose)";
+    } else {
+        kalanEl.innerHTML = formatTL(kalan);
+        kalanEl.style.color = "var(--amber)";
     }
 }
