@@ -1791,6 +1791,11 @@ function tutarFormatla(input) {
         animateValue('val-net-servet', data.netServet, aSure);
         animateValueUSD('val-net-servet-usd', data.netServetUSD, aSure);
 
+            const kurEl = document.getElementById('usd-kur-bilgisi');
+        if (kurEl && data.usdRate) {
+            kurEl.innerText = `(Güncel Kur: ₺${data.usdRate.toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2})})`;
+        }
+
         // Net Varlık Dinamik Renk Zırhı
         const netServetEl = document.getElementById('val-net-servet');
         if (netServetEl) {
@@ -2179,6 +2184,53 @@ function tutarFormatla(input) {
                 kutuNet.style.background = 'rgba(244, 63, 94, 0.1)'; kutuNet.style.borderColor = 'rgba(244, 63, 94, 0.3)'; valNet.style.color = 'var(--rose)';
             } else {
                 kutuNet.style.background = 'rgba(16, 185, 129, 0.1)'; kutuNet.style.borderColor = 'rgba(16, 185, 129, 0.3)'; valNet.style.color = 'var(--emerald)';
+            }
+        }
+
+                    const kutuNet = document.getElementById('kutu-net-nakit'); const valNet = document.getElementById('val-net-nakit');
+        if (kutuNet && valNet) {
+            if (netAkis < 0) {
+                kutuNet.style.background = 'rgba(244, 63, 94, 0.1)'; kutuNet.style.borderColor = 'rgba(244, 63, 94, 0.3)'; valNet.style.color = 'var(--rose)';
+            } else {
+                kutuNet.style.background = 'rgba(16, 185, 129, 0.1)'; kutuNet.style.borderColor = 'rgba(16, 185, 129, 0.3)'; valNet.style.color = 'var(--emerald)';
+            }
+        }
+
+        // --- MİMAR DOKUNUŞU: Akıllı Tüketim Barı Motoru ---
+        const tuketimKapsayici = document.getElementById('tuketim-bari-kapsayici');
+        const tuketimYuzdeEl = document.getElementById('tuketim-yuzdesi');
+        const tuketimBarDoluluk = document.getElementById('tuketim-bari-doluluk');
+        
+        if (tuketimKapsayici && tuketimYuzdeEl && tuketimBarDoluluk) {
+            let toplamGelir = nakitAkisiGruplar["Toplam Gelirler"].toplam || 0;
+            let toplamGider = (nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam || 0) + (nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam || 0);
+            
+            // Sadece bu ay gelir kaydedilmişse barı göster
+            if (toplamGelir > 0) {
+                tuketimKapsayici.style.display = 'block';
+                let yuzdeHesap = (toplamGider / toplamGelir) * 100;
+                let barYuzdesi = Math.min(yuzdeHesap, 100); // Bar taşmasın diye %100'e sabitler
+                
+                setTimeout(() => {
+                    tuketimBarDoluluk.style.width = barYuzdesi + '%';
+                    
+                    // Renk Sensörleri ("Frene Bas" mesajı)
+                    if (yuzdeHesap >= 90) {
+                        tuketimBarDoluluk.style.backgroundColor = 'var(--rose)';
+                        tuketimYuzdeEl.style.color = 'var(--rose)';
+                    } else if (yuzdeHesap >= 75) {
+                        tuketimBarDoluluk.style.backgroundColor = 'var(--amber)';
+                        tuketimYuzdeEl.style.color = 'var(--amber)';
+                    } else {
+                        tuketimBarDoluluk.style.backgroundColor = 'var(--emerald)';
+                        tuketimYuzdeEl.style.color = 'var(--text-muted)';
+                    }
+                    
+                    // Küsuratsız temiz yüzde gösterimi
+                    tuketimYuzdeEl.innerText = '%' + yuzdeHesap.toFixed(0);
+                }, 100); // CSS animasyonunun devreye girmesi için ufak bir bekleme
+            } else {
+                tuketimKapsayici.style.display = 'none'; // Gelir yoksa bar gizli kalır
             }
         }
 
