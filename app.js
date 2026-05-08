@@ -1822,7 +1822,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
 
                     bHtml += `
         <div style="margin-top:15px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
-            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('ozel-borc-islemleri-screen', 'ozel-secim', 'Şahıs & Özel Borçlar').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); toggleOzelTab('ode'); this.style.pointerEvents='auto'; });" class="btn-ozel-borclar" style="width:100%; height:38px; border-radius:10px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; border:none; cursor:pointer;">
+            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('ozel-borc-islemleri-screen', 'ozel-secim', 'Şahıs & Özel Borçlar').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); toggleOzelTab('ode'); this.style.pointerEvents='auto'; });" style="width:100%; height:38px; background:rgba(244, 63, 94, 0.1); border:1px solid rgba(244, 63, 94, 0.2); color:var(--rose); border-radius:10px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
                 <i class="fas fa-hand-holding-dollar"></i> ÖZEL BORÇ ÖDE
             </button>
         </div>`;
