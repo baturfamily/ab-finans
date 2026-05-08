@@ -440,59 +440,83 @@ if (lblTur) {
         }
 
         async function submitAnlik() {
-            const anaKalemSecimi = getCustomVal('an-kalem');
-            const secilenTarih = document.getElementById('an-tarih').value;
-            const yontem = getCustomVal('an-yontem');
-            const tutarStr = document.getElementById('an-tutar').value;
-            const tutar = parseSaha(tutarStr);
-            
-            let err = false;
-            if(!anaKalemSecimi || anaKalemSecimi === "Seçiniz...") { markError('an-kalem'); err = true; }
-            if(!tutarStr || tutar <= 0) { markError('an-tutar'); err = true; }
-            if(!yontem || yontem === "Seçiniz...") { markError('an-yontem'); err = true; }
-            if(!secilenTarih) { markError('an-tarih'); err = true; }
-            
-            if(err) return;
-            
-            let finalKalem = anaKalemSecimi;
-            if(anaKalemSecimi.toLowerCase() === "diğer") {
-                const digerInput = document.getElementById('an-kalem-diger').value.trim();
-                if(!digerInput) return markError('an-kalem-diger');
-                finalKalem = digerInput;
-            } else if (anaKalemSecimi && anaKalemSecimi.toLowerCase().includes("faiz") && anaKalemSecimi.toLowerCase().includes("banka")) {
-                const faizDetay = getCustomVal('an-faiz-detay');
-                if(!faizDetay) return alert("Faiz uygulanan hesabı seçin!");
-                finalKalem = faizDetay + " Faizi";
+    const anaKalemSecimi = getCustomVal('an-kalem');
+    const secilenTarih = document.getElementById('an-tarih').value;
+    const tutarStr = document.getElementById('an-tutar').value;
+    const tutar = parseSaha(tutarStr);
+    
+    let err = false;
+    if(!anaKalemSecimi || anaKalemSecimi === "Seçiniz...") { markError('an-kalem'); err = true; }
+    if(!tutarStr || tutar <= 0) { markError('an-tutar'); err = true; }
+    if(!secilenTarih) { markError('an-tarih'); err = true; }
+    
+    if(err) return;
+    
+    // MİMAR KORUMASI: Açıklama oluşturma mantığı (Bozulmadı)
+    let finalKalem = anaKalemSecimi;
+    if(anaKalemSecimi.toLowerCase() === "diğer") {
+        const digerInput = document.getElementById('an-kalem-diger').value.trim();
+        if(!digerInput) return markError('an-kalem-diger');
+        finalKalem = digerInput;
+    } else if (anaKalemSecimi && anaKalemSecimi.toLowerCase().includes("faiz") && anaKalemSecimi.toLowerCase().includes("banka")) {
+        const faizDetay = getCustomVal('an-faiz-detay');
+        if(!faizDetay) return alert("Faiz uygulanan hesabı seçin!");
+        finalKalem = faizDetay + " Faizi";
+    } else {
+        const ekCheck = document.getElementById('an-ek-check');
+        const ekInput = document.getElementById('an-ek-input').value.trim();
+        if(ekCheck && ekCheck.checked && ekInput) finalKalem = ekInput;
+    }
+    
+    const simdi = new Date();
+    const tParca = secilenTarih.split('-');
+    const tamTarih = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2, '0')}:${String(simdi.getMinutes()).padStart(2, '0')}:${String(simdi.getSeconds()).padStart(2, '0')}`;
+    
+    let payload = {
+        action: "yeni_hareket",
+        tur: currentAnlikType,
+        kategori: anaKalemSecimi,
+        kalem: finalKalem,
+        taksit: 1,
+        tarih: tamTarih
+    };
+
+    const sekil = document.getElementById('an-odeme-sekli').value;
+    
+    if (sekil === 'parcali') {
+        const parcalar = [];
+        let parcaHata = false;
+        document.querySelectorAll('.parca-satiri-anlik').forEach(row => {
+            const selectEl = row.querySelector('.an-parca-hesap');
+            let hesap = selectEl.value;
+            if(!hesap || hesap === "") {
+                const spanTxt = row.querySelector('.custom-select-trigger span');
+                if(spanTxt) hesap = spanTxt.innerText;
+            }
+            const pTutarVal = parseSaha(row.querySelector('.an-parca-tutar').value);
+            if (!hesap || hesap.includes("Seçiniz") || pTutarVal <= 0) {
+                parcaHata = true;
+                row.querySelector('.an-parca-tutar').classList.add('error');
             } else {
-const ekCheck = document.getElementById('an-ek-check');
-const ekInput = document.getElementById('an-ek-input').value.trim();
-if(ekCheck && ekCheck.checked && ekInput) {
-// DÜZELTME: Kategoriyi birleştirmeyi bıraktık. Sadece yazılan açıklamayı (örn: Kedi Kumu) gönderir.
-finalKalem = ekInput;
+                parcalar.push({
+                    yontem: hesap,
+                    tutar: pTutarVal,
+                    odeme_turu: window.hesapTurleri[hesap] || "Banka Hesabı"
+                });
+            }
+        });
+        if (parcaHata || parcalar.length === 0) return alert("Parçalı ödeme alanlarını kontrol edin!");
+        payload.parcalar = parcalar;
+    } else {
+        const yontem = getCustomVal('an-yontem');
+        if(!yontem || yontem === "Seçiniz...") { markError('an-yontem'); return; }
+        payload.yontem = yontem;
+        payload.tutar = tutar;
+        payload.odeme_turu = window.hesapTurleri[yontem] || "Banka Hesabı";
+    }
+    
+    apiIstekAt(payload, 'btn-submit-anlik');
 }
-}
-            
-            const simdi = new Date();
-            const saat = String(simdi.getHours()).padStart(2, '0');
-            const dak = String(simdi.getMinutes()).padStart(2, '0');
-            const sn = String(simdi.getSeconds()).padStart(2, '0');
-            const tParca = secilenTarih.split('-');
-            const tamTarih = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${saat}:${dak}:${sn}`;
-            
-            const odTuru = window.hesapTurleri[yontem] || "Banka Hesabı";
-            
-            apiIstekAt({
-                action: "yeni_hareket",
-                tur: currentAnlikType,
-                kategori: anaKalemSecimi, // DÜZELTİLEN SATIR: "Değişken" yerine doğrudan senin seçtiğin kategoriyi alıyor (Örn: Market)
-                kalem: finalKalem,
-                yontem: yontem,
-                tutar: tutar,
-                taksit: 1,
-                odeme_turu: odTuru,
-                tarih: tamTarih
-            }, 'btn-submit-anlik');
-        }
 
         async function submitDuzenli() {
             const tur = getCustomVal('du-tur');
@@ -2763,4 +2787,45 @@ function getKalanAyBadge(kalan) {
     }
 
     return `<span style="font-size:9px; background:${bgColor}; color:${textColor}; padding:2px 6px; border-radius:4px; margin-left:8px; font-weight:700; border:1px solid ${bgColor.replace('0.12', '0.25')}; white-space:nowrap; display:inline-flex; align-items:center; vertical-align:middle;">${text}</span>`;
+}
+
+function toggleParcaliAnlik() {
+    const sekil = document.getElementById('an-odeme-sekli').value;
+    const isParcali = (sekil === 'parcali');
+    document.getElementById('an-tek-hesap-alani').style.display = isParcali ? 'none' : 'block';
+    document.getElementById('an-parcali-hesap-alani').style.display = isParcali ? 'block' : 'none';
+    if(isParcali) {
+        document.getElementById('an-parcalar-container').innerHTML = '';
+        addParcaAnlik(); addParcaAnlik();
+        hesaplaKalanParcaliAnlik();
+    }
+}
+
+function addParcaAnlik() {
+    const container = document.getElementById('an-parcalar-container');
+    if(container.querySelectorAll('.parca-satiri-anlik').length >= 5) return;
+    const uniqueId = 'parca-an-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const options = (currentAnlikType === 'Gelir') ? window.vadesizOptions : window.hesapOptions;
+    const row = document.createElement('div');
+    row.className = 'parca-satiri-anlik';
+    row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
+    row.innerHTML = `
+        <select id="${uniqueId}" class="form-control an-parca-hesap" style="padding: 10px; font-size: 13px;">${options}</select>
+        <input type="text" inputmode="decimal" class="form-control an-parca-tutar" placeholder="Tutar" oninput="tutarFormatla(this); hesaplaKalanParcaliAnlik()" style="padding: 10px; font-size: 14px;">
+        <button onclick="this.parentElement.remove(); hesaplaKalanParcaliAnlik();" style="background: rgba(244, 63, 94, 0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    `;
+    container.appendChild(row);
+    if(typeof refreshCustomSelect === 'function') refreshCustomSelect(document.getElementById(uniqueId));
+}
+
+function hesaplaKalanParcaliAnlik() {
+    const hedefTutar = parseSaha(document.getElementById('an-tutar').value) || 0;
+    let girilenToplam = 0;
+    document.querySelectorAll('.an-parca-tutar').forEach(inp => girilenToplam += parseSaha(inp.value) || 0);
+    const kalan = hedefTutar - girilenToplam;
+    document.getElementById('an-hedef-tutar-info').innerText = "Hedef: " + formatTLTam(hedefTutar);
+    const kalanEl = document.getElementById('an-kalan-tutar-info');
+    if(kalan === 0) { kalanEl.style.color = "var(--emerald)"; kalanEl.innerText = "₺0,00"; }
+    else if (kalan < 0) { kalanEl.style.color = "var(--rose)"; kalanEl.innerText = "Fazla: " + formatTL(Math.abs(kalan)); }
+    else { kalanEl.style.color = "var(--amber)"; kalanEl.innerText = "Kalan: " + formatTL(kalan); }
 }
