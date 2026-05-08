@@ -68,23 +68,30 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NV
     if (typeof val === 'number') return val; 
     if (!val) return 0; 
     
-    // 1. Metne çevir, para sembolü ve boşlukları temizle
+    // 1. Temizlik: Para sembolü ve boşluklar gider
     let s = val.toString().replace(/₺/g, "").replace(/\s/g, ""); 
     
-    // 2. AKILLI KONTROL: Noktanın binlik mi yoksa kuruş mu olduğunu anlar
+    // 2. HEM NOKTA HEM VİRGÜL VARSA (Örn: 1.250,50)
+    // Nokta binliktir (sil), virgül ondalıktır (noktaya çevir)
     if (s.includes('.') && s.includes(',')) {
-        // Hem nokta hem virgül varsa (2.865,00) nokta kesinlikle binliktir
         s = s.split('.').join('').replace(',', '.');
-    } else if (s.includes(',')) {
-        // Sadece virgül varsa (532,18) kuruş ayracıdır
+    } 
+    // 3. SADECE VİRGÜL VARSA (Örn: 532,18)
+    // Bu kesinlikle kuruş ayracıdır
+    else if (s.includes(',')) {
         s = s.replace(',', '.');
-    } else if (s.includes('.')) {
-        // Sadece nokta varsa: Sağında 2 rakam varsa kuruş (532.18), 3 rakam varsa binliktir (100.000)
+    } 
+    // 4. SADECE NOKTA VARSA (KRİTİK EMEK VERİLEN TAHMİN KISMI)
+    else if (s.includes('.')) {
         let parts = s.split('.');
-        if (parts[parts.length - 1].length > 2) { s = s.split('.').join(''); }
+        // Eğer noktanın sağında 3 rakam varsa (Örn: 9.650) binliktir, sileriz.
+        // Eğer 1 veya 2 rakam varsa (Örn: 10.5) kuruş ayracıdır, dokunmayız.
+        if (parts[parts.length - 1].length > 2) { 
+            s = s.split('.').join(''); 
+        }
     }
     
-    // 3. Sayıya çevir ve hata kontrolü yap
+    // 5. Sayıya çevir ve hata kontrolü yap
     let sonuc = parseFloat(s);
     return isNaN(sonuc) ? 0 : sonuc; 
 };
@@ -1692,31 +1699,41 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
     });
 
-    // --- YENİLENMİŞ: EVRENSEL TUTAR FORMATLAYICI ---
-    function tutarFormatla(input) {
-        let cursorPosition = input.selectionStart;
-        let originalLength = input.value.length;
-        let value = input.value;
+function tutarFormatla(input) {
+    let cursorPosition = input.selectionStart;
+    let originalLength = input.value.length;
+    let value = input.value;
 
-        let isNegative = value.startsWith('-');
-        value = value.replace(/[^0-9,]/g, '');
+    let isNegative = value.startsWith('-');
+    // Sadece rakam ve virgül kalacak şekilde temizle (Senin kuralın)
+    value = value.replace(/[^0-9,]/g, '');
 
-        let parts = value.split(',');
-        if (parts.length > 2) value = parts[0] + ',' + parts.slice(1).join('');
+    let parts = value.split(',');
+    if (parts.length > 2) value = parts[0] + ',' + parts.slice(1).join('');
 
-        parts = value.split(',');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    parts = value.split(',');
+    // Binlik noktalarını yerleştir (Senin kuralın)
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-        input.value = (isNegative ? '-' : '') + parts.join(',');
+    let finalValue = (isNegative ? '-' : '') + parts.join(',');
+    input.value = finalValue;
 
-        // --- KRİTİK EKLEME: Evrensellik Kimliği ---
-        // Bu inputun "formatlı bir para alanı" olduğunu işaretliyoruz
-        input.dataset.isCurrency = "true"; 
+    // --- KRİTİK EMEK: Evrensellik Kimliği (Aynen Korundu) ---
+    input.dataset.isCurrency = "true"; 
 
-        let newLength = input.value.length;
-        cursorPosition = cursorPosition + (newLength - originalLength);
-        input.setSelectionRange(cursorPosition, cursorPosition);
+    // --- KRİTİK DÜZELTME: İMLEÇ SIRALAMASI ---
+    // 9650 yazarken araya nokta girdiğinde imlecin yerini korur, rakam yutmaz.
+    let newLength = input.value.length;
+    cursorPosition = cursorPosition + (newLength - originalLength);
+    input.setSelectionRange(cursorPosition, cursorPosition);
+
+    // --- TETİKLEYİCİ: Eğer anlık işlem kutusuysa aşağıyı güncelle ---
+    if (input.id === 'an-tutar' || input.classList.contains('an-parca-tutar')) {
+        if(typeof hesaplaKalanParcaliAnlik === 'function') {
+            hesaplaKalanParcaliAnlik();
+        }
     }
+}
 
         // =========================================================================
     // 1. BÖLÜM: KAPORTA (SADECE EKRANI ÇİZEN FONKSİYON)
