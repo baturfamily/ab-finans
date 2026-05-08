@@ -341,6 +341,13 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NV
             labelEl.innerText = type === 'Gelir' ? 'Giriş Yapılacak Hesap' : 'Ödeme Hesabı';
             selectEl.innerHTML = type === 'Gelir' ? window.vadesizOptions : window.hesapOptions;
             refreshCustomSelect(selectEl);
+
+                // --- MİMAR DÜZELTMESİ: ÖDEME ŞEKLİ KUTUSUNU PREMİUM YAP ---
+    const odSekli = document.getElementById('an-odeme-sekli');
+    if(odSekli) {
+        odSekli.value = 'tek'; // Her sekme değişiminde 'Tek Hesaptan'a sıfırla
+        if(typeof refreshCustomSelect === 'function') refreshCustomSelect(odSekli);
+    }    
             
             setTimeout(() => checkAnlikKalem(), 50);
         }
@@ -2803,19 +2810,31 @@ function toggleParcaliAnlik() {
 
 function addParcaAnlik() {
     const container = document.getElementById('an-parcalar-container');
-    if(container.querySelectorAll('.parca-satiri-anlik').length >= 5) return;
+    // MİMAR DÜZELTMESİ: EKSİK UYARI EKLENDİ
+    if(container.querySelectorAll('.parca-satiri-anlik').length >= 5) {
+        alert("En fazla 5 farklı hesap ekleyebilirsiniz.");
+        return;
+    }
+    
     const uniqueId = 'parca-an-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
     const options = (currentAnlikType === 'Gelir') ? window.vadesizOptions : window.hesapOptions;
+
     const row = document.createElement('div');
     row.className = 'parca-satiri-anlik';
     row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
     row.innerHTML = `
         <select id="${uniqueId}" class="form-control an-parca-hesap" style="padding: 10px; font-size: 13px;">${options}</select>
         <input type="text" inputmode="decimal" class="form-control an-parca-tutar" placeholder="Tutar" oninput="tutarFormatla(this); hesaplaKalanParcaliAnlik()" style="padding: 10px; font-size: 14px;">
-        <button onclick="this.parentElement.remove(); hesaplaKalanParcaliAnlik();" style="background: rgba(244, 63, 94, 0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        <button onclick="this.parentElement.remove(); hesaplaKalanParcaliAnlik();" style="background: rgba(244, 63, 94, 0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
     `;
     container.appendChild(row);
-    if(typeof refreshCustomSelect === 'function') refreshCustomSelect(document.getElementById(uniqueId));
+    
+    // MİMAR DÜZELTMESİ: LİSTE KAPANMAMA VE ESKİ TASARIM SORUNU BURADA ÇÖZÜLÜYOR
+    if(typeof refreshCustomSelect === 'function') {
+        refreshCustomSelect(document.getElementById(uniqueId));
+    }
 }
 
 function hesaplaKalanParcaliAnlik() {
@@ -2823,9 +2842,19 @@ function hesaplaKalanParcaliAnlik() {
     let girilenToplam = 0;
     document.querySelectorAll('.an-parca-tutar').forEach(inp => girilenToplam += parseSaha(inp.value) || 0);
     const kalan = hedefTutar - girilenToplam;
-    document.getElementById('an-hedef-tutar-info').innerText = "Hedef: " + formatTLTam(hedefTutar);
+
+    // --- MİMAR DÜZELTMESİ: .innerText yerine .innerHTML kullanıldı ---
+    document.getElementById('an-hedef-tutar-info').innerHTML = "Hedef: " + formatTLTam(hedefTutar);
     const kalanEl = document.getElementById('an-kalan-tutar-info');
-    if(kalan === 0) { kalanEl.style.color = "var(--emerald)"; kalanEl.innerText = "₺0,00"; }
-    else if (kalan < 0) { kalanEl.style.color = "var(--rose)"; kalanEl.innerText = "Fazla: " + formatTL(Math.abs(kalan)); }
-    else { kalanEl.style.color = "var(--amber)"; kalanEl.innerText = "Kalan: " + formatTL(kalan); }
+    
+    if(kalan === 0) { 
+        kalanEl.style.color = "var(--emerald)"; 
+        kalanEl.innerHTML = "₺0,00"; 
+    } else if (kalan < 0) { 
+        kalanEl.style.color = "var(--rose)"; 
+        kalanEl.innerHTML = "Fazla: " + formatTL(Math.abs(kalan)); 
+    } else { 
+        kalanEl.style.color = "var(--amber)"; 
+        kalanEl.innerHTML = "Kalan: " + formatTL(kalan); 
+    }
 }
