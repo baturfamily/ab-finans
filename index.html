@@ -170,21 +170,28 @@
         <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="accordion-content">
-        <div class="summary-grid" style="margin-bottom: 16px;">
+                <div class="summary-grid" style="margin-bottom: 12px;">
             <div class="summary-item br-right">
                 <span class="summary-label" style="color: var(--rose);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg> Toplam Tüketim</span>
                 <span class="summary-val text-red tabular-nums" id="saf-gider-toplam">₺0,00</span>
                 <div class="trend-box tabular-nums" id="trend-saf-harcama" style="font-size:11px; margin-top:6px; display:inline-block;"></div>
             </div>
-                        <div class="summary-item" style="position: relative;">
+            <div class="summary-item">
                 <span class="summary-label">Günlük Ortalama</span>
                 <span class="summary-val tabular-nums" id="saf-gunluk-ortalama">₺0,00</span>
                 <div class="trend-box tabular-nums" id="trend-gunluk-ortalama" style="font-size:11px; margin-top:6px; display:inline-block;"></div>
-                
-                <div id="saf-ay-sonu-tahmin" style="margin-top: 10px; font-size: 10px; color: var(--text-muted); font-weight: 600; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);">
-                    Tahmin: Bekleniyor...
-                </div>
             </div>
+        </div>
+
+        <div id="saf-ay-sonu-tahmin" style="display: none; background: rgba(244, 63, 94, 0.05); padding: 12px 14px; border-radius: 12px; border: 1px dashed rgba(244, 63, 94, 0.25); justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-chart-line" style="color: var(--rose); font-size: 13px;"></i>
+                <span style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Ay Sonu Hız Tahmini</span>
+            </div>
+            <div style="text-align: right;">
+                <span id="saf-ay-sonu-rakam" class="tabular-nums" style="color: var(--rose); font-size: 16px; font-weight: 800; letter-spacing: -0.3px;">₺0,00</span>
+            </div>
+        </div>
 
         <div id="saf-harcama-detay-alani" class="sensitive-data" style="margin-top: 10px; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; text-align: left;">
             <div class="sub-accordion-header" onclick="toggleSubAccordion('saf-harcama')" style="padding: 0 0 12px 0; border: none;">
