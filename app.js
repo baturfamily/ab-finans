@@ -825,22 +825,36 @@ function submitVarlikSil() {
             const result = await res.json(); 
 
             if (result.status === "success") {
-                vibe(); 
+            vibe(); 
+            
+            // --- GERİ AL LİSTESİNDEKİ O GÖRÜNTÜYÜ DÜZELTEN KISIM ---
+            if (payload.action === 'geri_al') {
+                // Yazıyı siliyoruz, arka planı şeffaf yapıyoruz, sadece temiz bir yeşil TİK koyuyoruz
+                btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                btn.style.background = "transparent"; 
+                btn.style.boxShadow = "none";
+                btn.style.border = "none";
+            } 
+            // --- DİĞER TÜM ANA BUTONLAR (KAYDET, GÜNCELLE VS.) İÇİN STANDART HAL ---
+            else {
                 btn.innerHTML = `Başarılı ✓`; 
                 btn.style.background = "var(--emerald)";
                 
-                // === FAB BUTONUNU YEŞİL TİK YAP ===
+                // Form gönderildiğinde ekranın sağ altındaki artı butonunu da yeşil yap
                 const fabBtn = document.getElementById('fab-btn');
                 if (fabBtn) {
-                    fabBtn.classList.remove('open'); // Çarpıya dönmesini sağlayan kuralı siliyoruz
+                    fabBtn.classList.remove('open');
                     fabBtn.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                     fabBtn.style.background = "var(--emerald)";
                 }
-                
-                setTimeout(async () => {
-                    await verileriCek();
-                }, 1000);
-            } else {
+            }
+            
+            // Verileri yenile
+            setTimeout(async () => {
+                await verileriCek();
+            }, 1000);
+
+        } else {
                 alert("İşlem başarısız: " + result.message);
                 btn.innerHTML = originalText; 
                 btn.disabled = false;
