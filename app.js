@@ -2409,14 +2409,21 @@ function tutarFormatla(input) {
                 let geriSayimBadge = "";
                 let rowStyleEk = "";
                 
-                if (fark === 0) {
-                    // BUGÜN: Tüm satır kırmızıya çalar ve nabız gibi atar
-                    geriSayimBadge = `<span style="font-size:9px; background:rgba(244, 63, 94, 0.15); color:var(--rose); padding:2px 6px; border-radius:4px; font-weight:800; border:1px solid rgba(244, 63, 94, 0.3); margin-left:6px; animation: textPulse 1s infinite;"><i class="fas fa-exclamation-triangle" style="margin-right:3px;"></i>BUGÜN</span>`;
-                    rowStyleEk = `background: rgba(244, 63, 94, 0.08); border-color: rgba(244, 63, 94, 0.4); animation: bugunPulse 1.5s infinite;`;
+                                if (fark === 0) {
+                    // BUGÜN: Mimar Dokunuşu - Tüm satır kırmızıya çalar ve nabız gibi yanıp söner
+                    geriSayimBadge = `<span style="font-size:9px; background:rgba(244, 63, 94, 0.15); color:var(--rose); padding:2px 6px; border-radius:4px; font-weight:800; border:1px solid rgba(244, 63, 94, 0.3); margin-left:6px;"><i class="fas fa-exclamation-triangle" style="margin-right:3px;"></i>BUGÜN</span>`;
                     
-                    if (!document.getElementById('bugun-pulse-style')) {
-                        const s = document.createElement('style'); s.id = 'bugun-pulse-style';
-                        s.innerHTML = `@keyframes bugunPulse { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.3); } 70% { box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } } @keyframes textPulse { 0% { opacity:1; } 50% { opacity:0.6; } 100% { opacity:1; } }`;
+                    // Satıra eklenecek animasyon stili
+                    rowStyleEk = `border-color: rgba(244, 63, 94, 0.6); animation: sirenPulse 1.2s infinite;`;
+                    
+                    if (!document.getElementById('siren-pulse-style')) {
+                        const s = document.createElement('style'); s.id = 'siren-pulse-style';
+                        // Hem arka plan rengi kızarır hem de dışarıya hafif kırmızı bir ışık yayar
+                        s.innerHTML = `@keyframes sirenPulse { 
+                            0% { background-color: rgba(244, 63, 94, 0.05); box-shadow: 0 0 0px rgba(244,63,94,0); } 
+                            50% { background-color: rgba(244, 63, 94, 0.3); box-shadow: 0 0 12px rgba(244,63,94,0.5); } 
+                            100% { background-color: rgba(244, 63, 94, 0.05); box-shadow: 0 0 0px rgba(244,63,94,0); } 
+                        }`;
                         document.head.appendChild(s);
                     }
                 } else if (fark === 1) {
