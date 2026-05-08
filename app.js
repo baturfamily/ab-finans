@@ -1806,8 +1806,25 @@ function tutarFormatla(input) {
 
         setText('val-borc-varlik-orani', data.borcVarlikOrani);
         setText('val-nakit-koruma', data.nakitKorumaSuresi + ' Ay');
-        animateValue('val-kasa', data.toplamKasa, aSure);
+                animateValue('val-kasa', data.toplamKasa, aSure);
         animateValue('val-borc', data.toplamBorc, aSure);
+        
+        // --- MİMAR DOKUNUŞU: "Sıfır Stres" Psikoloji Motoru ---
+        const canYakanKutu = document.getElementById('val-borc-acil');
+        const canYakanLabel = canYakanKutu ? canYakanKutu.parentElement.querySelector('.summary-label') : null;
+        if (canYakanKutu && canYakanLabel) {
+            if (data.toplamCanYakan === 0) {
+                // Borç sıfırsa Zümrüt Yeşili ve Başarı İkonu
+                canYakanLabel.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path></svg> Sıfır Stres`;
+                canYakanLabel.style.color = 'var(--emerald)';
+                canYakanKutu.style.color = 'var(--emerald)';
+            } else {
+                // Borç varsa Orijinal Kırmızı Uyarı
+                canYakanLabel.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;"><path d="M12 2c0 0-5 6.5-5 11a5 5 0 0 0 10 0c0-4.5-5-11-5-11Z"/><path d="M12 13a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg> Can Yakan`;
+                canYakanLabel.style.color = 'var(--rose)';
+                canYakanKutu.style.color = 'var(--rose)';
+            }
+        }
         animateValue('val-borc-acil', data.toplamCanYakan, aSure);
         animateValue('val-borc-planli', data.toplamPlanli, aSure);
         animateValue('val-tahmini-faiz', data.tahminiFaiz, aSure);
@@ -1907,9 +1924,45 @@ function tutarFormatla(input) {
         const headerBorcEl = document.getElementById('header-toplam-borc');
         if (headerBorcEl) headerBorcEl.innerHTML = formatTL(data.toplamBorc);
 
-        const bankaList = document.getElementById('banka-listesi');
+                const bankaList = document.getElementById('banka-listesi');
         let bankaHtml = "";
+        let toplamLikidite = 0; // MİMAR EKLENTİSİ: Sıcak Para Havuzu
+
         data.bankalar.sort((a, b) => {
+            if (a.isim.trim().toLowerCase() === "nakit") return -1;
+            if (b.isim.trim().toLowerCase() === "nakit") return 1;
+            return 0;
+        });
+
+        data.bankalar.forEach(b => {
+            let icon = b.tur === "Nakit" ? '<i class="fas fa-wallet" style="color:var(--emerald); margin-right:8px;"></i>' : '<i class="fas fa-university" style="color:var(--blue); margin-right:8px;"></i>';
+            let tutarRengi = b.bakiye < 0 ? 'text-red' : 'text-green';
+            let kmhDurumu = "";
+            if(b.bakiye < 0 && b.limit > 0) {
+                let kYuzde = Math.round((Math.abs(b.bakiye) / b.limit) * 100);
+                kmhDurumu = `<div style="font-size:10px; color:var(--text-muted); margin-top:4px;">KMH Kullanımı: %${kYuzde}</div>`;
+            }
+            bankaHtml += `<div class="t-row"><div class="t-details"><div class="t-name">${icon} ${b.isim}</div>${kmhDurumu}</div><div class="t-amt ${tutarRengi}">${formatTL(b.bakiye)}</div></div>`;
+            
+            // MİMAR EKLENTİSİ: Sadece cebindeki ve hesaptaki ARTILARI topla
+            if(b.bakiye > 0) {
+                toplamLikidite += b.bakiye;
+            }
+        });
+
+        // MİMAR EKLENTİSİ: Özgüven veren dip toplam satırı
+        bankaHtml += `
+        <div class="t-row" style="border-top: 1px dashed rgba(255,255,255,0.1); margin-top: 4px; padding-top: 12px; background: rgba(16, 185, 129, 0.05); border-radius: 8px;">
+            <div class="t-details" style="display: flex; align-items: center;">
+                <i class="fas fa-shield-alt" style="color: var(--emerald); font-size: 15px; margin-right: 8px;"></i>
+                <div style="font-size: 12px; font-weight: 700; color: var(--emerald);">Kullanılabilir Nakit Gücü</div>
+            </div>
+            <div class="t-amt" style="font-size: 16px; font-weight: 800; color: var(--emerald);">
+                ${formatTL(toplamLikidite)}
+            </div>
+        </div>`;
+
+        bankaList.innerHTML = bankaHtml;
             if (a.isim.trim().toLowerCase() === "nakit") return -1;
             if (b.isim.trim().toLowerCase() === "nakit") return 1;
             return 0;
@@ -2643,12 +2696,38 @@ function tutarFormatla(input) {
         animateValue('val-kart-donemici', cDonemIci, 600);
         animateValue('val-kart-gelecek', cGelecek, 600);
         
-        document.getElementById('bar-kart-limit').style.width = doluluk + '%';
+                document.getElementById('bar-kart-limit').style.width = doluluk + '%';
         const dBadge = document.getElementById('val-kart-doluluk');
-        dBadge.innerText = '%' + doluluk + ' Dolu';
-        if (doluluk > 80) dBadge.style.background = 'rgba(244, 63, 94, 0.15)', dBadge.style.color = 'var(--rose)';
-        else if (doluluk > 50) dBadge.style.background = 'rgba(245, 158, 11, 0.15)', dBadge.style.color = 'var(--amber)';
-        else dBadge.style.background = 'rgba(16, 185, 129, 0.15)', dBadge.style.color = 'var(--emerald)';
+        
+        // --- MİMAR DOKUNUŞU: Kritik Limit Animasyonu ---
+        
+        // Önce CSS animasyonunu bir kere sayfaya enjekte edelim (Yoksa ekle)
+        if (!document.getElementById('pulse-anim-style')) {
+            const style = document.createElement('style');
+            style.id = 'pulse-anim-style';
+            style.innerHTML = `@keyframes criticalPulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }`;
+            document.head.appendChild(style);
+        }
+
+        // Animasyonu varsayılan olarak temizle
+        dBadge.style.animation = "none";
+        dBadge.style.border = "none";
+
+        if (doluluk >= 90) { // %90 ve üzeri KRİTİK ALARM
+            dBadge.innerText = `KRİTİK LİMİT (%${doluluk})`;
+            dBadge.style.background = 'rgba(244, 63, 94, 0.2)'; 
+            dBadge.style.color = 'var(--rose)';
+            dBadge.style.border = '1px solid rgba(244, 63, 94, 0.5)';
+            dBadge.style.animation = "criticalPulse 1.5s infinite";
+        } else if (doluluk >= 75) { // %75 - %89 arası SARI UYARI
+            dBadge.innerText = '%' + doluluk + ' Dolu';
+            dBadge.style.background = 'rgba(245, 158, 11, 0.15)'; 
+            dBadge.style.color = 'var(--amber)';
+        } else { // %75 altı GÜVENLİ BÖLGE
+            dBadge.innerText = '%' + doluluk + ' Dolu';
+            dBadge.style.background = 'rgba(16, 185, 129, 0.15)'; 
+            dBadge.style.color = 'var(--emerald)';
+        }
     }
 
     function toggleSubAccordion(id) {
