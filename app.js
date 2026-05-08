@@ -2274,15 +2274,20 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             krediListe.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size: 13px; padding: 10px 0;">Aktif kredi ilerlemesi bulunamadı.</div>`;
         }
 
-        const ctxPasta = document.getElementById('expenseChart');
+                const ctxPasta = document.getElementById('expenseChart');
         if (ctxPasta) {
             const cCtx = ctxPasta.getContext('2d');
-            let pastaData = {}; let pastaSafToplam = 0;
+            let pastaData = {}; 
+            let pastaSafToplam = 0;
+
+            // --- 1. VERİ TOPLAMA VE GRUPLAMA (DİLİMLER İÇİN) ---
             if (data.buAyIslemler && data.buAyIslemler.length > 0) {
                 data.buAyIslemler.forEach(islem => {
                     if (islem.tur === 'Gider') { 
-                        let kat = islem.kalem || "Diğer";
+                        // KRİTİK: Dilimler artık Kalem(E) değil, Kategori(C) bazlı oluşuyor
+                        let kat = islem.kategori || "Diğer";
                         if (kat.toLowerCase().includes("faiz")) kat = "Toplam Faiz Gideri";
+                        
                         pastaData[kat] = (pastaData[kat] || 0) + islem.tutar;
                         pastaSafToplam += islem.tutar;
                     }
@@ -2292,17 +2297,21 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             // ÖNEMLİ: Grafik varsa önce yok et (İki kere üst üste çizilmesini engeller)
             if (expenseChartInstance) expenseChartInstance.destroy();
 
-            const sortedKategoriler = Object.entries(pastaData).sort((a, b) => b[1] - a[1]);
-            let labels = []; let values = []; let digerToplam = 0;
+            // Kategorileri tutara göre büyükten küçüğe sırala
+            const sortedPastaKategoriler = Object.entries(pastaData).sort((a, b) => b[1] - a[1]);
+            let labels = []; 
+            let values = []; 
+            let digerToplam = 0;
 
-            sortedKategoriler.forEach((item, index) => {
+            sortedPastaKategoriler.forEach((item, index) => {
                 if (index < 5) { labels.push(item[0]); values.push(item[1]); } else { digerToplam += item[1]; }
             });
             if (digerToplam > 0) { labels.push("Diğer"); values.push(digerToplam); }
 
-                        if (values.length > 0) {
+            // --- 2. AY BAŞI KONTROLÜ VE GRAFİK ÇİZİMİ ---
+            if (values.length > 0) {
                 const premiumColors = ['#f43f5e', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6', '#ec4899', '#64748b'];
-                                try {
+                try {
                     expenseChartInstance = new Chart(cCtx, {
                         type: 'doughnut',
                         data: {
@@ -2311,7 +2320,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                                 data: values, 
                                 backgroundColor: labels.map((label, index) => label === "Diğer" ? '#64748b' : premiumColors[index]), 
                                 borderWidth: 0, 
-                                hoverOffset: 12 // Dilimlere basınca biraz daha dışarı çıksın, premium hissettirir
+                                hoverOffset: 12 
                             }]
                         },
                         options: {
@@ -2320,7 +2329,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                             cutout: '75%', 
                             plugins: {
                                 legend: { display: false }, 
-                                tooltip: { enabled: false } // Siyah kutuyu iptal ettik, çakışma bitti
+                                tooltip: { enabled: false } // Siyah kutu çakışmasını önler
                             },
                             // --- DİNAMİK MERKEZ YAZIM MANTIĞI ---
                             onHover: (event, chartElement) => {
@@ -2329,48 +2338,69 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                                 if(!mBaslik || !mDeger) return;
 
                                 if (chartElement.length > 0) {
-                                    // BİR DİLİME DOKUNULDUĞUNDA:
                                     const index = chartElement[0].index;
                                     const label = labels[index];
                                     const val = values[index];
                                     const yuzde = pastaSafToplam > 0 ? ((val / pastaSafToplam) * 100).toFixed(1) : 0;
                                     
-                                    mBaslik.innerText = label + " (%" + yuzde + ")";
-                                    mBaslik.style.color = "var(--amber)"; // Dokunulan kategoriyi vurgula
-                                    mDeger.innerHTML = formatTL(val); // O kategorinin tutarını yaz
+                                    mBaslik.innerText = label.toUpperCase() + " (%" + yuzde + ")";
+                                    mBaslik.style.color = "var(--amber)"; 
+                                    mDeger.innerHTML = formatTL(val); 
                                 } else {
-                                    // PARMAK ÇEKİLDİĞİNDE (VARSAYILAN DURUM):
-                                    mBaslik.innerText = "Saf Harcama";
+                                    mBaslik.innerText = "SAF HARCAMA";
                                     mBaslik.style.color = "var(--text-muted)";
-                                    mDeger.innerHTML = formatTL(pastaSafToplam); // Toplam aylık saf harcamayı yaz
+                                    mDeger.innerHTML = formatTL(pastaSafToplam); 
                                 }
                             }
                         }
                     });
                 } catch(e) { console.error("Grafik çizim hatası:", e); }
 
-                // --- İLK AÇILIŞTA TOPLAMI MERKEZE YAZDIRMA ---
-                // Bu satır, sayfa ilk yüklendiğinde merkezin boş kalmamasını sağlar
+                // İlk açılışta merkezi doldur
                 const pastaToplamEl = document.getElementById('pasta-toplam-rakam'); 
                 if(pastaToplamEl) pastaToplamEl.innerHTML = formatTL(pastaSafToplam);
+
+                // --- 3. ALTTAKİ TOP 5 LİSTESİ (KATEGORİ - AÇIKLAMA) ---
                 const top5Container = document.getElementById('pasta-ozet-grid');
                 if (top5Container) {
                     let top5Html = "";
-                    sortedKategoriler.slice(0, 5).forEach((item, index) => {
-                        const katAdi = item[0]; const katTutar = item[1]; const yuzde = pastaSafToplam > 0 ? ((katTutar / pastaSafToplam) * 100).toFixed(1) : 0;
-                        top5Html += `<div class="t-row" style="padding: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); align-items: center;"><div class="t-details" style="flex: 1;"><div class="t-name" style="font-size: 13px; color: #cbd5e1;"><span style="color: var(--text-muted); margin-right: 4px; font-weight: 400;">${index + 1}.</span> ${katAdi}</div></div><div class="t-amt" style="text-align: right;"><div class="text-red" style="font-size: 14px; font-weight: 700;">${formatTL(katTutar)}</div><div style="font-size: 10px; color: var(--text-muted); font-weight: 600;">%${yuzde}</div></div></div>`;
+                    // Bireysel harcamaları bul ve sırala
+                    let enYuksekBesHarcama = data.buAyIslemler
+                        .filter(i => i.tur === 'Gider')
+                        .sort((a, b) => b.tutar - a.tutar)
+                        .slice(0, 5);
+
+                    enYuksekBesHarcama.forEach((islem, index) => {
+                        const kat = islem.kategori || "Diğer";
+                        const kalem = islem.kalem || "-";
+                        // "G" kontrolü ve Kategori - Açıklama birleşimi
+                        const gorunurAd = (kat === kalem || kalem === "-" || kalem === "" || kalem === "G") ? kat : `${kat} - ${kalem}`;
+                        const tutar = islem.tutar; 
+                        const pay = pastaSafToplam > 0 ? ((tutar / pastaSafToplam) * 100).toFixed(1) : 0;
+                        
+                        top5Html += `<div class="t-row" style="padding: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); align-items: center;"><div class="t-details" style="flex: 1;"><div class="t-name" style="font-size: 13px; color: #cbd5e1;"><span style="color: var(--text-muted); margin-right: 4px; font-weight: 400;">${index + 1}.</span> ${gorunurAd}</div></div><div class="t-amt" style="text-align: right;"><div class="text-red" style="font-size: 14px; font-weight: 700;">${formatTL(tutar)}</div><div style="font-size: 10px; color: var(--text-muted); font-weight: 600;">%${pay}</div></div></div>`;
                     });
                     top5Container.innerHTML = top5Html;
                 }
             } else {
-                cCtx.clearRect(0,0,ctxPasta.width,ctxPasta.height); cCtx.font = "13px Inter"; cCtx.fillStyle = "#94a3b8"; cCtx.textAlign = "center"; cCtx.fillText("Bu ay henüz saf harcama yok", ctxPasta.canvas.width/2, ctxPasta.canvas.height/2);
+                // AY BAŞI KORUMASI: Hiç veri yoksa temizle ve placeholder yaz
+                cCtx.clearRect(0,0,ctxPasta.width,ctxPasta.height); 
+                cCtx.font = "13px Inter"; 
+                cCtx.fillStyle = "#94a3b8"; 
+                cCtx.textAlign = "center"; 
+                cCtx.fillText("Bu ay henüz saf harcama yok", ctxPasta.canvas.width/2, ctxPasta.canvas.height/2);
+                const pastaToplamEl = document.getElementById('pasta-toplam-rakam');
+                if(pastaToplamEl) pastaToplamEl.innerHTML = formatTL(0);
+                const t5C = document.getElementById('pasta-ozet-grid');
+                if(t5C) t5C.innerHTML = "";
             }
         }
         
-        // Son güncellenme saatini yaz
+        // Header tarihini her zaman güncelle
         const simdi = new Date();
         const formatliTarih = `${simdi.getDate()} ${simdi.toLocaleString('tr-TR', { month: 'long' })} ${simdi.getFullYear()}, ${gunler[simdi.getDay()]}`;
-        document.getElementById('header-date').innerText = formatliTarih;
+        const headDateEl = document.getElementById('header-date');
+        if(headDateEl) headDateEl.innerText = formatliTarih;
     }
 
 
