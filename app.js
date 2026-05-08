@@ -2082,25 +2082,27 @@ function tutarFormatla(input) {
             data.buAyIslemler.forEach(islem => { if (islem.tur === 'Gider') { v14_safToplam += islem.tutar; v14_safListe.push(islem); } });
         }
 
-                const gercekSafHarcama = data.backendSafHarcama || 0;
+        const gercekSafHarcama = data.backendSafHarcama || 0;
         const gercekGunlukOrtalama = data.backendGunlukOrtalama || 0;
         const safToplamEl = document.getElementById('saf-gider-toplam');
         const safOrtalamaEl = document.getElementById('saf-gunluk-ortalama');
         if(safToplamEl) safToplamEl.innerHTML = formatTL(gercekSafHarcama);
         if(safOrtalamaEl) safOrtalamaEl.innerHTML = formatTL(gercekGunlukOrtalama) + `<span style="font-size:11px; opacity:0.5; font-weight:500; margin-left:4px;">/gün</span>`;
 
-        // --- MİMAR DOKUNUŞU: Ay Sonu Projeksiyon Motoru ---
-        const tahminEl = document.getElementById('saf-ay-sonu-tahmin');
-        if (tahminEl) {
+        // --- MİMAR DOKUNUŞU: Ay Sonu Projeksiyon Motoru (Yeni Tasarıma Uyumlu) ---
+        const tahminKutuEl = document.getElementById('saf-ay-sonu-tahmin');
+        const tahminRakamEl = document.getElementById('saf-ay-sonu-rakam');
+        
+        if (tahminKutuEl && tahminRakamEl) {
             const bugun = new Date();
-            // Bu ayın toplam kaç gün çektiğini buluyoruz
             const buAyKacGun = new Date(bugun.getFullYear(), bugun.getMonth() + 1, 0).getDate();
             const aySonuTahminiTutar = gercekGunlukOrtalama * buAyKacGun;
             
             if (gercekGunlukOrtalama > 0) {
-                tahminEl.innerHTML = `Hız Uyarıcısı (Ay Sonu):<br><span style="color:var(--rose); font-size:13px; font-weight:800; display:block; margin-top:2px;">${formatTL(aySonuTahminiTutar)}</span>`;
+                tahminKutuEl.style.display = 'flex'; // Veri varsa yatay banner olarak göster
+                tahminRakamEl.innerHTML = formatTL(aySonuTahminiTutar);
             } else {
-                tahminEl.innerHTML = `Hız Uyarıcısı (Ay Sonu):<br><span style="color:var(--text-muted); display:block; margin-top:2px;">Veri Bekleniyor</span>`;
+                tahminKutuEl.style.display = 'none'; // Henüz harcama yoksa gizle, yer kaplamasın
             }
         }
 
