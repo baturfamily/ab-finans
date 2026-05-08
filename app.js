@@ -1924,7 +1924,7 @@ function tutarFormatla(input) {
         const headerBorcEl = document.getElementById('header-toplam-borc');
         if (headerBorcEl) headerBorcEl.innerHTML = formatTL(data.toplamBorc);
 
-                const bankaList = document.getElementById('banka-listesi');
+        const bankaList = document.getElementById('banka-listesi');
         let bankaHtml = "";
         let toplamLikidite = 0; // MİMAR EKLENTİSİ: Sıcak Para Havuzu
 
@@ -1963,24 +1963,6 @@ function tutarFormatla(input) {
         </div>`;
 
         bankaList.innerHTML = bankaHtml;
-            if (a.isim.trim().toLowerCase() === "nakit") return -1;
-            if (b.isim.trim().toLowerCase() === "nakit") return 1;
-            return 0;
-        });
-
-        data.bankalar.forEach(b => {
-            let icon = b.tur === "Nakit" ? '<i class="fas fa-wallet" style="color:var(--emerald); margin-right:8px;"></i>' : '<i class="fas fa-university" style="color:var(--blue); margin-right:8px;"></i>';
-            let tutarRengi = b.bakiye < 0 ? 'text-red' : 'text-green';
-            let kmhDurumu = "";
-            if(b.bakiye < 0 && b.limit > 0) {
-                let kYuzde = Math.round((Math.abs(b.bakiye) / b.limit) * 100);
-                kmhDurumu = `<div style="font-size:10px; color:var(--text-muted); margin-top:4px;">KMH Kullanımı: %${kYuzde}</div>`;
-            }
-            bankaHtml += `<div class="t-row"><div class="t-details"><div class="t-name">${icon} ${b.isim}</div>${kmhDurumu}</div><div class="t-amt ${tutarRengi}">${formatTL(b.bakiye)}</div></div>`;
-        });
-        bankaList.innerHTML = bankaHtml;
-
-        window.kartlarDetayli = data.kartlarDetayli || [];
         const kSecim = document.getElementById('dashboard-kart-secim');
         if (kSecim) {
             let kOptions = `<option value="hepsi">Tüm Kartlar (Özet)</option>`;
