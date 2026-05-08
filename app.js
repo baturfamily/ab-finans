@@ -1963,6 +1963,7 @@ function tutarFormatla(input) {
         </div>`;
 
         bankaList.innerHTML = bankaHtml;
+            window.kartlarDetayli = data.kartlarDetayli || [];
         const kSecim = document.getElementById('dashboard-kart-secim');
         if (kSecim) {
             let kOptions = `<option value="hepsi">Tüm Kartlar (Özet)</option>`;
