@@ -2195,7 +2195,7 @@ function tutarFormatla(input) {
             }
         }
 
-        // 2. Akıllı Tüketim Barı Motoru
+                // 2. Akıllı Tüketim Barı Motoru
         try {
             const tuketimKapsayici = document.getElementById('tuketim-bari-kapsayici');
             const tuketimYuzdeEl = document.getElementById('tuketim-yuzdesi');
@@ -2205,8 +2205,10 @@ function tutarFormatla(input) {
                 let toplamGelir = nakitAkisiGruplar["Toplam Gelirler"].toplam || 0;
                 let toplamGider = (nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam || 0) + (nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam || 0);
                 
+                // MİMAR KURALI: Bar gelir olsun olmasın HER ZAMAN görünür olacak!
+                tuketimKapsayici.style.display = 'block'; 
+                
                 if (toplamGelir > 0) {
-                    tuketimKapsayici.style.display = 'block';
                     let yuzdeHesap = (toplamGider / toplamGelir) * 100;
                     let barYuzdesi = Math.min(yuzdeHesap, 100); 
                     
@@ -2225,7 +2227,12 @@ function tutarFormatla(input) {
                         tuketimYuzdeEl.innerText = '%' + yuzdeHesap.toFixed(0);
                     }, 100); 
                 } else {
-                    tuketimKapsayici.style.display = 'none'; 
+                    // EĞER HENÜZ GELİR GİRİLMEDİYSE: Bar gizlenmez, boş bekler.
+                    setTimeout(() => {
+                        tuketimBarDoluluk.style.width = '0%';
+                        tuketimYuzdeEl.innerText = 'Gelir Bekleniyor';
+                        tuketimYuzdeEl.style.color = 'var(--text-muted)';
+                    }, 100);
                 }
             }
         } catch (e) {
