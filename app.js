@@ -2594,22 +2594,15 @@ function tutarFormatla(input) {
                 if (top5Container) {
                     let top5Html = "";
                     
-                    let enYuksekBesHarcama = data.buAyIslemler
-                        .filter(i => i.tur === 'Gider')
-                        .sort((a, b) => b.tutar - a.tutar)
-                        .slice(0, 5);
+                    // MİMAR DOKUNUŞU: Artık tekil fişleri değil, doğrudan Pasta Grafiğindeki KATEGORİLERİ (labels/values) çekiyoruz.
+                    // En yüksek kategori tutarını (1. sıradakini) Isı Haritası referansı için alıyoruz
+                    let maxTutar = values.length > 0 ? values[0] : 0;
 
-                    // MİMAR DOKUNUŞU: Isı haritası için en yüksek işlemi (1. sıradaki) referans al
-                    let maxTutar = enYuksekBesHarcama.length > 0 ? enYuksekBesHarcama[0].tutar : 0;
-
-                    enYuksekBesHarcama.forEach((islem, index) => {
-                        const kat = islem.kategori || "Diğer";
-                        const kalem = islem.kalem || "-";
-                        const gorunurAd = (kat === kalem || kalem === "-" || kalem === "" || kalem === "G") ? kat : `${kat} - ${kalem}`;
-                        const tutar = islem.tutar; 
+                    labels.forEach((kategoriAdi, index) => {
+                        const tutar = values[index]; 
                         const pay = pastaSafToplam > 0 ? ((tutar / pastaSafToplam) * 100).toFixed(1) : 0;
                         
-                        // MİMAR DOKUNUŞU: Isı Haritası Bar Genişliği (1. Harcama %100, diğerleri ona göre oranlanır)
+                        // Isı Haritası Bar Genişliği (1. Kategori %100, diğerleri ona göre oranlanır)
                         const isiYuzdesi = maxTutar > 0 ? (tutar / maxTutar) * 100 : 0;
                         
                         top5Html += `
@@ -2619,7 +2612,7 @@ function tutarFormatla(input) {
                             
                             <div class="t-details" style="flex: 1; z-index: 1; position: relative;">
                                 <div class="t-name" style="font-size: 13px; color: #cbd5e1;">
-                                    <span style="color: var(--text-muted); margin-right: 4px; font-weight: 400;">${index + 1}.</span> ${gorunurAd}
+                                    <span style="color: var(--text-muted); margin-right: 4px; font-weight: 400;">${index + 1}.</span> ${kategoriAdi}
                                 </div>
                             </div>
                             <div class="t-amt" style="text-align: right; z-index: 1; position: relative;">
