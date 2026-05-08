@@ -2337,17 +2337,37 @@ function tutarFormatla(input) {
         </div>`;
         sKategoriContainer.innerHTML = sKategoriHtml;
 
-        document.getElementById('sabit-genel-toplam').innerHTML = formatTL(sOdenenGider + sKalanGider);
+                document.getElementById('sabit-genel-toplam').innerHTML = formatTL(sOdenenGider + sKalanGider);
         document.getElementById('sabit-odenen-toplam').innerHTML = formatTL(sOdenenGider);
         
+        // --- MİMAR DOKUNUŞU: Aylık Yük Erime Barı Hesaplaması ---
+        let genelTop = sOdenenGider + sKalanGider;
+        let tamYuzde = genelTop > 0 ? (sOdenenGider / genelTop) * 100 : 0;
+        
+        const barEl = document.getElementById('sabit-tamamlanma-bar');
+        const yuzdeEl = document.getElementById('sabit-tamamlanma-yuzde');
+        if (barEl && yuzdeEl) {
+            setTimeout(() => {
+                barEl.style.width = tamYuzde + '%';
+                yuzdeEl.innerText = '%' + tamYuzde.toFixed(0);
+                if (tamYuzde === 100) {
+                    barEl.style.backgroundColor = 'var(--emerald)';
+                    yuzdeEl.style.color = 'var(--emerald)';
+                } else {
+                    barEl.style.backgroundColor = 'var(--blue)'; 
+                    yuzdeEl.style.color = 'var(--text-muted)';
+                }
+            }, 100);
+        }
+
         // EVRENSEL SIFIR BORÇ MOTİVASYON MOTORU
         const kalanKutu = document.getElementById('sabit-kalan-toplam');
-        if (sKalanGider === 0) {
-            kalanKutu.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-3px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>` + formatTL(sKalanGider);
-            kalanKutu.style.color = "var(--emerald)"; // Başarı yeşili
+        if (sKalanGider === 0 && genelTop > 0) {
+            kalanKutu.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-3px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>TAMAMLANDI`;
+            kalanKutu.style.color = "var(--emerald)"; 
         } else {
             kalanKutu.innerHTML = formatTL(sKalanGider);
-            kalanKutu.style.color = "var(--rose)"; // Borç kırmızısı
+            kalanKutu.style.color = "var(--rose)"; 
         }
 
                 const yListe = document.getElementById('yaklasan-listesi');
