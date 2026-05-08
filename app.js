@@ -690,11 +690,15 @@ function submitVarlikSil() {
             setText('modal-title', title);
             document.querySelectorAll('.form-control').forEach(el => { el.value = ''; el.classList.remove('error'); });
             
-            if(id === 'section-anlik') {
+                        if(id === 'section-anlik') {
+                // MİMAR DOKUNUŞU: Formu tertemiz yap
+                resetAnlikForm();
+
                 if(document.querySelectorAll('#anlik-segment .segment-btn').length > 0) {
                     document.querySelectorAll('#anlik-segment .segment-btn')[0].classList.add('active');
                     document.querySelectorAll('#anlik-segment .segment-btn')[1].classList.remove('active');
                 }
+                // Filtreyi Gider olarak başlat (Bu işlem kategorileri doldurur)
                 setAnlikFilter('Gider', document.querySelectorAll('#anlik-segment .segment-btn')[0]);
             }
             if(id === 'section-duzenli') {
