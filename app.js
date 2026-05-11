@@ -1952,12 +1952,12 @@ function tutarFormatla(input) {
 
         // MİMAR EKLENTİSİ: Özgüven veren dip toplam satırı
         bankaHtml += `
-        <div class="t-row" style="border-top: 1px dashed rgba(255,255,255,0.1); margin-top: 4px; padding-top: 12px; background: rgba(16, 185, 129, 0.05); border-radius: 8px;">
-            <div class="t-details" style="display: flex; align-items: center;">
-                <i class="fas fa-shield-alt" style="color: var(--emerald); font-size: 15px; margin-right: 8px;"></i>
-                <div style="font-size: 12px; font-weight: 700; color: var(--emerald);">Kullanılabilir Nakit Gücü</div>
+        <div class="t-row" style="border-top: 1px dashed rgba(255,255,255,0.1); margin-top: 4px; padding: 12px 10px; background: rgba(16, 185, 129, 0.05); border-radius: 8px; display: flex; align-items: center; min-height: 48px;">
+            <div class="t-details" style="display: flex; align-items: center; flex: 1;">
+                <i class="fas fa-shield-alt" style="color: var(--emerald); font-size: 14px; margin-right: 8px; display: flex; align-items: center;"></i>
+                <div style="font-size: 12px; font-weight: 700; color: var(--emerald); line-height: 1;">Kullanılabilir Nakit Gücü</div>
             </div>
-            <div class="t-amt" style="font-size: 16px; font-weight: 800; color: var(--emerald);">
+            <div class="t-amt" style="font-size: 16px; font-weight: 800; color: var(--emerald); display: flex; align-items: center;">
                 ${formatTL(toplamLikidite)}
             </div>
         </div>`;
