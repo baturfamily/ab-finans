@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxXffGd4V-8GslsyEK056NVod-7nPCWTwsNFG6lFqTn9GFAl8oLCgHUU_OA6ej3uLw_kw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxVgRN7IrNdrqu5GMuMycYmL_l1kEb4HXuWdyKK8FbY0feFlx3exLRaFqENjqm0sCb2/exec";
 
         let expenseChartInstance = null; window.tarihceData = []; window.currentStats = {};
         window.hesapOptions = ""; window.vadesizOptions = ""; window.hesapTurleri = { "Nakit": "Nakit" }; 
