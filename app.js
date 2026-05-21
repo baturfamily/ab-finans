@@ -2391,15 +2391,8 @@ function tutarFormatla(input) {
             // ------------------------------------------------------------------------------------------------
 
                             siraliYaklasanlar.forEach(y => {
-// 🌟 MİMAR ZIRHI: Türkçe karakter uyumlu acımasız eşleştirme
-const otoLogListRaw = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
-const isOtomatik = otoLogListRaw.some(item => 
-    item.toString().trim().toLocaleLowerCase('tr-TR') === (y.tur || "").toString().trim().toLocaleLowerCase('tr-TR')
-);
-const temizTur = (y.tur || "").toString().trim().toLowerCase();
-
-// Artık boşluk veya büyük/küçük harf hatası imkansız!
-const isOtomatik = temizOtoLogListesi.includes(temizTur);
+                const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
+                const isOtomatik = otoLogListesi.includes(y.tur);
 
                 const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) 
                     ? `<span style="opacity:0.85; font-weight:500;">${y.tur}</span>&nbsp;-&nbsp;` 
