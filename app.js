@@ -2391,8 +2391,15 @@ function tutarFormatla(input) {
             // ------------------------------------------------------------------------------------------------
 
                             siraliYaklasanlar.forEach(y => {
-                const otoLogListesi = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
-                const isOtomatik = otoLogListesi.includes(y.tur);
+                // 🌟 MİMAR ZIRHI: Hem listeyi hem de kontrol edilen kelimeyi tamamen tıraşlar (boşlukları yok eder) ve küçük harfe çevirip milimetrik eşleştirir.
+const otoLogListesiRaw = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
+// Listedeki tüm elemanları temizle ve küçük harfe çevir
+const temizOtoLogListesi = otoLogListesiRaw.map(item => item.toString().trim().toLowerCase());
+// Gelen türü de temizle ve küçük harfe çevir
+const temizTur = (y.tur || "").toString().trim().toLowerCase();
+
+// Artık boşluk veya büyük/küçük harf hatası imkansız!
+const isOtomatik = temizOtoLogListesi.includes(temizTur);
 
                 const kategoriMetni = (y.tur && y.tur !== "-" && !y.kalem.startsWith(y.tur)) 
                     ? `<span style="opacity:0.85; font-weight:500;">${y.tur}</span>&nbsp;-&nbsp;` 
