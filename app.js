@@ -2391,11 +2391,11 @@ function tutarFormatla(input) {
             // ------------------------------------------------------------------------------------------------
 
                             siraliYaklasanlar.forEach(y => {
-                // 🌟 MİMAR ZIRHI: Hem listeyi hem de kontrol edilen kelimeyi tamamen tıraşlar (boşlukları yok eder) ve küçük harfe çevirip milimetrik eşleştirir.
-const otoLogListesiRaw = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
-// Listedeki tüm elemanları temizle ve küçük harfe çevir
-const temizOtoLogListesi = otoLogListesiRaw.map(item => item.toString().trim().toLowerCase());
-// Gelen türü de temizle ve küçük harfe çevir
+// 🌟 MİMAR ZIRHI: Türkçe karakter uyumlu acımasız eşleştirme
+const otoLogListRaw = (data.dinamikKategoriler && data.dinamikKategoriler.otoLog) ? data.dinamikKategoriler.otoLog : [];
+const isOtomatik = otoLogListRaw.some(item => 
+    item.toString().trim().toLocaleLowerCase('tr-TR') === (y.tur || "").toString().trim().toLocaleLowerCase('tr-TR')
+);
 const temizTur = (y.tur || "").toString().trim().toLowerCase();
 
 // Artık boşluk veya büyük/küçük harf hatası imkansız!
