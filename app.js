@@ -1967,10 +1967,26 @@ function tutarFormatla(input) {
         let filtrelenmisBorclar = tumBorclarHavuzu.filter(b => parseFloat(b.tutar) >= 0.01);
 
         filtrelenmisBorclar.sort((a, b) => parseFloat(b.tutar) - parseFloat(a.tutar)).forEach(b => {
-          let val = parseFloat(b.tutar) || 0;
-          let p = data.toplamBorc > 0 ? Math.round((val / data.toplamBorc) * 100) : 0;
-          bHtml += `<div class="t-row"><div class="t-details"><div class="t-name">${b.isim}</div><div class="progress-container" style="height:4px; margin-top:6px; background:rgba(255,255,255,0.05);"><div class="progress-bar" style="width:${p}%; background:var(--rose);"></div></div></div><div class="t-amt text-red">${formatTL(val)}</div></div>`;
-        });
+  let val = parseFloat(b.tutar) || 0;
+  let p = data.toplamBorc > 0 ? Math.round((val / data.toplamBorc) * 100) : 0;
+  
+  // Dövizli borç bilgisi
+  let dovizSatiri = '';
+  if (b.doviz && b.doviz !== 'TL' && b.orijinalMiktar > 0) {
+    let dovizSembol = b.doviz === 'USD' ? '$' : (b.doviz === 'EUR' ? '€' : 'gr');
+    let guncelKur = b.doviz === 'USD' ? (data.usdRate || 0) : (b.doviz === 'EUR' ? (data.euroRate || 0) : (data.gramAltinKuru || 0));
+    let guncelTL = b.orijinalMiktar * guncelKur;
+    let fark = guncelTL - (b.orijinalMiktar * b.alisKuru);
+    let farkRenk = fark > 0 ? 'var(--rose)' : 'var(--emerald)';
+    let farkIkon = fark > 0 ? '▲' : '▼';
+    dovizSatiri = `<div style="font-size:10px; color:var(--text-muted); margin-top:3px;">
+      ${b.orijinalMiktar.toLocaleString('tr-TR')} ${dovizSembol} × ${guncelKur.toLocaleString('tr-TR', {minimumFractionDigits:2})}₺
+      <span style="color:${farkRenk}; margin-left:6px; font-weight:700;">${farkIkon} ${formatTL(Math.abs(fark))}</span>
+    </div>`;
+  }
+  
+  bHtml += `<div class="t-row"><div class="t-details"><div class="t-name">${b.isim}</div>${dovizSatiri}<div class="progress-container" style="height:4px; margin-top:6px; background:rgba(255,255,255,0.05);"><div class="progress-bar" style="width:${p}%; background:var(--rose);"></div></div></div><div class="t-amt text-red">${formatTL(val)}</div></div>`;
+});
 
                     bHtml += `
         <div style="margin-top:15px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
