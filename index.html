@@ -494,6 +494,12 @@
                         </div>
                         <span>Kart<br>İşlemleri</span>
                     </div>
+                    <div class="action-card-grid" onclick="showSection('section-butce-limitleri', 'Bütçe Limitleri')">
+                        <div class="i-wrap" style="background: rgba(16, 185, 129, 0.15); color: var(--emerald);">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <span>Bütçe<br>Limitleri</span>
+                    </div>
                 </div>
         
                 <div style="height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 16px; border-radius: 1px;"></div>
@@ -1295,6 +1301,30 @@
 
         </div>
     </div>
+
+    <div id="section-butce-limitleri" class="form-section">
+    <span class="back-link" onclick="showSection('section-menu', 'Ne yapmak istersin?')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg> Ana Menüye Dön</span>
+    
+    <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Kategori bazlı aylık harcama limiti belirle. Limitler aşıldığında uyarı gösterilir.</p>
+
+    <div class="form-group">
+        <label>Kategori</label>
+        <select id="bl-kategori" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Aylık Limit (₺) — 0 yazarsan limit kaldırılır</label>
+        <input type="text" inputmode="decimal" id="bl-limit" class="form-control" placeholder="Örn: 5.000" oninput="tutarFormatla(this)">
+    </div>
+
+    <div id="bl-mevcut-bilgi" style="display:none; background:rgba(255,255,255,0.05); padding:12px; border-radius:12px; margin-bottom:16px; font-size:12px; color:var(--text-muted);">
+        Mevcut limit: <span id="bl-mevcut-deger" style="color:#fff; font-weight:700;"></span>
+    </div>
+
+    <button class="btn-submit" id="btn-submit-butce" onclick="submitButceLimiti()">Limiti Kaydet</button>
+
+    <div id="bl-ozet-listesi" style="margin-top:24px;"></div>
+</div>
 
     <script>
         
