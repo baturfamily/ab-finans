@@ -1442,6 +1442,55 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             apiIstekAt({ action: "ozel_borc_guncelle", isim: isim, yeni_tutar: yeniTutar }, 'btn-submit-ozel-guncelle');
         }
 
+function toggleOzelDovizAlani() {
+    const doviz = getCustomVal('ozel-doviz');
+    const alan = document.getElementById('ozel-doviz-alani');
+    const kuruLabel = document.getElementById('ozel-alis-kuru-label');
+    const miktarLabel = document.getElementById('ozel-miktar-label');
+    const bilgi = document.getElementById('ozel-doviz-hesap-bilgi');
+    const tutarLabel = document.querySelector('label[for="ozel-yeni-tutar"]') || document.getElementById('ozel-yeni-tutar').previousElementSibling;
+
+    if (doviz === 'TL') {
+        alan.style.display = 'none';
+    } else {
+        alan.style.display = 'block';
+        if (doviz === 'USD') {
+            kuruLabel.innerText = 'Alış Kuru (Borç Alınırken 1 $ = kaç ₺)';
+            miktarLabel.innerText = 'Orijinal Miktar (Kaç $)';
+            // Güncel kuru otomatik doldur
+            const guncelKur = window.currentStats && window.currentStats.usdRate ? window.currentStats.usdRate : 0;
+            if (guncelKur > 0) document.getElementById('ozel-alis-kuru').value = guncelKur.toLocaleString('tr-TR', {minimumFractionDigits: 2});
+        } else if (doviz === 'EUR') {
+            kuruLabel.innerText = 'Alış Kuru (Borç Alınırken 1 € = kaç ₺)';
+            miktarLabel.innerText = 'Orijinal Miktar (Kaç €)';
+            const guncelKur = window.currentStats && window.currentStats.euroRate ? window.currentStats.euroRate : 0;
+            if (guncelKur > 0) document.getElementById('ozel-alis-kuru').value = guncelKur.toLocaleString('tr-TR', {minimumFractionDigits: 2});
+        } else if (doviz === 'Altın') {
+            kuruLabel.innerText = 'Alış Kuru (Borç Alınırken 1 gram = kaç ₺)';
+            miktarLabel.innerText = 'Orijinal Miktar (Kaç gram)';
+            const guncelKur = window.currentStats && window.currentStats.gramAltinKuru ? window.currentStats.gramAltinKuru : 0;
+            if (guncelKur > 0) document.getElementById('ozel-alis-kuru').value = guncelKur.toLocaleString('tr-TR', {minimumFractionDigits: 2});
+        }
+        // TL karşılığı hesapla
+        hesaplaOzelDovizTL();
+    }
+}
+
+function hesaplaOzelDovizTL() {
+    const miktar = parseSaha(document.getElementById('ozel-alis-kuru-miktar').value) || 0;
+    const kur = parseSaha(document.getElementById('ozel-alis-kuru').value) || 0;
+    const bilgi = document.getElementById('ozel-doviz-hesap-bilgi');
+    const tutarInput = document.getElementById('ozel-yeni-tutar');
+    
+    if (miktar > 0 && kur > 0) {
+        const tlKarsıligi = miktar * kur;
+        bilgi.innerHTML = `TL karşılığı: <strong style="color:var(--emerald)">${formatTL(tlKarsıligi)}</strong>`;
+        tutarInput.value = tlKarsıligi.toLocaleString('tr-TR', {minimumFractionDigits: 2});
+    } else {
+        bilgi.innerHTML = 'Miktar ve kur girince TL karşılığı hesaplanır';
+    }
+}
+
         function submitYeniOzel() {
             const isim = document.getElementById('ozel-yeni-isim').value.trim(); const tutar = document.getElementById('ozel-yeni-tutar').value;
             const tarih = document.getElementById('ozel-yeni-tarih').value;
