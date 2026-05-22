@@ -3113,7 +3113,16 @@ async function submitTransfer() {
     }, 'btn-submit-transfer');
 }
 
-    window.onload = () => { verileriCek(); };
+    window.onload = () => {
+    if (typeof CONFIG !== 'undefined') {
+        document.title = CONFIG.APP_TITLE;
+        const titleEl = document.getElementById('app-title');
+        if (titleEl) titleEl.innerText = CONFIG.APP_TITLE;
+        const h1El = document.querySelector('.header-section h1');
+        if (h1El) h1El.innerText = CONFIG.APP_TITLE;
+    }
+    verileriCek();
+};
 
 // --- SADECE İSTENEN LİSTELERİ DÜZELTEN NOKTA ATIŞI KOD ---
     setTimeout(function() {
