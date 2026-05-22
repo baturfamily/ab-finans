@@ -1585,6 +1585,91 @@ apiIstekAt({
         }
     }
 
+function showButceLimitleri() {
+    // Kategori listesini doldur
+    const katSel = document.getElementById('bl-kategori');
+    let html = '<option value="" disabled selected>Kategori seçin...</option>';
+    if (window.dinamikKategoriler && window.dinamikKategoriler.gider) {
+        window.dinamikKategoriler.gider.forEach(k => {
+            html += `<option value="${k}">${k}</option>`;
+        });
+    }
+    katSel.innerHTML = html;
+    if (typeof refreshCustomSelect === 'function') refreshCustomSelect(katSel);
+    katSel.addEventListener('change', function() { updateButceMevcut(); });
+
+    // Özet listesini çiz
+    renderButceOzet();
+}
+
+function updateButceMevcut() {
+    const kat = getCustomVal('bl-kategori');
+    const bilgi = document.getElementById('bl-mevcut-bilgi');
+    const deger = document.getElementById('bl-mevcut-deger');
+    if (!kat || !window.currentStats.butceLimitleri) { bilgi.style.display = 'none'; return; }
+    const limit = window.currentStats.butceLimitleri[kat];
+    if (limit && limit > 0) {
+        deger.innerHTML = formatTL(limit);
+        bilgi.style.display = 'block';
+        document.getElementById('bl-limit').value = limit.toLocaleString('tr-TR', {minimumFractionDigits: 2});
+    } else {
+        deger.innerHTML = 'Limit yok';
+        bilgi.style.display = 'block';
+        document.getElementById('bl-limit').value = '';
+    }
+}
+
+function renderButceOzet() {
+    const container = document.getElementById('bl-ozet-listesi');
+    if (!container) return;
+    const limtiler = window.currentStats.butceLimitleri || {};
+    const harcamalar = {};
+
+    // Bu ayın harcamalarını kategori bazlı topla
+    if (window.currentStats.buAyIslemler) {
+        window.currentStats.buAyIslemler.forEach(i => {
+            if (i.tur === 'Gider' && i.kategori && i.kategori !== '-') {
+                harcamalar[i.kategori] = (harcamalar[i.kategori] || 0) + i.tutar;
+            }
+        });
+    }
+
+    const katlar = Object.keys(limtiler);
+    if (katlar.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">Henüz limit tanımlanmamış.</div>';
+        return;
+    }
+
+    let html = '<div style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px;">Mevcut Limitler</div>';
+    katlar.forEach(kat => {
+        const limit = limtiler[kat];
+        const harcama = harcamalar[kat] || 0;
+        const yuzde = limit > 0 ? Math.min((harcama / limit) * 100, 100) : 0;
+        const asim = harcama > limit;
+        const renk = asim ? 'var(--rose)' : (yuzde > 75 ? 'var(--amber)' : 'var(--emerald)');
+
+        html += `
+        <div style="background:rgba(255,255,255,0.03); border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.06);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:13px; font-weight:600; color:#e2e8f0;">${kat}</span>
+                <span style="font-size:12px; font-weight:700; color:${renk};">${formatTL(harcama)} / ${formatTL(limit)}</span>
+            </div>
+            <div style="height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;">
+                <div style="height:100%; width:${yuzde}%; background:${renk}; border-radius:3px; transition:width 0.5s ease;"></div>
+            </div>
+            ${asim ? `<div style="font-size:10px; color:var(--rose); margin-top:6px; font-weight:700;">⚠️ Limit aşıldı! ${formatTL(harcama - limit)} fazla harcandı.</div>` : ''}
+        </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function submitButceLimiti() {
+    const kat = getCustomVal('bl-kategori');
+    const limit = parseSaha(document.getElementById('bl-limit').value);
+    if (!kat || kat.includes('seçin')) return markError('bl-kategori');
+    apiIstekAt({ action: 'butce_limiti_guncelle', kategori: kat, limit: limit }, 'btn-submit-butce');
+}
+
     function submitYeniHesap() {
         const isim = document.getElementById('yh-isim').value;
         const bakiye = document.getElementById('yh-bakiye').value;
