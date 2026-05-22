@@ -2290,6 +2290,9 @@ function tutarFormatla(input) {
 
         animateValue('val-buay-borc-odeme', buAyEkstraCikislar, aSure);
         window.currentStats.safHarcama = gercekSafHarcama || 0;
+        window.currentStats.usdRate = data.usdRate || 0;
+        window.currentStats.euroRate = data.euroRate || 0;
+        window.currentStats.gramAltinKuru = data.gramAltinKuru || 0;
         window.currentStats.gunlukOrt = gercekGunlukOrtalama || 0;
         window.currentStats.netKalan = netAkis || 0;
         animateValue('val-nakit-giris', nakitAkisiGruplar["Toplam Gelirler"].toplam, aSure);
