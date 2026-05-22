@@ -1452,7 +1452,20 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             const simdi = new Date(); const tParca = tarih.split('-');
             const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
             // Evrensellik: Vade parametresi direkt "-" olarak Backend'e gönderilir
-            apiIstekAt({ action: "yeni_ozel_borc", isim: isim, tutar: tutar, vade: "-", tarih: tamTarihLog }, 'btn-submit-ozel-tanimla');
+            const dovizCinsi = getCustomVal('ozel-doviz') || 'TL';
+const alisKuruVal = parseSaha(document.getElementById('ozel-alis-kuru').value) || 1;
+const orijinalMiktarVal = dovizCinsi === 'TL' ? parseSaha(tutar) : parseSaha(document.getElementById('ozel-alis-kuru-miktar').value);
+
+apiIstekAt({ 
+    action: "yeni_ozel_borc", 
+    isim: isim, 
+    tutar: tutar, 
+    vade: "-", 
+    tarih: tamTarihLog,
+    doviz: dovizCinsi,
+    alis_kuru: alisKuruVal,
+    orijinal_miktar: orijinalMiktarVal
+}, 'btn-submit-ozel-tanimla');
         }
         
                         function doldurSabitGuncelleForm() {
