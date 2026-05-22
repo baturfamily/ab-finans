@@ -2397,6 +2397,8 @@ function tutarFormatla(input) {
         window.currentStats.usdRate = data.usdRate || 0;
         window.currentStats.euroRate = data.euroRate || 0;
         window.currentStats.gramAltinKuru = data.gramAltinKuru || 0;
+        window.currentStats.butceLimitleri = data.butceLimitleri || {};
+        window.currentStats.buAyIslemler = data.buAyIslemler || [];
         window.currentStats.gunlukOrt = gercekGunlukOrtalama || 0;
         window.currentStats.netKalan = netAkis || 0;
         animateValue('val-nakit-giris', nakitAkisiGruplar["Toplam Gelirler"].toplam, aSure);
