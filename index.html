@@ -1070,11 +1070,11 @@
                     <div id="ozel-doviz-alani" style="display:none;">
                         <div class="form-group">
                             <label id="ozel-alis-kuru-label">Alış Kuru (Borç Alınırken 1 $ = kaç ₺)</label>
-                            <input type="text" inputmode="decimal" id="ozel-alis-kuru" class="form-control" placeholder="Örn: 45,50" oninput="tutarFormatla(this)">
+                            <input type="text" inputmode="decimal" id="ozel-alis-kuru" class="form-control" placeholder="Örn: 45,50" oninput="tutarFormatla(this); hesaplaOzelDovizTL()">
                         </div>
                         <div class="form-group">
                             <label id="ozel-miktar-label">Orijinal Miktar (Kaç $ / € / gram)</label>
-                            <input type="text" inputmode="decimal" id="ozel-alis-kuru-miktar" class="form-control" placeholder="Örn: 1.000" oninput="tutarFormatla(this)">
+                            <input type="text" inputmode="decimal" id="ozel-alis-kuru-miktar" class="form-control" placeholder="Örn: 1.000" oninput="tutarFormatla(this); hesaplaOzelDovizTL()">
                         </div>
                         <div id="ozel-doviz-hesap-bilgi" style="font-size:12px; color:var(--text-muted); padding: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 12px;">
                             TL karşılığı otomatik hesaplanacak
