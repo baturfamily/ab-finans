@@ -1629,7 +1629,9 @@ function renderButceOzet() {
     const harcamalar = {};
 
     // Bu ayın harcamalarını kategori bazlı topla
-    if (window.currentStats.buAyIslemler) {
+    console.log("butceLimitleri:", window.currentStats.butceLimitleri);
+console.log("buAyIslemler:", window.currentStats.buAyIslemler ? window.currentStats.buAyIslemler.length : "YOK");
+        if (window.currentStats.buAyIslemler) {
         window.currentStats.buAyIslemler.forEach(i => {
             if (i.tur === 'Gider' && i.kategori && i.kategori !== '-') {
                 harcamalar[i.kategori] = (harcamalar[i.kategori] || 0) + i.tutar;
