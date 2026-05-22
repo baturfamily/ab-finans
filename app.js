@@ -771,6 +771,9 @@ function submitVarlikSil() {
                     document.getElementById('kbd-yeni-borc').value = '';
                     if(typeof refreshCustomSelect === 'function') refreshCustomSelect(document.getElementById('kbd-kart-secim'));
                 }
+                if(id === 'section-butce-limitleri') {
+    showButceLimitleri();
+}
         }
 
         function fillInput(id, text) { vibe(); document.getElementById(id).value = text; }
