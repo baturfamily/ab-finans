@@ -1,5 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwg0bsaicr3XpgYbzN5WHk-TKxfHJaSZPLAG5pBOjh2slognLo4492GedcUM3W6KF6t/exec";
-
+const API_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_URL : "";
         let expenseChartInstance = null; window.tarihceData = []; window.currentStats = {};
         window.hesapOptions = ""; window.vadesizOptions = ""; window.hesapTurleri = { "Nakit": "Nakit" }; 
         window.sabitDataRaw = [];
