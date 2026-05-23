@@ -1890,6 +1890,7 @@ function tutarFormatla(input) {
     // 1. BÖLÜM: KAPORTA (SADECE EKRANI ÇİZEN FONKSİYON)
     // =========================================================================
     function ekraniCiz(data, ilkAcilisMi = false) {
+            if (!data.gramAltinKuru && window._gramKur) data.gramAltinKuru = window._gramKur;
                 // =========================================================
         // YENİ AY HAYALET VERİ ZIRHI (ÇÖKMELERİ KESİN ÖNLER)
         // =========================================================
