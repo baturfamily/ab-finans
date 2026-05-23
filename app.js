@@ -3118,7 +3118,7 @@ async function submitTransfer() {
         document.title = CONFIG.APP_TITLE;
         const titleEl = document.getElementById('app-title');
         if (titleEl) titleEl.innerText = CONFIG.APP_TITLE;
-        const h1El = document.querySelector('.header-section h1');
+        const h1El = document.getElementById('app-header-title');
         if (h1El) h1El.innerText = CONFIG.APP_TITLE;
     }
     verileriCek();
