@@ -2071,6 +2071,7 @@ function tutarFormatla(input) {
   if (b.doviz && b.doviz !== 'TL' && b.orijinalMiktar > 0) {
     let dovizSembol = b.doviz === 'USD' ? '$' : (b.doviz === 'EUR' ? '€' : 'gr');
     let gramKur = window._gramKur || 0;
+if (gramKur === 0 && b.doviz === 'Altın') { gramKur = b.alisKuru || 0; }
     let guncelKur = b.doviz === 'USD' ? (window._usdKur || 0) : (b.doviz === 'EUR' ? (window._euroKur || 0) : gramKur);
     let guncelTL = b.orijinalMiktar * guncelKur;
     let fark = guncelTL - (b.orijinalMiktar * b.alisKuru);
@@ -2829,6 +2830,7 @@ function tutarFormatla(input) {
         if (hayaletVeri) {
             try {
                 const eskiData = JSON.parse(hayaletVeri);
+                    if (!eskiData.gramAltinKuru) eskiData.gramAltinKuru = 0;
                 ekraniCiz(eskiData, true); 
                 durumEl.innerHTML = `<span class="spinner"></span>Senkronize ediliyor...`;
                 durumEl.style.color = "var(--amber)";
