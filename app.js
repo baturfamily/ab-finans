@@ -2066,7 +2066,8 @@ function tutarFormatla(input) {
   let dovizSatiri = '';
   if (b.doviz && b.doviz !== 'TL' && b.orijinalMiktar > 0) {
     let dovizSembol = b.doviz === 'USD' ? '$' : (b.doviz === 'EUR' ? '€' : 'gr');
-    let guncelKur = b.doviz === 'USD' ? (data.usdRate || 0) : (b.doviz === 'EUR' ? (data.euroRate || 0) : (window.currentStats.gramAltinKuru || data.gramAltinKuru || 0));
+    let gramKur = window.currentStats.gramAltinKuru || data.gramAltinKuru || 6641;
+    let guncelKur = b.doviz === 'USD' ? (data.usdRate || 0) : (b.doviz === 'EUR' ? (data.euroRate || 0) : gramKur);
     let guncelTL = b.orijinalMiktar * guncelKur;
     let fark = guncelTL - (b.orijinalMiktar * b.alisKuru);
     let farkRenk = fark > 0 ? 'var(--rose)' : 'var(--emerald)';
