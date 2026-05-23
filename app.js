@@ -2063,6 +2063,7 @@ function tutarFormatla(input) {
   let dovizSatiri = '';
   if (b.doviz && b.doviz !== 'TL' && b.orijinalMiktar > 0) {
     let dovizSembol = b.doviz === 'USD' ? '$' : (b.doviz === 'EUR' ? '€' : 'gr');
+          console.log("gramAltinKuru from data:", data.gramAltinKuru, "from currentStats:", window.currentStats.gramAltinKuru);
     let guncelKur = b.doviz === 'USD' ? (data.usdRate || 0) : (b.doviz === 'EUR' ? (data.euroRate || 0) : (data.gramAltinKuru || 0));
     let guncelTL = b.orijinalMiktar * guncelKur;
     let fark = guncelTL - (b.orijinalMiktar * b.alisKuru);
