@@ -1908,6 +1908,9 @@ function tutarFormatla(input) {
         data.faizDetaylari = data.faizDetaylari || [];
         data.varliklarListe = data.varliklarListe || [];
         data.borclarListe = data.borclarListe || [];
+        window.currentStats.usdRate = data.usdRate || 0;
+        window.currentStats.euroRate = data.euroRate || 0;
+        window.currentStats.gramAltinKuru = data.gramAltinKuru || 0;
         data.bankalar = data.bankalar || [];
         data.kartlarDetayli = data.kartlarDetayli || [];
         data.sonIslemler = data.sonIslemler || [];
@@ -2395,9 +2398,6 @@ function tutarFormatla(input) {
 
         animateValue('val-buay-borc-odeme', buAyEkstraCikislar, aSure);
         window.currentStats.safHarcama = gercekSafHarcama || 0;
-        window.currentStats.usdRate = data.usdRate || 0;
-        window.currentStats.euroRate = data.euroRate || 0;
-        window.currentStats.gramAltinKuru = data.gramAltinKuru || 0;
         window.currentStats.butceLimitleri = data.butceLimitleri || {};
         window.currentStats.buAyIslemler = data.buAyIslemler || [];
         window.currentStats.gunlukOrt = gercekGunlukOrtalama || 0;
