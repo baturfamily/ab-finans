@@ -2013,6 +2013,8 @@ function tutarFormatla(input) {
         window._usdKur = data.usdRate ? Number(data.usdRate) : 0;
         window._euroKur = data.euroRate ? Number(data.euroRate) : 0;
         window.tarihceData = data.tarihce || [];
+            // Tarihçe mini grafiğini çiz
+renderTarihceMiniGrafik(data.tarihce || []);
         window.dinamikKategoriler = data.dinamikKategoriler || window.dinamikKategoriler;
 
         // EKRAN GÜNCELLEME HİLESİ: İlk açılışta animasyon (1000ms), arka plan güncellemesinde anında değişim (10ms)
@@ -3462,6 +3464,102 @@ function resetAnlikForm() {
         if(sel) {
             sel.selectedIndex = 0;
             if(typeof refreshCustomSelect === 'function') refreshCustomSelect(sel);
+        }
+    });
+
+        function renderTarihceMiniGrafik(tarihce) {
+    const canvas = document.getElementById('tarihce-mini-grafik');
+    if (!canvas || tarihce.length < 2) return;
+
+    // Son 30 kaydı al
+    const son30 = tarihce.slice(-30);
+
+    function parseTarihceDate(raw) {
+        if (!raw) return null;
+        if (raw instanceof Date) return raw;
+        let s = raw.toString().trim();
+        if (s.includes('.')) {
+            let p = s.split(' ')[0].split('.');
+            if (p.length === 3) return new Date(parseInt(p[2]), parseInt(p[1]) - 1, parseInt(p[0]));
+        }
+        let t = new Date(s);
+        return isNaN(t.getTime()) ? null : t;
+    }
+
+    const etiketler = son30.map(r => {
+        const t = parseTarihceDate(r[0]);
+        if (!t) return '';
+        return (t.getDate()) + '/' + (t.getMonth() + 1);
+    });
+
+    const netServetVerisi = son30.map(r => parseSaha(r[2]) || 0);
+    const kasaVerisi      = son30.map(r => parseSaha(r[7]) || 0);
+
+    if (window._tarihceGrafikInstance) {
+        window._tarihceGrafikInstance.destroy();
+    }
+
+    window._tarihceGrafikInstance = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: etiketler,
+            datasets: [
+                {
+                    label: 'Net Varlık',
+                    data: netServetVerisi,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16,185,129,0.08)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Kasa',
+                    data: kasaVerisi,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.4,
+                    borderDash: [4, 3]
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 600 },
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 12, padding: 12 }
+                },
+                tooltip: {
+                    backgroundColor: '#1e2330',
+                    titleColor: '#94a3b8',
+                    bodyColor: '#fff',
+                    borderColor: 'rgba(255,255,255,0.08)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: ctx => ' ₺' + new Intl.NumberFormat('tr-TR', {maximumFractionDigits:0}).format(ctx.raw)
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748b', font: { size: 10 }, maxTicksLimit: 6 },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                },
+                y: {
+                    ticks: {
+                        color: '#64748b', font: { size: 10 },
+                        callback: v => '₺' + new Intl.NumberFormat('tr-TR', {maximumFractionDigits:0, notation:'compact'}).format(v)
+                    },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                }
+            }
         }
     });
 }
