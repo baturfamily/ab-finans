@@ -2057,6 +2057,8 @@ renderTarihceMiniGrafik(data.tarihce || []);
 
             if (heroGelirVal) heroGelirVal.innerHTML = formatTL(toplamGelir);
             if (heroGiderVal) heroGiderVal.innerHTML = formatTL(toplamGiderToplam);
+                const heroKalanRef = document.getElementById('hero-kalan-ref');
+            if (heroKalanRef) heroKalanRef.innerHTML = formatTL(netKalan);
             
             if (heroTuketimBar && heroTuketimYuzde) {
                 setTimeout(() => {
@@ -2076,8 +2078,6 @@ renderTarihceMiniGrafik(data.tarihce || []);
             }
         } catch(e) {}
 
-        setText('val-borc-varlik-orani', data.borcVarlikOrani);
-        setText('val-nakit-koruma', data.nakitKorumaSuresi + ' Ay');
                 animateValue('val-kasa', data.toplamKasa, aSure);
         animateValue('val-borc', data.toplamBorc, aSure);
         
