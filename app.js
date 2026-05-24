@@ -850,6 +850,34 @@ function submitVarlikSil() {
             const result = await res.json(); 
 
             if (result.status === "success") {
+                    // Başarı toast mesajı
+const toastMesajlari = {
+    'yeni_hareket': '✓ İşlem kaydedildi',
+    'transfer_yap': '✓ Transfer kaydedildi',
+    'yeni_sabit': '✓ Düzenli kural oluşturuldu',
+    'sabit_onayla': '✓ Ödeme onaylandı',
+    'sabit_guncelle': '✓ Kural güncellendi',
+    'kart_borcu_ode': '✓ Kart borcu ödendi',
+    'yeni_kredi': '✓ Kredi tanımlandı',
+    'kredi_erken_kapama': '✓ Kredi kapatıldı',
+    'ozel_borc_ode': '✓ Borç ödendi',
+    'ozel_borc_guncelle': '✓ Borç güncellendi',
+    'yeni_ozel_borc': '✓ Borç tanımlandı',
+    'varlik_guncelle': '✓ Varlık güncellendi',
+    'varlik_ekle': '✓ Varlık eklendi',
+    'varlik_sil': '✓ Varlık silindi',
+    'hesap_bakiyesi_duzelt': '✓ Bakiye eşitlendi',
+    'kmh_limiti_guncelle': '✓ KMH limiti güncellendi',
+    'kart_bakiyesi_duzelt': '✓ Kart borcu eşitlendi',
+    'yeni_hesap': '✓ Hesap oluşturuldu',
+    'yeni_kart_ekle': '✓ Kart eklendi',
+    'kart_limiti_guncelle': '✓ Kart limiti güncellendi',
+    'kart_ekstre_guncelle': '✓ Ekstre günü güncellendi',
+    'butce_limiti_guncelle': '✓ Bütçe limiti kaydedildi',
+    'geri_al': '✓ İşlem geri alındı'
+};
+const mesaj = toastMesajlari[payload.action] || '✓ Kaydedildi';
+showToast(mesaj, 'success');
             vibe(); 
             
             // --- GERİ AL LİSTESİNDEKİ O GÖRÜNTÜYÜ DÜZELTEN KISIM ---
