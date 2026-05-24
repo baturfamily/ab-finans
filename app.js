@@ -489,7 +489,7 @@ if (lblTur) {
         finalKalem = digerInput;
     } else if (anaKalemSecimi && anaKalemSecimi.toLowerCase().includes("faiz") && anaKalemSecimi.toLowerCase().includes("banka")) {
         const faizDetay = getCustomVal('an-faiz-detay');
-        if(!faizDetay) return alert("Faiz uygulanan hesabı seçin!");
+        if(!faizDetay) return showToast("Faiz uygulanan hesabı seçin!", "error");
         finalKalem = faizDetay + " Faizi";
     } else {
         const ekCheck = document.getElementById('an-ek-check');
@@ -534,7 +534,7 @@ if (lblTur) {
                 });
             }
         });
-        if (parcaHata || parcalar.length === 0) return alert("Parçalı ödeme alanlarını kontrol edin!");
+        if (parcaHata || parcalar.length === 0) return showToast("Parçalı ödeme alanlarını kontrol edin!", "error");
         payload.parcalar = parcalar;
     } else {
         const yontem = getCustomVal('an-yontem');
@@ -562,13 +562,13 @@ if (lblTur) {
                 if (tNum > 0 && sNum > 0 && !isNaN(sNum)) {
                     finalTutar = parseFloat((tNum / sNum).toFixed(2));
                 } else {
-                    return alert("Toplam tutarı bölebilmemiz için lütfen 'Ödeme Süresi (Ay)' kısmına geçerli bir taksit sayısı girin!");
+                    return showToast("Taksit sayısını girmeden devam edemezsiniz!", "error");
                 }
             }
             
-            if(!kalem || finalTutar <= 0 || !gun) return alert("Eksik alanları doldurun!");
-            if(!sure) return alert("Lütfen süre belirtin!");
-            if(!yontem || yontem.includes("Seçin")) { markError('du-yontem'); return alert("Lütfen ödeme şeklini / hesabı seçin!"); }
+            if(!kalem || finalTutar <= 0 || !gun) return showToast("Eksik alanları doldurun!", "error");
+            if(!sure) return showToast("Lütfen süre belirtin!", "error");
+            if(!yontem || yontem.includes("Seçin")) { markError('du-yontem'); return showToast("Lütfen ödeme şeklini / hesabı seçin!", "error"); }
             
             const odTuru = window.hesapTurleri[yontem] || "Banka Hesabı";
             
@@ -880,13 +880,13 @@ function submitVarlikSil() {
             }, 1000);
 
         } else {
-                alert("İşlem başarısız: " + result.message);
+                showToast("Hata: " + result.message, "error");
                 btn.innerHTML = originalText; 
                 btn.disabled = false;
             }
 
         } catch (error) {
-            alert("Bağlantı veya Sunucu Hatası: İşlem kaydedilemedi.");
+            showToast("Bağlantı hatası, işlem kaydedilemedi.", "error");
             btn.innerHTML = originalText; 
             btn.disabled = false;
         }
@@ -936,7 +936,7 @@ function submitVarlikSil() {
                         }
                     }
                 }
-            } catch(e) { alert("Sistem Hatası: " + e.message); }
+            } catch(e) { showToast("Sistem hatası: " + e.message, "error"); }
             if (ev) ev.innerHTML = orig;
         }
 
@@ -1061,7 +1061,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
 
         function addParca() {
             const container = document.getElementById('so-parcalar-container');
-            if(container.querySelectorAll('.parca-satiri').length >= 5) { alert("En fazla 5 parçaya bölebilirsiniz."); return; }
+            if(container.querySelectorAll('.parca-satiri').length >= 5) { showToast("En fazla 5 parçaya bölebilirsiniz.", "info"); return; }
             
             const row = document.createElement('div'); row.className = 'parca-satiri';
             row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
@@ -1223,7 +1223,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                     else { parcalar.push({ yontem: yontem, tutar: pTutarVal }); }
                 });
                 if(hataVar) return;
-                if(parcalar.length === 0) return alert("Lütfen en az bir ödeme tutarı girin.");
+                if(parcalar.length === 0) return showToast("Lütfen en az bir ödeme tutarı girin.", "error");
                 payload.parcalar = parcalar;
             } else {
                 let tekYontem = getCustomVal('kbo-yontem');
@@ -1391,7 +1391,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                     if(pTutarVal <= 0) { row.querySelector('.parca-tutar-kredi').classList.add('error'); hataVar = true; }
                     else { parcalar.push({ yontem: yontem, tutar: pTutarVal }); }
                 });
-                if(hataVar || parcalar.length === 0) return alert("Hatalı ödeme tutarı.");
+                if(hataVar || parcalar.length === 0) return showToast("Hatalı ödeme tutarı.", "error");
                 payload.parcalar = parcalar; payload.odeme_turu = window.hesapTurleri[parcalar[0].yontem] || "Banka Hesabı";
             } else {
                 let tekYontem = getCustomVal('kredi-yontem');
@@ -1443,7 +1443,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                     if(pTutarVal <= 0) { row.querySelector('.parca-tutar-ozel').classList.add('error'); hataVar = true; }
                     else { parcalar.push({ yontem: yontem, tutar: pTutarVal }); }
                 });
-                if(hataVar || parcalar.length === 0) return alert("Hatalı ödeme tutarı.");
+                if(hataVar || parcalar.length === 0) return showToast("Hatalı ödeme tutarı.", "error");
                 payload.parcalar = parcalar; payload.odeme_turu = window.hesapTurleri[parcalar[0].yontem] || "Banka Hesabı";
             } else {
                 let tekYontem = getCustomVal('ozel-yontem');
