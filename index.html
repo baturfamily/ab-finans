@@ -154,27 +154,42 @@
             </div>
             <div class="accordion-content">
 
-                <!-- Varlık Dağılımı -->
-                <div class="sensitive-data" style="margin-bottom: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                        <span style="font-size: 12px; font-weight: 700; color: var(--emerald); text-transform: uppercase; letter-spacing: 0.5px;">Varlıklar</span>
-                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                            <span id="header-toplam-varlik" class="tabular-nums" style="font-size: 15px; font-weight: 800; color: var(--emerald);">₺0,00</span>
-                            <div id="trend-header-varlik" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 2px;"></div>
+                <!-- Varlık Dağılımı — accordion -->
+                <div class="sensitive-data" style="margin-bottom: 4px;">
+                    <div onclick="toggleSubAccordion('vb-varlik')" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--emerald);"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3H8l-2 4h12l-2-4z"/></svg>
+                            <span style="font-size: 12px; font-weight: 700; color: var(--emerald); text-transform: uppercase; letter-spacing: 0.5px;">Varlıklar</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="text-align: right;">
+                                <span id="header-toplam-varlik" class="tabular-nums" style="font-size: 15px; font-weight: 800; color: var(--emerald);">₺0,00</span>
+                                <div id="trend-header-varlik" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 2px;"></div>
+                            </div>
+                            <svg id="sub-icon-vb-varlik" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted); transition: transform 0.3s ease; flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
                     </div>
-                    <div id="varlik-listesi"></div>
+                    <div class="sub-accordion-content" id="sub-content-vb-varlik">
+                        <div id="varlik-listesi" style="padding-bottom: 12px;"></div>
+                    </div>
                 </div>
 
-                <!-- Borç Dağılımı — türe göre gruplu -->
-                <div class="sensitive-data" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                        <span style="font-size: 12px; font-weight: 700; color: var(--rose); text-transform: uppercase; letter-spacing: 0.5px;">Borçlar</span>
-                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                            <span id="header-toplam-borc" class="tabular-nums" style="font-size: 15px; font-weight: 800; color: var(--rose);">₺0,00</span>
-                            <div id="trend-header-borc" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 2px;"></div>
+                <!-- Borç Dağılımı — accordion, türe göre gruplu -->
+                <div class="sensitive-data" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div onclick="toggleSubAccordion('vb-borc')" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--rose);"><path d="M12 2c0 0-5 6.5-5 11a5 5 0 0 0 10 0c0-4.5-5-11-5-11Z"/><path d="M12 13a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg>
+                            <span style="font-size: 12px; font-weight: 700; color: var(--rose); text-transform: uppercase; letter-spacing: 0.5px;">Borçlar</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="text-align: right;">
+                                <span id="header-toplam-borc" class="tabular-nums" style="font-size: 15px; font-weight: 800; color: var(--rose);">₺0,00</span>
+                                <div id="trend-header-borc" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 2px;"></div>
+                            </div>
+                            <svg id="sub-icon-vb-borc" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted); transition: transform 0.3s ease; flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
                     </div>
+                    <div class="sub-accordion-content" id="sub-content-vb-borc">
 
                     <!-- Kart Borçları -->
                     <div id="borc-grup-kart" style="display:none; margin-bottom: 14px;">
@@ -210,11 +225,11 @@
                             <span id="borc-grup-ozel-toplam" class="tabular-nums" style="font-size: 12px; font-weight: 800; color: var(--rose);">₺0</span>
                         </div>
                         <div id="borc-grup-ozel-liste"></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+                    </div>  
+                    </div>  
+                </div>      
+            </div>          
+        </div>    
 
         <div class="card accordion" id="acc-son-islemler">
     <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">
