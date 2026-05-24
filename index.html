@@ -53,54 +53,48 @@
 
         <section id="section-ozet" class="tab-section active">
             <div class="card main-stats accordion" id="acc-net-servet">
-                <!-- HERO HEADER: Bu Ay Kalan (primary) + Net Varlık (secondary) -->
-                <div class="accordion-header" onclick="toggleAccordion(this.parentElement)" style="flex-direction: column; align-items: flex-start;">
-                    <!-- Sol: Hero metrik -->
-                    <div style="flex: 1;">
-                        <div style="font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;">Bu Ay Kalan</div>
-                        <div class="amount-large tabular-nums" id="hero-net-kalan" style="font-size: 40px; letter-spacing: -1.5px; text-align: left; color: var(--emerald);">₺0</div>
-                        <div id="trend-net-kalan-hero" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 6px; display: inline-block;"></div>
-                    </div>
-                    <!-- Üst satır: chevron -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 4px;">
-                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <!-- Net Varlık — çok küçük referans -->
-                    <div style="margin-top: 6px; display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 10px; color: rgba(255,255,255,0.22); font-weight: 600;">Net Varlık:</span>
-                        <span id="val-net-servet" class="tabular-nums sensitive-data" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.28);">₺0</span>
-                        <div class="trend-box tabular-nums" id="trend-net-servet" style="font-size: 9px; opacity: 0.4;"></div>
-                    </div>
-                </div>
+    <div class="accordion-header" onclick="toggleAccordion(this.parentElement)" style="flex-direction: column; align-items: center; text-align: center; padding-bottom: 0;">
+        <div style="width:100%; display:flex; justify-content:flex-end; margin-bottom: 8px;">
+            <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div style="font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Bu Ay Kalan</div>
+        <div class="amount-large tabular-nums" id="hero-net-kalan" style="font-size: 42px; letter-spacing: -1.5px; color: var(--emerald); line-height: 1;">₺0</div>
+        <div id="trend-net-kalan-hero" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 8px; display: inline-block;"></div>
+        <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600;">Net Varlık</span>
+            <span id="val-net-servet" class="tabular-nums sensitive-data" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25);">₺0</span>
+            <div class="trend-box tabular-nums" id="trend-net-servet" style="font-size: 9px; opacity: 0.4;"></div>
+        </div>
+    </div>
 
-                <div class="accordion-content">
-                    <!-- Tüketim barı — accordion içinde ilk sırada -->
-                    <div style="background: rgba(0,0,0,0.2); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Gelir Tüketimi</span>
-                            <span id="hero-tuketim-yuzde" class="tabular-nums" style="font-size: 12px; font-weight: 800; color: var(--amber);">%0</span>
-                        </div>
-                        <div style="height: 7px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden;">
-                            <div id="hero-tuketim-bar" style="height: 100%; width: 0%; background: var(--emerald); border-radius: 4px; transition: width 1s cubic-bezier(0.1,0.5,0.1,1);"></div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 8px;">
-                            <span style="font-size: 10px; color: var(--text-muted);">Gelir: <span id="hero-gelir-val" class="tabular-nums" style="color: var(--emerald); font-weight: 700;">₺0</span></span>
-                            <span style="font-size: 10px; color: var(--text-muted);">Gider+Borç: <span id="hero-gider-val" class="tabular-nums" style="color: var(--rose); font-weight: 700;">₺0</span></span>
-                        </div>
-                    </div>
+    <div class="accordion-content">
+        <div style="background: rgba(0,0,0,0.2); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Gelir Tüketimi</span>
+                <span id="hero-tuketim-yuzde" class="tabular-nums" style="font-size: 12px; font-weight: 800; color: var(--amber);">%0</span>
+            </div>
+            <div style="height: 7px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden;">
+                <div id="hero-tuketim-bar" style="height: 100%; width: 0%; background: var(--emerald); border-radius: 4px; transition: width 1s cubic-bezier(0.1,0.5,0.1,1);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                <span style="font-size: 10px; color: var(--text-muted);">Gelir: <span id="hero-gelir-val" class="tabular-nums" style="color: var(--emerald); font-weight: 700;">₺0</span></span>
+                <span style="font-size: 10px; color: var(--text-muted);">Gider+Borç: <span id="hero-gider-val" class="tabular-nums" style="color: var(--rose); font-weight: 700;">₺0</span></span>
+            </div>
+        </div>
 
-                    <!-- Dolar bazında varlık -->
-                    <div class="sensitive-data" style="padding-top: 14px; border-top: 1px dashed rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted);"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.3px;">Dolar bazında</span>
-                            <span id="usd-kur-bilgisi" style="font-size: 10px; color: var(--text-muted); font-weight: 600; opacity: 0.5;"></span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <div class="trend-box tabular-nums" id="trend-net-servet-usd" style="font-size: 10px;"></div>
-                            <div class="tabular-nums sensitive-data" id="val-net-servet-usd" style="font-size: 16px; font-weight: 800; color: #cbd5e1;">$0</div>
-                        </div>
-                    </div>
+        <div class="sensitive-data" style="padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted);"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Dolar bazında</span>
+                <span id="usd-kur-bilgisi" style="font-size: 10px; color: var(--text-muted); font-weight: 600; opacity: 0.5;"></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="trend-box tabular-nums" id="trend-net-servet-usd" style="font-size: 10px;"></div>
+                <div class="tabular-nums sensitive-data" id="val-net-servet-usd" style="font-size: 16px; font-weight: 800; color: #cbd5e1;">$0</div>
+            </div>
+        </div>
+    </div>
+</div>
 
         </div> </div> <div class="card accordion" id="acc-nakit-akisi">
     <div class="accordion-header" onclick="toggleAccordion(this.parentElement)" style="justify-content: flex-start;">
