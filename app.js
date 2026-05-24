@@ -3464,10 +3464,10 @@ function resetAnlikForm() {
         if(sel) {
             sel.selectedIndex = 0;
             if(typeof refreshCustomSelect === 'function') refreshCustomSelect(sel);
-        }
-    });
+        });
+}
 
-        function renderTarihceMiniGrafik(tarihce) {
+function renderTarihceMiniGrafik(tarihce) {
     const canvas = document.getElementById('tarihce-mini-grafik');
     if (!canvas || tarihce.length < 2) return;
 
