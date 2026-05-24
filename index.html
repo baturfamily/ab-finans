@@ -53,19 +53,22 @@
         <section id="section-ozet" class="tab-section active">
             <div class="card main-stats accordion" id="acc-net-servet">
                 <!-- HERO HEADER: Bu Ay Kalan (primary) + Net Varlık (secondary) -->
-                <div class="accordion-header" onclick="toggleAccordion(this.parentElement)" style="align-items: flex-start; gap: 12px;">
+                <div class="accordion-header" onclick="toggleAccordion(this.parentElement)" style="flex-direction: column; align-items: flex-start;">
                     <!-- Sol: Hero metrik -->
                     <div style="flex: 1;">
                         <div style="font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;">Bu Ay Kalan</div>
                         <div class="amount-large tabular-nums" id="hero-net-kalan" style="font-size: 40px; letter-spacing: -1.5px; text-align: left; color: var(--emerald);">₺0</div>
                         <div id="trend-net-kalan-hero" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 6px; display: inline-block;"></div>
                     </div>
-                    <!-- Sağ: Net Varlık ikincil + chevron -->
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; padding-top: 2px;">
-                        <div style="font-size: 9px; color: rgba(255,255,255,0.35); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Net Varlık</div>
-                        <div id="val-net-servet" class="tabular-nums sensitive-data" style="font-size: 15px; font-weight: 800; color: var(--rose);">₺0</div>
-                        <div class="trend-box tabular-nums" id="trend-net-servet" style="font-size: 9px; margin-top: 2px;"></div>
-                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 6px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <!-- Üst satır: chevron -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 4px;">
+                        <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <!-- Net Varlık — çok küçük referans -->
+                    <div style="margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 10px; color: rgba(255,255,255,0.22); font-weight: 600;">Net Varlık:</span>
+                        <span id="val-net-servet" class="tabular-nums sensitive-data" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.28);">₺0</span>
+                        <div class="trend-box tabular-nums" id="trend-net-servet" style="font-size: 9px; opacity: 0.4;"></div>
                     </div>
                 </div>
 
