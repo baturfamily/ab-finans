@@ -86,7 +86,7 @@
         .card-icon { margin-right: 8px; opacity: 0.8; }
 
         .main-stats { 
-            display: block; text-align: center; padding: 28px 24px; 
+            display: block; text-align: left; padding: 28px 24px; 
             border: 1px solid rgba(99, 102, 241, 0.3);
             border-top: 1px solid rgba(168, 85, 247, 0.4);
             background: linear-gradient(180deg, rgba(99, 102, 241, 0.15) 0%, rgba(15,17,21,0.7) 100%);
