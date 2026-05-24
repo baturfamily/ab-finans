@@ -3494,7 +3494,7 @@ function renderTarihceMiniGrafik(tarihce) {
     });
 
     const netServetVerisi = son30.map(r => parseSaha(r[2]) || 0);
-    const kasaVerisi      = son30.map(r => parseSaha(r[7]) || 0);
+    const borcVerisi = son30.map(r => parseSaha(r[3]) || 0);
 
     if (window._tarihceGrafikInstance) {
         window._tarihceGrafikInstance.destroy();
@@ -3516,15 +3516,15 @@ function renderTarihceMiniGrafik(tarihce) {
                     fill: true
                 },
                 {
-                    label: 'Kasa',
-                    data: kasaVerisi,
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'transparent',
-                    borderWidth: 1.5,
-                    pointRadius: 0,
-                    tension: 0.4,
-                    borderDash: [4, 3]
-                }
+    label: 'Toplam Borç',
+    data: borcVerisi,
+    borderColor: '#f43f5e',
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    pointRadius: 0,
+    tension: 0.4,
+    borderDash: [4, 3]
+}
             ]
         },
         options: {
