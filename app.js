@@ -3464,7 +3464,8 @@ function resetAnlikForm() {
         if(sel) {
             sel.selectedIndex = 0;
             if(typeof refreshCustomSelect === 'function') refreshCustomSelect(sel);
-        });
+        }
+    });
 }
 
 function renderTarihceMiniGrafik(tarihce) {
