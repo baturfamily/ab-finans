@@ -2032,13 +2032,19 @@ function tutarFormatla(input) {
         animateValue('val-toplam-odenen-faiz', data.toplamOdenenFaiz, aSure);
         animateValue('val-aylik-faiz', data.aylikFaizGuncel, aSure);
 
-            // Faiz başlangıç tarihini dinamik göster
-const ilkIslem = data.tarihce && data.tarihce.length > 0 ? data.tarihce[0][0] : null;
-if (ilkIslem) {
-    const t = new Date(ilkIslem);
-    const aylar = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
-    const etiket = aylar[t.getMonth()] + " " + t.getFullYear() + "'dan<br>Beri";
-    setHtml("lbl-faiz-baslangic", etiket);
+// Faiz başlangıç tarihini dinamik göster
+const aylar = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+if (data.tarihce && data.tarihce.length > 0) {
+    // İlk geçerli tarihi bul (başlık satırını atlar)
+    for (let i = 0; i < data.tarihce.length; i++) {
+        const ham = data.tarihce[i][0];
+        if (!ham) continue;
+        const t = new Date(ham);
+        if (!isNaN(t.getTime()) && t.getFullYear() > 2000) {
+            setHtml("lbl-faiz-baslangic", aylar[t.getMonth()] + " " + t.getFullYear() + "'dan<br>Beri");
+            break;
+        }
+    }
 }
 
         updateTrends(0, document.querySelectorAll('.time-btn')[0]);
