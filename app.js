@@ -1131,12 +1131,38 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
         }
 
         function submitPasGec() {
-            const kuralSatir = getCustomVal('so-kural');
-            if(!kuralSatir) return markError('so-kural');
-            if(confirm("Bu işlemi bu ay için pas geçmek (ödenmiş sayıp gelecek aya devretmek) istediğinize emin misiniz?")) {
-                apiIstekAt({ action: "sabit_onayla", satir: kuralSatir, odeme_sekli: "parcali", parcalar: [{ yontem: "Sistem", tutar: 0 }] }, 'btn-submit-sabit-onayla');
-            }
+    const kuralSatir = getCustomVal('so-kural');
+    if(!kuralSatir) return markError('so-kural');
+    
+    // confirm() yerine toast + 3 saniyelik geri sayım
+    showToast("Pas geçmek için tekrar dokun (3sn)", "info");
+    const btn = document.querySelector('[onclick="submitPasGec()"]');
+    if (!btn) {
+        apiIstekAt({ action: "sabit_onayla", satir: kuralSatir, odeme_sekli: "parcali", parcalar: [{ yontem: "Sistem", tutar: 0 }] }, 'btn-submit-sabit-onayla');
+        return;
+    }
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = "Emin misiniz? (3)";
+    btn.style.background = "rgba(59,130,246,0.3)";
+    let sayac = 2;
+    const interval = setInterval(() => {
+        if (sayac <= 0) {
+            clearInterval(interval);
+            btn.innerHTML = originalHTML;
+            btn.style.background = "";
+            return;
         }
+        btn.innerHTML = `Emin misiniz? (${sayac})`;
+        sayac--;
+    }, 1000);
+    btn.onclick = function() {
+        clearInterval(interval);
+        btn.innerHTML = originalHTML;
+        btn.style.background = "";
+        btn.onclick = function() { submitPasGec(); };
+        apiIstekAt({ action: "sabit_onayla", satir: kuralSatir, odeme_sekli: "parcali", parcalar: [{ yontem: "Sistem", tutar: 0 }] }, 'btn-submit-sabit-onayla');
+    };
+}
 
         function submitSabitOnayla() {
             const kuralSatir = getCustomVal('so-kural');
@@ -1164,7 +1190,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                     else { parcalar.push({ yontem: yontem, tutar: tutarVal }); }
                 });
                 if(hataVar) return;
-                if(parcalar.length === 0) return alert("Lütfen en az bir ödeme tutarı girin.");
+                if(parcalar.length === 0) return showToast("Lütfen en az bir ödeme tutarı girin.", "error");
                 payload.parcalar = parcalar;
             } else {
                 let tekYontem = getCustomVal('so-yontem');
