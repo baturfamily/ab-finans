@@ -3316,7 +3316,7 @@ function addParcaAnlik() {
     const container = document.getElementById('an-parcalar-container');
     // MİMAR DÜZELTMESİ: EKSİK UYARI EKLENDİ
     if(container.querySelectorAll('.parca-satiri-anlik').length >= 5) {
-        alert("En fazla 5 farklı hesap ekleyebilirsiniz.");
+        showToast("En fazla 5 farklı hesap ekleyebilirsiniz.", "info");
         return;
     }
     
