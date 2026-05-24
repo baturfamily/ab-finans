@@ -2125,7 +2125,7 @@ if (data.tarihce && data.tarihce.length > 0) {
         let fHtml = "";
         if (data.faizDetaylari && data.faizDetaylari.length > 0) {
             data.faizDetaylari.forEach(f => {
-                fHtml += `<div class="list-row"><div class="list-label"><span style="background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 6px; font-size: 11px; margin-right: 8px;">${f.tur}</span> ${f.banka}</div><div class="list-value text-red">${formatTL(f.aylik)}</div></div>`;
+                fHtml += `<div class="list-row"><div class="list-label"><span style="background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 6px; font-size: 10px; margin-right: 8px; white-space: nowrap;">${f.tur}</span> ${f.banka}</div><div class="list-value text-red">${formatTL(f.aylik)}</div></div>`;
             });
         } else {
             fHtml = `<div class="list-row" style="border:none; padding:8px 0;"><span class="list-label" style="font-size:13px; color:var(--text-muted);">Bu ay gerçekleşen faiz yok.</span></div>`;
