@@ -540,3 +540,38 @@
     margin-top: 0 !important;
     text-shadow: none;
 }
+
+/* Toast Bildirimi */
+#toast-container {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+    width: 90%;
+    max-width: 360px;
+}
+.toast {
+    background: #1e2330;
+    color: #fff;
+    padding: 13px 18px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    text-align: center;
+    width: 100%;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.toast-success { border-left: 4px solid #10b981; }
+.toast.toast-error   { border-left: 4px solid #f43f5e; }
+.toast.toast-info    { border-left: 4px solid #3b82f6; }
