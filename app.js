@@ -1952,7 +1952,7 @@ function tutarFormatla(input) {
         const netServetEl = document.getElementById('val-net-servet');
         if (netServetEl) {
             netServetEl.innerHTML = formatTL(data.netServet || 0);
-            netServetEl.style.color = data.netServet < 0 ? 'var(--rose)' : 'var(--emerald)';
+            netServetEl.style.color = 'rgba(255,255,255,0.28)';
         }
         animateValueUSD('val-net-servet-usd', data.netServetUSD, aSure);
 
