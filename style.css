@@ -98,7 +98,7 @@
         .main-stats .accordion-header { justify-content: center; position: relative; }
         .main-stats .accordion-header h3 { margin-bottom: 0; color: rgba(255,255,255,0.85); font-weight: 700;}
         .main-stats .chevron-icon { position: absolute; right: 0; }
-        .main-stats .accordion-content { display: flex; flex-direction: column; align-items: center; margin-top: 12px; }
+        .main-stats .accordion-content { display: flex; flex-direction: column; align-items: stretch; margin-top: 12px; }
         .amount-large { font-size: 48px; font-weight: 800; letter-spacing: -1.5px; margin-top: 8px; color: #FFFFFF; text-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; 
                         z-index: 1;}
 
