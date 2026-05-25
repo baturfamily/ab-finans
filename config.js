@@ -5,7 +5,7 @@
 
 const CONFIG = {
     // Google Apps Script deployment URL'si
-    API_URL: "https://script.google.com/macros/s/AKfycbxVgRN7IrNdrqu5GMuMycYmL_l1kEb4HXuWdyKK8FbY0feFlx3exLRaFqENjqm0sCb2/exec",
+    API_URL: "https://script.google.com/macros/s/AKfycbzgyjpQB_iOVF0I4HYALWZ3cXB8whESU7z6-jipPqGvSmvS3xzhhDRMLrAkb69tKdo/exec",
     
     // Uygulama başlığı (tarayıcı sekmesi ve header)
     APP_TITLE: "Finans Merkezi",
