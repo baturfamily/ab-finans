@@ -2048,7 +2048,7 @@ if (data.buAyIslemler) {
         }
     });
 }
-            const tuketimYuzde = toplamGelir > 0 ? Math.min(((toplamGelir - netKalan) / toplamGelir) * 100, 100) : 0;
+            const tuketimYuzde = toplamGelir > 0 ? Math.min((heroNakitGider / toplamGelir) * 100, 100) : 0;
 
             if (heroGelirVal) heroGelirVal.innerHTML = formatTL(toplamGelir);
             if (heroGiderVal) heroGiderVal.innerHTML = formatTL(heroNakitGider);
