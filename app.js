@@ -2010,6 +2010,7 @@ function tutarFormatla(input) {
         window.currentStats = data;
             window._gramKur = Number(data.gramAltinKuru) || 0;
         window._gramKur = data.gramAltinKuru ? Number(data.gramAltinKuru) : 0;
+            console.log("gramAltinKuru:", data.gramAltinKuru, "| _gramKur:", window._gramKur);
         window._usdKur = data.usdRate ? Number(data.usdRate) : 0;
         window._euroKur = data.euroRate ? Number(data.euroRate) : 0;
         window.tarihceData = data.tarihce || [];
