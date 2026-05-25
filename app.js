@@ -2038,18 +2038,16 @@ renderTarihceMiniGrafik(data.tarihce || []);
             const heroBorcOdemeVal = document.getElementById('hero-borc-odeme-val');
             const toplamGelir = data.buAyToplamGelir || 0;
             let heroNakitGider = 0;
-            let heroBorcOdeme = 0;
-            if (data.buAyIslemler) {
-                const _kartIsimleriHero = (data.kartlarDetayli || []).map(k => k.isim.toLowerCase().trim());
-                data.buAyIslemler.forEach(islem => {
-                    if (islem.tur === 'Gider') {
-                        const odeme = (islem.odeme || '').toLowerCase().trim();
-                        if (!_kartIsimleriHero.includes(odeme)) heroNakitGider += islem.tutar;
-                    } else if (islem.tur === 'Kart Ödemesi' || islem.tur === 'Borç Ödemesi') {
-                        heroBorcOdeme += islem.tutar;
-                    }
-                });
-            }
+let heroBorcOdeme = 0;
+if (data.buAyIslemler) {
+    data.buAyIslemler.forEach(islem => {
+        if (islem.tur === 'Gider') {
+            heroNakitGider += islem.tutar;
+        } else if (islem.tur === 'Borç Ödemesi') {
+            heroBorcOdeme += islem.tutar;
+        }
+    });
+}
             const tuketimYuzde = toplamGelir > 0 ? Math.min(((toplamGelir - netKalan) / toplamGelir) * 100, 100) : 0;
 
             if (heroGelirVal) heroGelirVal.innerHTML = formatTL(toplamGelir);
