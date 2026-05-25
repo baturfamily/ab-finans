@@ -83,7 +83,7 @@
             backface-visibility: hidden;
         }
         .card h3 { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 16px; font-weight: 600; display: flex; align-items: center;}
-        .card-icon { margin-right: 8px; opacity: 0.8; }
+        .card-icon { margin-right: 8px; opacity: 0.8; flex-shrink: 0; }
 
         .main-stats { 
             display: block; text-align: left; padding: 28px 24px; 
