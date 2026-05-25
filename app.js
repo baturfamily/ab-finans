@@ -2043,7 +2043,7 @@ if (data.buAyIslemler) {
     data.buAyIslemler.forEach(islem => {
         if (islem.tur === 'Gider') {
             heroNakitGider += islem.tutar;
-        } else if (islem.tur === 'Borç Ödemesi') {
+        } else if (islem.tur === 'Kart Ödemesi' || islem.tur === 'Borç Ödemesi') {
             heroBorcOdeme += islem.tutar;
         }
     });
