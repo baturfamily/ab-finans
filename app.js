@@ -2037,14 +2037,25 @@ renderTarihceMiniGrafik(data.tarihce || []);
             const heroGiderVal = document.getElementById('hero-gider-val');
             const heroBorcOdemeVal = document.getElementById('hero-borc-odeme-val');
             const toplamGelir = data.buAyToplamGelir || 0;
-            const toplamSafGider = data.backendSafHarcama || 0;
-            const borcOdemeleri = Math.max(0, toplamGelir - netKalan - toplamSafGider);
-            const toplamGiderToplam = toplamSafGider + borcOdemeleri;
-            const tuketimYuzde = toplamGelir > 0 ? Math.min((toplamGiderToplam / toplamGelir) * 100, 100) : 0;
+let heroNakitGider = 0;
+let heroBorcOdeme = 0;
+if (data.buAyIslemler) {
+    const _bankaKartIsimleri = window.hesapTurleri ? Object.keys(window.hesapTurleri).filter(k => window.hesapTurleri[k] === 'Kredi Kartı').map(k => k.toLowerCase()) : [];
+    data.buAyIslemler.forEach(islem => {
+        if (islem.tur === 'Gider') {
+            const odeme = (islem.odeme || '').toLowerCase().trim();
+            if (!_bankaKartIsimleri.includes(odeme)) heroNakitGider += islem.tutar;
+        } else if (islem.tur === 'Kart Ödemesi' || islem.tur === 'Borç Ödemesi') {
+            heroBorcOdeme += islem.tutar;
+        }
+    });
+}
+const toplamGiderToplam = heroNakitGider + heroBorcOdeme;
+const tuketimYuzde = toplamGelir > 0 ? Math.min((toplamGiderToplam / toplamGelir) * 100, 100) : 0;
 
-            if (heroGelirVal) heroGelirVal.innerHTML = formatTL(toplamGelir);
-            if (heroGiderVal) heroGiderVal.innerHTML = formatTL(toplamSafGider);
-            if (heroBorcOdemeVal) heroBorcOdemeVal.innerHTML = formatTL(borcOdemeleri);
+if (heroGelirVal) heroGelirVal.innerHTML = formatTL(toplamGelir);
+if (heroGiderVal) heroGiderVal.innerHTML = formatTL(heroNakitGider);
+if (heroBorcOdemeVal) heroBorcOdemeVal.innerHTML = formatTL(heroBorcOdeme);
                 const heroKalanRef = document.getElementById('hero-kalan-ref');
             if (heroKalanRef) heroKalanRef.innerHTML = formatTL(netKalan);
             
