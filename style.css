@@ -576,3 +576,14 @@
 .toast.toast-success { border-left: 4px solid #10b981; }
 .toast.toast-error   { border-left: 4px solid #f43f5e; }
 .toast.toast-info    { border-left: 4px solid #3b82f6; }
+
+/* Hero Kart Blok Başlıkları (Siber Cyan - Sade) */
+.hero-block-title {
+    color: #38bdf8 !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    margin-bottom: 10px !important;
+    opacity: 0.95;
+}
