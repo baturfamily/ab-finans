@@ -60,10 +60,19 @@
         </div>
         <div class="amount-large tabular-nums" id="hero-net-kalan" style="font-size: 46px; letter-spacing: -2px; color: var(--emerald); line-height: 1;">₺0</div>
         <div id="trend-net-kalan-hero" class="trend-box tabular-nums" style="font-size: 10px; margin-top: 8px; display: inline-block;"></div>
-        <div style="margin-top: 8px; display: flex; align-items: center; gap: 6px;">
+        <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center; gap: 6px;">
             <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600;">Net Varlık</span>
-            <span id="val-net-servet" class="tabular-nums sensitive-data" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25);">₺0</span>
-            <div class="trend-box tabular-nums" id="trend-net-servet" style="font-size: 9px; opacity: 0.4;"></div>
+            <div style="display:flex; align-items:center; gap:4px;">
+                <span id="val-net-servet" class="tabular-nums sensitive-data" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25);">₺0</span>
+                <div class="trend-box tabular-nums" id="trend-net-servet" style="font-size: 9px; opacity: 0.4;"></div>
+            </div>
+        </div>
+        <div class="sensitive-data" style="display: flex; justify-content: space-between; align-items: center; margin-top: 3px; gap: 6px;">
+            <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600;">Dolar Bazında Net Varlık</span>
+            <div style="display:flex; align-items:baseline; gap:5px;">
+                <span id="val-net-servet-usd" class="tabular-nums sensitive-data" style="font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25);">$0</span>
+                <span id="usd-kur-bilgisi" style="font-size: 9px; color: rgba(255,255,255,0.15); font-weight: 600;"></span>
+            </div>
         </div>
     </div>
 
@@ -123,16 +132,6 @@
                     <span id="hero-kalan-ref" class="tabular-nums" style="font-size:17px; color:var(--emerald); font-weight:900; letter-spacing:-0.5px;">₺0</span>
                 </div>
                 <div style="font-size:11px; color:rgba(255,255,255,0.4); line-height:1.6;">Bu ay tüm borç, kredi ve kredi kartı ekstresi ödemelerinden sonra kasanda kalan para. <strong style="color:rgba(255,255,255,0.6); font-weight:700;">Dikkat:</strong> Bu ayki kredi kartı harcamaların bu ayki kalan tutarı değil gelecek ayın kalan tutarını etkiler.</div>
-            </div>
-        </div>
-
-        <!-- Dolar bazında -->
-        <div class="sensitive-data" style="padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.07);">
-            <div style="font-size: 10px; color: rgba(255,255,255,0.25); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;">Dolar Bazında Net Varlık</div>
-            <div style="display: flex; align-items: baseline; gap: 8px;">
-                <div class="tabular-nums sensitive-data" id="val-net-servet-usd" style="font-size: 16px; font-weight: 800; color: #94a3b8; letter-spacing: -0.3px;">0</div>
-                <div class="trend-box tabular-nums" id="trend-net-servet-usd" style="font-size: 10px;"></div>
-                <span id="usd-kur-bilgisi" style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600; margin-left: auto;"></span>
             </div>
         </div>
     </div>
