@@ -2597,7 +2597,7 @@ if (data.tarihce && data.tarihce.length > 0) {
         var nakitAkisiGruplar = {
             "Toplam Gelirler": { toplam: 0, liste: {}, renk: "var(--emerald)" },
             "Nakit Giderler (Banka/Kasa)": { toplam: 0, liste: {}, renk: "var(--rose)" },
-            "Toplam Borç Ödemeleri": { toplam: 0, liste: {}, renk: "var(--blue)" }
+            "Toplam Borç Ödemeleri": { toplam: 0, liste: {}, renk: "var(--amber)" }
         };
         var bankaKartIsimleri = (window.kartlarDetayli) ? window.kartlarDetayli.map(k => (k.isim || "").toString().toLowerCase().trim()) : [];
 
