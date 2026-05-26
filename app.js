@@ -2529,11 +2529,11 @@ if (data.tarihce && data.tarihce.length > 0) {
                 let altSatirBilgi = islem.tur === 'Gelir' ? (islem.hedef || islem.odeme) : islem.odeme;
                 let rotaMetni = ((islem.tur === 'Transfer' || islem.tur === 'Kart Ödemesi' || islem.tur === 'Borç Ödemesi') && islem.hedef) ? `${islem.odeme} ➔ ${islem.hedef}` : altSatirBilgi;
 
-                let amtClass = islem.tur === 'Gelir' ? 'text-green' : (islem.tur === 'Transfer' ? 'text-gray' : 'text-red');
+                let amtClass = islem.tur === 'Gelir' ? 'text-green' : (islem.tur === 'Transfer' ? 'text-gray' : (islem.tur === 'Kart Ödemesi' || islem.tur === 'Borç Ödemesi') ? 'text-amber' : 'text-red');
                 let sign = islem.tur === 'Gelir' ? '+' : (islem.tur === 'Transfer' ? '' : '-');
                 let badgeText = isOtoLog ? islem.kategori : islem.tur;
                 let badgeStyle = isOtoLog ? "background: rgba(59, 130, 246, 0.15); color: var(--blue); border: 1px solid rgba(59, 130, 246, 0.2);" : "";
-                let badgeClass = isOtoLog ? "" : (islem.tur === 'Gelir' ? 'pill-green' : (islem.tur === 'Transfer' ? 'pill-gray' : 'pill-red'));
+                let badgeClass = isOtoLog ? "" : (islem.tur === 'Gelir' ? 'pill-green' : (islem.tur === 'Transfer' ? 'pill-gray' : (islem.tur === 'Kart Ödemesi' || islem.tur === 'Borç Ödemesi') ? 'pill-amber' : 'pill-red'));
                 let robotIcon = isOtoLog ? '<i class="fas fa-robot" style="font-size:9px; margin-right:3px;"></i>' : '';
                 let kalemGosterim = isOtoLog ? hamKalem : ((islem.kategori && islem.kategori !== "-" && !hamKalem.startsWith(islem.kategori)) ? islem.kategori + " - " + hamKalem : hamKalem);
 
@@ -2634,7 +2634,7 @@ if (data.tarihce && data.tarihce.length > 0) {
                 var nGrup = nakitAkisiGruplar[nBaslik];
                 if (nGrup.toplam === 0) continue;
                 var isGelir = nBaslik.includes('Gelir'); var isaret = isGelir ? '+' : '-';
-                var yaziRenk = isGelir ? 'text-green' : (nBaslik.includes('Borç') ? 'text-blue' : 'text-red');
+                var yaziRenk = isGelir ? 'text-green' : (nBaslik.includes('Borç') ? 'text-amber' : 'text-red');
                 var nHtml = `<div class="sub-accordion-header" onclick="toggleSubAccordion('${nIdx}')"><div style="font-size: 13px; font-weight: 600; color: #e2e8f0; display:flex; align-items:center;"><svg id="sub-icon-${nIdx}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px; color:var(--text-muted); transition: transform 0.3s ease;"><polyline points="9 18 15 12 9 6"></polyline></svg>${nBaslik}</div><div style="text-align:right;"><span style="font-size:13px; color:${nGrup.renk}; font-weight:700;">${isaret}${formatTL(nGrup.toplam)}</span></div></div><div class="sub-accordion-content" id="sub-content-${nIdx}">`;
                 
                 var siraliKategoriler = Object.keys(nGrup.liste).sort((a, b) => nGrup.liste[b] - nGrup.liste[a]);
