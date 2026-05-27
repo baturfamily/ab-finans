@@ -1106,31 +1106,33 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             }
         }
 
-        function addParca() {
-            const container = document.getElementById('so-parcalar-container');
-            if(container.querySelectorAll('.parca-satiri').length >= 5) { showToast("En fazla 5 parçaya bölebilirsiniz.", "info"); return; }
-            
-            const row = document.createElement('div'); row.className = 'parca-satiri';
-            row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
-            
-            const yontemSelect = document.getElementById('so-yontem');
-            const dinamikSecenekler = yontemSelect ? yontemSelect.innerHTML : `<option value="">Hesap Seçin</option>`;
-            
-            // MİMAR DOKUNUŞU: Benzersiz Kimlik
-            const uniqueId = 'parca-so-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-            
-            row.innerHTML = `
-                <select id="${uniqueId}" class="form-control parca-hesap" style="padding: 10px; font-size: 13px;">
-                    ${dinamikSecenekler}
-                </select>
-                <input type="text" inputmode="decimal" class="form-control parca-tutar" placeholder="Tutar" oninput="tutarFormatla(this); hesaplaKalanParcali()" style="padding: 10px; font-size: 14px;">
-                <button onclick="this.parentElement.remove(); hesaplaKalanParcali();" style="background: rgba(244, 63, 94, 0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-            `;
-            // Artık kendi kimliğiyle çiziliyor
-            container.appendChild(row); refreshCustomSelect(document.getElementById(uniqueId));
-        }
+        function addParca(containerPrefix) {
+    const config = {
+        'so':    { containerSuffix: 'so-parcalar-container',    rowClass: 'parca-satiri',           hesapClass: 'parca-hesap',           tutarClass: 'parca-tutar',           kalanFn: 'hesaplaKalanParcali()',           idPrefix: 'parca-so',    yontemSourceId: 'so-yontem'    },
+        'kbo':   { containerSuffix: 'kbo-parcalar-container',   rowClass: 'parca-satiri-kartborc',   hesapClass: 'parca-hesap-kartborc',   tutarClass: 'parca-tutar-kartborc',   kalanFn: 'hesaplaKalanParcaliKartBorc()', idPrefix: 'parca-kbo',   yontemSourceId: 'kbo-yontem'   },
+        'kredi': { containerSuffix: 'kredi-parcalar-container',  rowClass: 'parca-satiri-kredi',      hesapClass: 'parca-hesap-kredi',      tutarClass: 'parca-tutar-kredi',      kalanFn: 'hesaplaKalanParcaliKredi()',    idPrefix: 'parca-kredi', yontemSourceId: 'kredi-yontem' },
+        'ozel':  { containerSuffix: 'ozel-parcalar-container',   rowClass: 'parca-satiri-ozel',       hesapClass: 'parca-hesap-ozel',       tutarClass: 'parca-tutar-ozel',       kalanFn: 'hesaplaKalanParcaliOzel()',     idPrefix: 'parca-ozel',  yontemSourceId: 'ozel-yontem'  },
+    };
+    const c = config[containerPrefix];
+    if (!c) return;
+    const container = document.getElementById(c.containerSuffix);
+    if (!container) return;
+    if (container.querySelectorAll('.' + c.rowClass).length >= 5) { showToast("En fazla 5 parçaya bölebilirsiniz.", "info"); return; }
+    const yontemSelect = document.getElementById(c.yontemSourceId);
+    const dinamikSecenekler = yontemSelect ? yontemSelect.innerHTML : `<option value="">Hesap Seçin</option>`;
+    const uniqueId = c.idPrefix + '-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const row = document.createElement('div');
+    row.className = c.rowClass;
+    row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
+    row.innerHTML = `
+        <select id="${uniqueId}" class="form-control ${c.hesapClass}" style="padding: 10px; font-size: 13px;">${dinamikSecenekler}</select>
+        <input type="text" inputmode="decimal" class="form-control ${c.tutarClass}" placeholder="Tutar" oninput="tutarFormatla(this); ${c.kalanFn}" style="padding: 10px; font-size: 14px;">
+        <button onclick="this.parentElement.remove(); ${c.kalanFn}" style="background: rgba(244,63,94,0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>`;
+    container.appendChild(row);
+    refreshCustomSelect(document.getElementById(uniqueId));
+}
 
         function hesaplaKalanParcali() {
             const hedefTutar = parseSaha(document.getElementById('so-guncel-tutar').value) || 0;
