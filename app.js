@@ -1281,7 +1281,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             
             const tamTarihLog = formatTarihLog(secilenTarih);
 
-            let payload = { action: "kart_borcu_ode", kart_adi: kartIsmi, tutar: tutar, tarih: tamTarihLog, odeme_sekli: sekil };
+            let payload = { action: "kart_borcu_ode", kart_adi: kartIsmi, tutar: tutar, tarih: tamTarihLog, odeme_sekli: sekil, odeme_tipi: document.getElementById('kart-odeme-tipi').value };
             
             if(sekil === 'parcali') {
                 const parcalar = []; let hataVar = false;
