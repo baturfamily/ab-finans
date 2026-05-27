@@ -792,10 +792,25 @@
                     <div class="form-group"><label>Ekstre Günü</label><input type="text" inputmode="numeric" id="yk-ekstre" class="form-control" placeholder="Ayın Kaçı? (1-31)"></div>
                 </div>
                 <div class="form-group">
-                    <label>Mevcut Borcu Var Mı? (₺)</label>
-                    <input type="text" inputmode="decimal" id="yk-borc" class="form-control" placeholder="Sıfır kart ise 0 yazın" oninput="tutarFormatla(this)">
-                    <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">* Yazdığınız borç sisteme eksi (-) bakiye olarak otomatik kaydedilir.</div>
-                </div>
+    <label>Toplam Güncel Borç (₺)</label>
+    <input type="text" inputmode="decimal" id="yk-borc" class="form-control" placeholder="Sıfır kart ise 0 yazın" oninput="tutarFormatla(this)">
+    <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">* Taksitler dahil tüm güncel borcunuzu yazın.</div>
+</div>
+<div class="form-group">
+    <label>Son Ekstre Ödemesi</label>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <button type="button" id="btn-yk-tam" onclick="seciYeniKartOdemeTipi('Tam')" style="padding: 12px; border-radius: 12px; background: rgba(16,185,129,0.15); border: 2px solid var(--emerald); color: var(--emerald); font-weight: 700; cursor: pointer;">✅ Tam Ödedim</button>
+        <button type="button" id="btn-yk-asgari" onclick="seciYeniKartOdemeTipi('Asgari')" style="padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-weight: 700; cursor: pointer;">⚠️ Asgari Ödedim</button>
+    </div>
+</div>
+<input type="hidden" id="yk-odeme-tipi" value="Tam">
+<div id="yk-asgari-grup" style="display:none;">
+    <div class="form-group">
+        <label>Devreden Bakiye Ne Kadar? (₺)</label>
+        <input type="text" inputmode="decimal" id="yk-devreden" class="form-control" placeholder="Son ekstreden ödenmemiş kalan tutar" oninput="tutarFormatla(this)">
+        <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">* Tahmini faiz hesabı için kullanılır.</div>
+    </div>
+</div>
                 <button class="btn-submit" id="btn-submit-yeni-kart" data-default-text="Kartı Sisteme Ekle" onclick="submitYeniKart()">Kartı Sisteme Ekle</button>
             </div>
 
