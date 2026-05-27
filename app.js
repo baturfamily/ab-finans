@@ -2941,9 +2941,10 @@ const badge = isOtomatik
                         </div>
                     </div>
                     
-                    <div class="t-amt text-red" style="font-size: 16px; font-weight: 800; margin-left:10px; flex-shrink: 0;">
-                        ${formatTL(y.tutar)}
-                    </div>
+                    <div class="t-amt text-red" style="font-size: 16px; font-weight: 800; margin-left:10px; flex-shrink: 0; text-align:right;">
+    ${y.tahminiMi ? '<div style="font-size:9px; color:var(--amber); font-weight:700; margin-bottom:2px;">~ TAHMİNİ</div>' : ''}
+    ${formatTL(y.tutar)}
+</div>
                 </div>`;
             });
 
