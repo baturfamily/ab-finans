@@ -2596,7 +2596,7 @@ if (data.tarihce && data.tarihce.length > 0) {
         var buAyEkstraCikislar = 0; 
         var nakitAkisiGruplar = {
             "Nakit Girişleri (Gelirler)": { toplam: 0, liste: {}, renk: "var(--emerald)" },
-            "Nakit Giderler (Banka/Kasa)": { toplam: 0, liste: {}, renk: "var(--rose)" },
+            "Nakit Çıkışları (Banka/Nakit)": { toplam: 0, liste: {}, renk: "var(--rose)" },
             "Toplam Borç Ödemeleri": { toplam: 0, liste: {}, renk: "var(--amber)" }
         };
         var bankaKartIsimleri = (window.kartlarDetayli) ? window.kartlarDetayli.map(k => (k.isim || "").toString().toLowerCase().trim()) : [];
@@ -2614,9 +2614,9 @@ if (data.tarihce && data.tarihce.length > 0) {
                     nakitAkisiGruplar["Nakit Girişleri (Gelirler)"].liste[islemKategori] += islem.tutar;
                 } else if (islem.tur === 'Gider') {
                     if (!bankaKartIsimleri.includes(odemeYontemi)) {
-                        nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam += islem.tutar;
-                        if (!nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].liste[islemKategori]) nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].liste[islemKategori] = 0;
-                        nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].liste[islemKategori] += islem.tutar;
+                        nakitAkisiGruplar["Nakit Çıkışları (Banka/Nakit)"].toplam += islem.tutar;
+                        if (!nakitAkisiGruplar["Nakit Çıkışları (Banka/Nakit)"].liste[islemKategori]) nakitAkisiGruplar["Nakit Çıkışları (Banka/Nakit)"].liste[islemKategori] = 0;
+                        nakitAkisiGruplar["Nakit Çıkışları (Banka/Nakit)"].liste[islemKategori] += islem.tutar;
                     }
                 } else if (islem.tur === 'Kart Ödemesi' || islem.tur === 'Borç Ödemesi') {
                     buAyEkstraCikislar += islem.tutar;
@@ -2661,7 +2661,7 @@ if (data.tarihce && data.tarihce.length > 0) {
         window.currentStats.gunlukOrt = gercekGunlukOrtalama || 0;
         window.currentStats.netKalan = netAkis || 0;
         animateValue('val-nakit-giris', nakitAkisiGruplar["Nakit Girişleri (Gelirler)"].toplam, aSure);
-        animateValue('val-nakit-cikis', (nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam + nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam), aSure);
+        animateValue('val-nakit-cikis', (nakitAkisiGruplar["Nakit Çıkışları (Banka/Nakit)"].toplam + nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam), aSure);
         animateValue('val-net-nakit', netAkis, aSure);
 
                 // 1. Kutu Rengini Ayarla (Sadece BİR KERE tanımlıyoruz)
@@ -2687,7 +2687,7 @@ if (data.tarihce && data.tarihce.length > 0) {
             
             if (tuketimKapsayici && tuketimYuzdeEl && tuketimBarDoluluk) {
                 let toplamGelir = nakitAkisiGruplar["Nakit Girişleri (Gelirler)"].toplam || 0;
-                let toplamGider = (nakitAkisiGruplar["Nakit Giderler (Banka/Kasa)"].toplam || 0) + (nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam || 0);
+                let toplamGider = (nakitAkisiGruplar["Nakit Çıkışları (Banka/Nakit)"].toplam || 0) + (nakitAkisiGruplar["Toplam Borç Ödemeleri"].toplam || 0);
                 
                 // MİMAR KURALI: Bar gelir olsun olmasın HER ZAMAN görünür olacak!
                 tuketimKapsayici.style.display = 'block'; 
