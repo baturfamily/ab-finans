@@ -2284,7 +2284,6 @@ window._gelecekSabitNakit = sabitNakit;
 renderGelecekEkstreKartlar();      
             if (elTaksit) elTaksit.innerHTML = formatTL(borcTaksit);
             if (elSabit) elSabit.innerHTML = formatTL(sabitNakit);
-            if (elToplam) elToplam.innerHTML = formatTL(toplamCikis);
 
             const _renderListe = (elId, items) => {
                 const el = document.getElementById(elId);
