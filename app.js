@@ -88,7 +88,26 @@ function formatTarihLog(dateInputValue) {
         const setHtml = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
         const setText = (id, text) => { const el = document.getElementById(id); if(el) el.innerText = text; };
 
-        function vibe() { /* iOS PWA uyumsuzluğu nedeniyle iptal edildi */ }
+        function seciOdemeTipi(tip) {
+    document.getElementById('kart-odeme-tipi').value = tip;
+    const btnTam = document.getElementById('btn-odeme-tam');
+    const btnAsgari = document.getElementById('btn-odeme-asgari');
+    if (tip === 'Tam') {
+        btnTam.style.background = 'rgba(16,185,129,0.15)';
+        btnTam.style.border = '2px solid var(--emerald)';
+        btnTam.style.color = 'var(--emerald)';
+        btnAsgari.style.background = 'rgba(255,255,255,0.05)';
+        btnAsgari.style.border = '1px solid rgba(255,255,255,0.1)';
+        btnAsgari.style.color = 'var(--text-muted)';
+    } else {
+        btnAsgari.style.background = 'rgba(245,158,11,0.15)';
+        btnAsgari.style.border = '2px solid var(--amber)';
+        btnAsgari.style.color = 'var(--amber)';
+        btnTam.style.background = 'rgba(255,255,255,0.05)';
+        btnTam.style.border = '1px solid rgba(255,255,255,0.1)';
+        btnTam.style.color = 'var(--text-muted)';
+    }
+}
 
         function initAccordions() { document.querySelectorAll('.accordion').forEach(el => { if (el.id && localStorage.getItem(el.id) === "1") el.classList.add("collapsed"); }); }
 
