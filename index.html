@@ -531,9 +531,9 @@
     <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow(event,'section-kart-borc-ode', 'kbo-secim', 'Kart Borcu Öde').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); this.style.pointerEvents='auto'; });" style="height:38px; background:rgba(244, 63, 94, 0.15); border:1px solid rgba(244, 63, 94, 0.3); color:var(--rose); border-radius:12px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
         <i class="fas fa-credit-card"></i> Borç Öde
     </button>
-    <button onclick="this.style.pointerEvents='none'; showSection('section-kart-merkezi','💳 Kredi Kartı İşlemleri'); const m=document.getElementById('action-modal');const b=document.getElementById('fab-btn');if(!m.classList.contains('active')){m.classList.add('active');b.classList.add('open');document.body.classList.add('modal-open');}.then(()=>{ const m=document.getElementById('action-modal');const b=document.getElementById('fab-btn');if(!m.classList.contains('active')){m.classList.add('active');b.classList.add('open');document.body.classList.add('modal-open');} this.style.pointerEvents='auto';});" style="height:38px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-muted); border-radius:12px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
-        <i class="fas fa-cog"></i> Kart İşlemleri
-    </button>
+    <button onclick="const m=document.getElementById('action-modal');const b=document.getElementById('fab-btn');if(!m.classList.contains('active')){m.classList.add('active');b.classList.add('open');document.body.classList.add('modal-open');} showSection('section-kart-merkezi','💳 Kredi Kartı İşlemleri');" style="height:38px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-muted); border-radius:12px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
+    <i class="fas fa-cog"></i> Kart İşlemleri
+</button>
 </div>
                     </div> </div> <div class="card accordion" id="acc-bankalar">
                 <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">
