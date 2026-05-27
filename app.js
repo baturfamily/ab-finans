@@ -129,10 +129,13 @@ function renderGelecekEkstreKartlar() {
     if (ekstreEl) ekstreEl.innerHTML = formatTL(toplamEkstre) + (toplamEkstre > (window._kartlarDetayliToplamDonemIci || 0) ? `<div style="font-size:10px; color:var(--amber); margin-top:2px;">Devreden + faiz dahil</div>` : '');
 
     const toplamEl = document.getElementById('gelecek-toplam-cikis');
-    if (toplamEl) {
-        const borcTaksit = parseFloat(document.getElementById('gelecek-borc-taksit')?.innerText?.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-        const sabitNakit = parseFloat(document.getElementById('gelecek-sabit-gider')?.innerText?.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-    }
+if (toplamEl) {
+    const borcTaksitEl = document.getElementById('gelecek-borc-taksit');
+    const sabitNakitEl = document.getElementById('gelecek-sabit-gider');
+    const borcTaksit = borcTaksitEl ? (parseSaha(borcTaksitEl.innerText) || 0) : 0;
+    const sabitNakit = sabitNakitEl ? (parseSaha(sabitNakitEl.innerText) || 0) : 0;
+    toplamEl.innerHTML = formatTL(toplamEkstre + borcTaksit + sabitNakit);
+}
 }
 
         const setHtml = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
