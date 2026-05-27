@@ -935,8 +935,8 @@ showToast(mesaj, 'success');
         }
     }
 
-                                async function loadSabitlerAndShow(sectionId, selectId, title) {
-            const ev = event.currentTarget; const orig = ev.innerHTML;
+async function loadSabitlerAndShow(ev, sectionId, selectId, title) {
+    ev = ev.currentTarget || ev; const orig = ev.innerHTML;
             ev.innerHTML = `<div class="premium-loader"><span></span><span></span><span></span></div>`; vibe();
             try {
                 const res = await fetch(API_URL, { 
