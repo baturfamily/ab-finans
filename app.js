@@ -1636,7 +1636,8 @@ apiIstekAt({
     tarih: tamTarihLog,
     doviz: dovizCinsi,
     alis_kuru: alisKuruVal,
-    orijinal_miktar: orijinalMiktarVal
+    orijinal_miktar: orijinalMiktarVal,
+    borc_turu: document.getElementById('ozel-borc-turu').value
 }, 'btn-submit-ozel-tanimla');
         }
         
