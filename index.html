@@ -829,6 +829,14 @@
                 </div>
 
                 <div class="form-group">
+    <label>Ödeme Tipi</label>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <button type="button" id="btn-odeme-tam" onclick="seciOdemeTipi('Tam')" style="padding: 12px; border-radius: 12px; background: rgba(16,185,129,0.15); border: 2px solid var(--emerald); color: var(--emerald); font-weight: 700; cursor: pointer;">✅ Tam Ödeme</button>
+        <button type="button" id="btn-odeme-asgari" onclick="seciOdemeTipi('Asgari')" style="padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-weight: 700; cursor: pointer;">⚠️ Asgari Ödeme</button>
+    </div>
+</div>
+<input type="hidden" id="kart-odeme-tipi" value="Tam">
+                <div class="form-group">
                     <label>Tarih</label>
                     <input type="date" id="kbo-tarih" class="form-control">
                 </div>
