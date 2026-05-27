@@ -2447,7 +2447,12 @@ const ekstra = k.donemIci > 0 ? `<div style="font-size:10px;color:var(--text-mut
                 let kYuzde = Math.round((Math.abs(b.bakiye) / b.limit) * 100);
                 kmhDurumu = `<div style="font-size:10px; color:var(--text-muted); margin-top:4px;">KMH Kullanımı: %${kYuzde}</div>`;
             }
-            bankaHtml += `<div class="t-row"><div class="t-details"><div class="t-name">${icon} ${b.isim}</div>${kmhDurumu}</div><div class="t-amt ${tutarRengi}">${formatTL(b.bakiye)}</div></div>`;
+            const bankaIsmiEnc = encodeURIComponent(b.isim);
+const bankaButonlar = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+    <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow(event,'section-bakiye-guncelle','hg-hesap','Bakiye Güncelle').then(()=>{const m=document.getElementById('action-modal');const bEl=document.getElementById('fab-btn');if(!m.classList.contains('active')){m.classList.add('active');bEl.classList.add('open');document.body.classList.add('modal-open');}this.style.pointerEvents='auto';});" style="height:32px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--emerald);border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;">💰 Bakiye Güncelle</button>
+    <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow(event,'section-hesap-islemleri','','Hesap İşlemleri').then(()=>{const m=document.getElementById('action-modal');const bEl=document.getElementById('fab-btn');if(!m.classList.contains('active')){m.classList.add('active');bEl.classList.add('open');document.body.classList.add('modal-open');}this.style.pointerEvents='auto';});" style="height:32px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;">⚙️ Hesap İşlemleri</button>
+</div>`;
+bankaHtml += `<div class="t-row" style="flex-direction:column;align-items:stretch;"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="t-details"><div class="t-name">${icon} ${b.isim}</div>${kmhDurumu}</div><div class="t-amt ${tutarRengi}">${formatTL(b.bakiye)}</div></div>${bankaButonlar}</div>`;
             
             // MİMAR EKLENTİSİ: Sadece cebindeki ve hesaptaki ARTILARI topla
             if(b.bakiye > 0) {
