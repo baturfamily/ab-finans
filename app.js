@@ -1304,6 +1304,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 if(!tekYontem || tekYontem.includes("Seçin")) return markError('kbo-yontem');
                 payload.yontem = tekYontem;
             }
+                seciOdemeTipi('Tam');
             apiIstekAt(payload, 'btn-submit-kart-borc-ode');
         }
         
