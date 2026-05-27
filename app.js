@@ -2379,13 +2379,11 @@ const ekstra = k.donemIci > 0 ? `<div style="font-size:10px;color:var(--text-mut
         // GRUP 2: BANKA KREDİLERİ
         let krediGrupHtml = '', krediGrupToplam = 0;
         data.borclarListe.filter(b => b.tur === 'Kredi' && parseFloat(b.tutar) >= 0.01).sort((a,b) => b.tutar - a.tutar).forEach(b => {
-    krediGrupToplam += b.tutar;
-    const ilerleme = (data.ilerlemeBarlari || []).find(i => i.isim === b.isim);
-    const ekstra = ilerleme ? `<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">%${ilerleme.yuzde} ödendi${ilerleme.vade !== '-' ? ' · ' + ilerleme.vade + ' taksit kaldı' : ''}</div>` : '';
-    krediGrupHtml += borcSatirOlustur(b.isim, b.tutar, ekstra, 'var(--blue)');
-});
-krediGrupHtml += `<div style="margin-top:10px;"><button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow(event,'section-sabit-onayla','so-kural','Kredi Taksidi Onayla').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); this.style.pointerEvents='auto'; });" style="width:100%; height:36px; background:rgba(59, 130, 246, 0.15); border:1px solid rgba(59, 130, 246, 0.3); color:var(--blue); border-radius:10px; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;"><i class="fas fa-landmark"></i> KREDİ ÖDE</button></div>`;
-</div>`;
+            krediGrupToplam += b.tutar;
+            const ilerleme = (data.ilerlemeBarlari || []).find(i => i.isim === b.isim);
+            const ekstra = ilerleme ? `<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">%${ilerleme.yuzde} ödendi${ilerleme.vade !== '-' ? ' · ' + ilerleme.vade + ' taksit kaldı' : ''}</div>` : '';
+            krediGrupHtml += borcSatirOlustur(b.isim, b.tutar, ekstra, 'var(--blue)');
+        });
         const krediGrupEl = document.getElementById('borc-grup-kredi');
         if (krediGrupEl) {
             krediGrupEl.style.display = krediGrupToplam > 0 ? 'block' : 'none';
