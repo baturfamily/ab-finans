@@ -3630,7 +3630,10 @@ function renderTarihceMiniGrafik(tarihce) {
     if (!canvas || tarihce.length < 2) return;
 
     // Son 30 kaydı al
-    const son30 = tarihce.slice(-30);
+    const otuzGunOnce = new Date();
+otuzGunOnce.setDate(otuzGunOnce.getDate() - 30);
+const otuzGunOnceTs = otuzGunOnce.getTime();
+const son30 = tarihce.filter(r => parseTarihceDate(r[0]) >= otuzGunOnceTs);
 
     const etiketler = son30.map(r => {
     const ts = parseTarihceDate(r[0]);
