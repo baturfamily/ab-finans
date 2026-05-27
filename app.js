@@ -1448,8 +1448,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             
             // KULLANICI ONAY ZIRHI
 
-            const simdi = new Date(); const tParca = secilenTarih.split('-');
-            const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
+            const tamTarihLog = formatTarihLog(secilenTarih);
             
             // Backend'deki yeni evrensel erken kapama modülüne yollanıyor
             let payload = { action: "kredi_erken_kapama", borc_adi: borcAdi, tutar: tutar, tarih: tamTarihLog, odeme_sekli: sekil };
