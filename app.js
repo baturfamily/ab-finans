@@ -695,9 +695,7 @@ function submitVarlikEkle() {
     if(err) return;
 
     const simdi = new Date();
-    const saatDak = String(simdi.getHours()).padStart(2, '0') + ':' + String(simdi.getMinutes()).padStart(2, '0');
-    const tParca = tarih.split('-');
-    const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${saatDak}`;
+    const tamTarihLog = formatTarihLog(tarih);
 
     apiIstekAt({ 
         action: "varlik_ekle", 
@@ -1279,8 +1277,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             if(!secilenTarih) { markError('kbo-tarih'); err = true; }
             if(err) return;
             
-            const simdi = new Date(); const tParca = secilenTarih.split('-');
-            const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
+            const tamTarihLog = formatTarihLog(secilenTarih);
 
             let payload = { action: "kart_borcu_ode", kart_adi: kartIsmi, tutar: tutar, tarih: tamTarihLog, odeme_sekli: sekil };
             
