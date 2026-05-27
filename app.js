@@ -1201,7 +1201,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
 
         function addParcaKartBorc() {
             const container = document.getElementById('kbo-parcalar-container');
-            if(container.querySelectorAll('.parca-satiri-kartborc').length >= 5) { alert("En fazla 5 parçaya bölebilirsiniz."); return; }
+            if(container.querySelectorAll('.parca-satiri-kartborc').length >= 5) { showToast("En fazla 5 parçaya bölebilirsiniz.", "info"); return; }
             const row = document.createElement('div'); row.className = 'parca-satiri-kartborc';
             row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
             
