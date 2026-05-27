@@ -22,6 +22,34 @@ function showToast(mesaj, tur = 'success') {
     }, 3000);
 }
 
+function onayIste(btnId, mesaj, callback) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const originalHTML = btn.innerHTML;
+    const originalBg = btn.style.background;
+    let sayac = 3;
+    btn.innerHTML = `⚠️ ${mesaj} (${sayac})`;
+    btn.style.background = "rgba(245,158,11,0.3)";
+    const interval = setInterval(() => {
+        sayac--;
+        if (sayac <= 0) {
+            clearInterval(interval);
+            btn.innerHTML = originalHTML;
+            btn.style.background = originalBg;
+            btn.onclick = null;
+        } else {
+            btn.innerHTML = `⚠️ ${mesaj} (${sayac})`;
+        }
+    }, 1000);
+    btn.onclick = function () {
+        clearInterval(interval);
+        btn.innerHTML = originalHTML;
+        btn.style.background = originalBg;
+        btn.onclick = null;
+        callback();
+    };
+}
+
                 function switchTab(tabId, el) {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -678,9 +706,10 @@ function submitVarlikSil() {
     const isim = getCustomVal('vs-secim');
     if(!isim || isim.includes("Seçin")) { markError('vs-secim'); return; }
 
-    if(!confirm(`"${isim}" adlı varlığı sistemden (log dosyasından ve pwadan) kalıcı olarak silmek istediğinize emin misiniz?`)) return;
-
+    onayIste('btn-submit-varlik-sil', 'Emin misin?', () => {
     apiIstekAt({ action: "varlik_sil", varlik_adi: isim }, 'btn-submit-varlik-sil');
+});
+return;
 }
 
         async function openSectionLive(ev, sectionId, title) {
@@ -1414,7 +1443,6 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             if(err) return;
             
             // KULLANICI ONAY ZIRHI
-            if(!confirm("Erken kapatma işlemini onaylarsanız seçtiğiniz kredi sistemden (Borçlar ve Sabit Kurallar sayfasından) tamamen silinecektir, onaylıyor musunuz?")) return;
 
             const simdi = new Date(); const tParca = secilenTarih.split('-');
             const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
@@ -1437,7 +1465,9 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 if(!tekYontem || tekYontem.includes("Seçin")) return markError('kredi-yontem');
                 payload.yontem = tekYontem; payload.odeme_turu = window.hesapTurleri[tekYontem] || "Banka Hesabı";
             }
-            apiIstekAt(payload, 'btn-submit-kredi-ode');
+            onayIste('btn-submit-kredi-ode', 'Kredi silinecek, emin misin?', () => {
+    apiIstekAt(payload, 'btn-submit-kredi-ode');
+});
         }
 
         function submitYeniKredi() {
