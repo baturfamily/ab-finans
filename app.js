@@ -1099,7 +1099,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 document.getElementById('so-tek-hesap-alani').style.display = 'none';
                 document.getElementById('so-parcali-hesap-alani').style.display = 'block';
                 document.getElementById('so-parcalar-container').innerHTML = '';
-                addParca(); addParca(); hesaplaKalanParcali();
+                addParca('so'); addParca('so'); hesaplaKalanParcali();
             } else {
                 document.getElementById('so-tek-hesap-alani').style.display = 'block';
                 document.getElementById('so-parcali-hesap-alani').style.display = 'none';
@@ -1228,7 +1228,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 document.getElementById('kbo-tek-hesap-alani').style.display = 'none';
                 document.getElementById('kbo-parcali-hesap-alani').style.display = 'block';
                 document.getElementById('kbo-parcalar-container').innerHTML = '';
-                addParcaKartBorc(); addParcaKartBorc(); hesaplaKalanParcaliKartBorc();
+                addParca('kbo'); addParca('kbo'); hesaplaKalanParcaliKartBorc();
             } else {
                 document.getElementById('kbo-tek-hesap-alani').style.display = 'block';
                 document.getElementById('kbo-parcali-hesap-alani').style.display = 'none';
@@ -1336,7 +1336,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 document.getElementById('kredi-tek-hesap-alani').style.display = 'none';
                 document.getElementById('kredi-parcali-hesap-alani').style.display = 'block';
                 document.getElementById('kredi-parcalar-container').innerHTML = '';
-                addParcaKredi(); addParcaKredi(); hesaplaKalanParcaliKredi();
+                addParca('kredi'); addParca('kredi'); hesaplaKalanParcaliKredi();
             } else {
                 document.getElementById('kredi-tek-hesap-alani').style.display = 'block';
                 document.getElementById('kredi-parcali-hesap-alani').style.display = 'none';
@@ -1360,7 +1360,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 document.getElementById('ozel-tek-hesap-alani').style.display = 'none';
                 document.getElementById('ozel-parcali-hesap-alani').style.display = 'block';
                 document.getElementById('ozel-parcalar-container').innerHTML = '';
-                addParcaOzel(); addParcaOzel(); hesaplaKalanParcaliOzel();
+                addParca('ozel'); addParca('ozel'); hesaplaKalanParcaliOzel();
             } else {
                 document.getElementById('ozel-tek-hesap-alani').style.display = 'block';
                 document.getElementById('ozel-parcali-hesap-alani').style.display = 'none';
