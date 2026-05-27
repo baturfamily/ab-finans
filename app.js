@@ -3010,7 +3010,7 @@ const badge = isOtomatik
             });
                         krHtml += `
         <div style="margin-top:15px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.1);">
-            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow('section-sabit-onayla', 'so-kural', 'Kredi Taksidi Onayla').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); this.style.pointerEvents='auto'; });" style="width:100%; height:36px; background:rgba(245, 158, 11, 0.15); border:1px solid rgba(245, 158, 11, 0.3); color:var(--amber); border-radius:10px; font-size:12px; font-weight:800; cursor:pointer;">
+            <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow(event,'section-sabit-onayla', 'so-kural', 'Kredi Taksidi Onayla').then(() => { const m=document.getElementById('action-modal'); const b=document.getElementById('fab-btn'); m.classList.add('active'); b.classList.add('open'); document.body.classList.add('modal-open'); this.style.pointerEvents='auto'; });" style="width:100%; height:36px; background:rgba(245, 158, 11, 0.15); border:1px solid rgba(245, 158, 11, 0.3); color:var(--amber); border-radius:10px; font-size:12px; font-weight:800; cursor:pointer;">
                 <i class="fas fa-landmark"></i> KREDİ ÖDE
             </button>
         </div>`;
