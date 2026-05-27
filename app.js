@@ -89,9 +89,11 @@ function formatTarihLog(dateInputValue) {
         const setText = (id, text) => { const el = document.getElementById(id); if(el) el.innerText = text; };
 
         function seciOdemeTipi(tip) {
-    document.getElementById('kart-odeme-tipi').value = tip;
+    const hiddenInput = document.getElementById('kart-odeme-tipi');
     const btnTam = document.getElementById('btn-odeme-tam');
     const btnAsgari = document.getElementById('btn-odeme-asgari');
+    if (!hiddenInput || !btnTam || !btnAsgari) return;
+    hiddenInput.value = tip;
     if (tip === 'Tam') {
         btnTam.style.background = 'rgba(16,185,129,0.15)';
         btnTam.style.border = '2px solid var(--emerald)';
