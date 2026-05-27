@@ -1489,8 +1489,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             
             if(err) return;
             
-            const simdi = new Date(); const tParca = tarih.split('-');
-            const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
+            const tamTarihLog = formatTarihLog(tarih);
             
             apiIstekAt({ action: "yeni_kredi", isim: isim, tutar: tutar, vade: vade, aylik_taksit: aylik, gun: gun, bitis_tarihi: bitis, hesap: hesap, tarih: tamTarihLog, odeme_turu: window.hesapTurleri[hesap] || "Banka Hesabı" }, 'btn-submit-kredi-tanimla');
         }
@@ -1503,8 +1502,7 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             if(!tutar || parseSaha(tutar) <= 0) { markError('ozel-ode-tutar'); err = true; }
             if(!secilenTarih) { markError('ozel-tarih'); err = true; }
             if(err) return;
-            const simdi = new Date(); const tParca = secilenTarih.split('-');
-            const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
+            const tamTarihLog = formatTarihLog(secilenTarih);
             let payload = { action: "ozel_borc_ode", borc_adi: borcAdi, tutar: tutar, tarih: tamTarihLog, odeme_sekli: sekil };
             if(sekil === 'parcali') {
                 const parcalar = []; let hataVar = false;
@@ -1588,8 +1586,7 @@ function hesaplaOzelDovizTL() {
             if(!isim) { markError('ozel-yeni-isim'); err = true; } if(!tutar) { markError('ozel-yeni-tutar'); err = true; }
             if(!tarih) { markError('ozel-yeni-tarih'); err = true; }
             if(err) return;
-            const simdi = new Date(); const tParca = tarih.split('-');
-            const tamTarihLog = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
+            const tamTarihLog = formatTarihLog(tarih);
             // Evrensellik: Vade parametresi direkt "-" olarak Backend'e gönderilir
             const dovizCinsi = getCustomVal('ozel-doviz') || 'TL';
 const alisKuruVal = parseSaha(document.getElementById('ozel-alis-kuru').value) || 1;
@@ -3401,9 +3398,7 @@ async function submitTransfer() {
     if (err) return;
 
     // Tarih formatlama (dd.MM.yyyy HH:mm)
-    const simdi = new Date();
-    const tParca = tarih.split('-');
-    const tamTarih = `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2, '0')}:${String(simdi.getMinutes()).padStart(2, '0')}`;
+    const tamTarih = formatTarihLog(tarih);
 
     // Backend'e gönderim
     apiIstekAt({
