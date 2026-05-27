@@ -62,6 +62,12 @@ function parseTarihceDate(rawStr) {
     return isNaN(t) ? 0 : t;
 }
 
+function formatTarihLog(dateInputValue) {
+    const simdi = new Date();
+    const tParca = dateInputValue.split('-');
+    return `${tParca[2]}.${tParca[1]}.${tParca[0]} ${String(simdi.getHours()).padStart(2,'0')}:${String(simdi.getMinutes()).padStart(2,'0')}`;
+}
+
                 function switchTab(tabId, el) {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
