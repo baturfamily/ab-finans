@@ -1235,25 +1235,6 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             }
         }
 
-        function addParcaKartBorc() {
-            const container = document.getElementById('kbo-parcalar-container');
-            if(container.querySelectorAll('.parca-satiri-kartborc').length >= 5) { showToast("En fazla 5 parçaya bölebilirsiniz.", "info"); return; }
-            const row = document.createElement('div'); row.className = 'parca-satiri-kartborc';
-            row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
-            
-            const yontemSelect = document.getElementById('kbo-yontem');
-            const dinamikSecenekler = yontemSelect ? yontemSelect.innerHTML : `<option value="">Hesap Seçin</option>`;
-            
-            const uniqueId = 'parca-kbo-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-            
-            row.innerHTML = `
-                <select id="${uniqueId}" class="form-control parca-hesap-kartborc" style="padding: 10px; font-size: 13px;">${dinamikSecenekler}</select>
-                <input type="text" inputmode="decimal" class="form-control parca-tutar-kartborc" placeholder="Tutar" oninput="tutarFormatla(this); hesaplaKalanParcaliKartBorc()" style="padding: 10px; font-size: 14px;">
-                <button onclick="this.parentElement.remove(); hesaplaKalanParcaliKartBorc();" style="background: rgba(244, 63, 94, 0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-            `;
-            container.appendChild(row); refreshCustomSelect(document.getElementById(uniqueId));
-        }
-
         function hesaplaKalanParcaliKartBorc() {
             const hedefTutar = parseSaha(document.getElementById('kbo-tutar').value) || 0;
             let girilenToplam = 0; document.querySelectorAll('.parca-tutar-kartborc').forEach(inp => girilenToplam += parseSaha(inp.value) || 0);
@@ -1362,16 +1343,6 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
             }
         }
 
-        function addParcaKredi() {
-            const container = document.getElementById('kredi-parcalar-container');
-            if(container.querySelectorAll('.parca-satiri-kredi').length >= 5) { alert("En fazla 5 parçaya bölebilirsiniz."); return; }
-            const row = document.createElement('div'); row.className = 'parca-satiri-kredi';
-            row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
-            const uniqueId = 'parca-kr-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-            row.innerHTML = `<select id="${uniqueId}" class="form-control parca-hesap-kredi" style="padding: 10px; font-size: 13px;">${window.hesapOptions}</select><input type="text" inputmode="decimal" class="form-control parca-tutar-kredi" placeholder="Tutar" oninput="tutarFormatla(this); hesaplaKalanParcaliKredi()" style="padding: 10px; font-size: 14px;"><button onclick="this.parentElement.remove(); hesaplaKalanParcaliKredi();" style="background: rgba(244, 63, 94, 0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>`;
-            container.appendChild(row); refreshCustomSelect(document.getElementById(uniqueId));
-        }
-
         function hesaplaKalanParcaliKredi() {
             const hedefTutar = parseSaha(document.getElementById('kredi-ode-tutar').value) || 0;
             let girilenToplam = 0; document.querySelectorAll('.parca-tutar-kredi').forEach(inp => girilenToplam += parseSaha(inp.value) || 0);
@@ -1394,16 +1365,6 @@ let gorunenAd = (temizTur && temizTur !== "-") ? (temizKalem ? `${temizTur} - ${
                 document.getElementById('ozel-tek-hesap-alani').style.display = 'block';
                 document.getElementById('ozel-parcali-hesap-alani').style.display = 'none';
             }
-        }
-
-        function addParcaOzel() {
-            const container = document.getElementById('ozel-parcalar-container');
-            if(container.querySelectorAll('.parca-satiri-ozel').length >= 5) { alert("En fazla 5 parçaya bölebilirsiniz."); return; }
-            const row = document.createElement('div'); row.className = 'parca-satiri-ozel';
-            row.style.cssText = "display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 8px; margin-bottom: 10px; align-items: start;";
-            const uniqueId = 'parca-oz-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-            row.innerHTML = `<select id="${uniqueId}" class="form-control parca-hesap-ozel" style="padding: 10px; font-size: 13px;">${window.hesapOptions}</select><input type="text" inputmode="decimal" class="form-control parca-tutar-ozel" placeholder="Tutar" oninput="tutarFormatla(this); hesaplaKalanParcaliOzel()" style="padding: 10px; font-size: 14px;"><button onclick="this.parentElement.remove(); hesaplaKalanParcaliOzel();" style="background: rgba(244, 63, 94, 0.15); border: none; color: var(--rose); width: 38px; height: 38px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>`;
-            container.appendChild(row); refreshCustomSelect(document.getElementById(uniqueId));
         }
 
         function hesaplaKalanParcaliOzel() {
