@@ -2379,11 +2379,15 @@ const ekstra = k.donemIci > 0 ? `<div style="font-size:10px;color:var(--text-mut
         // GRUP 2: BANKA KREDİLERİ
         let krediGrupHtml = '', krediGrupToplam = 0;
         data.borclarListe.filter(b => b.tur === 'Kredi' && parseFloat(b.tutar) >= 0.01).sort((a,b) => b.tutar - a.tutar).forEach(b => {
-            krediGrupToplam += b.tutar;
-            const ilerleme = (data.ilerlemeBarlari || []).find(i => i.isim === b.isim);
-            const ekstra = ilerleme ? `<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">%${ilerleme.yuzde} ödendi${ilerleme.vade !== '-' ? ' · ' + ilerleme.vade + ' taksit kaldı' : ''}</div>` : '';
-            krediGrupHtml += borcSatirOlustur(b.isim, b.tutar, ekstra, 'var(--blue)');
-        });
+    krediGrupToplam += b.tutar;
+    const ilerleme = (data.ilerlemeBarlari || []).find(i => i.isim === b.isim);
+    const ekstra = ilerleme ? `<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">%${ilerleme.yuzde} ödendi${ilerleme.vade !== '-' ? ' · ' + ilerleme.vade + ' taksit kaldı' : ''}</div>` : '';
+    const krediButonlar = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+        <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow(event,'section-kredi-ode','kredi-ode-secim','Kredi Öde').then(()=>{const m=document.getElementById('action-modal');const bEl=document.getElementById('fab-btn');if(!m.classList.contains('active')){m.classList.add('active');bEl.classList.add('open');document.body.classList.add('modal-open');}this.style.pointerEvents='auto';});" style="height:32px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);color:var(--blue);border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;">💳 Kredi Öde</button>
+        <button onclick="this.style.pointerEvents='none'; loadSabitlerAndShow(event,'section-kredi-islemleri','','Kredi İşlemleri').then(()=>{const m=document.getElementById('action-modal');const bEl=document.getElementById('fab-btn');if(!m.classList.contains('active')){m.classList.add('active');bEl.classList.add('open');document.body.classList.add('modal-open');}this.style.pointerEvents='auto';});" style="height:32px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text-muted);border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;">⚙️ Kredi İşlemleri</button>
+    </div>`;
+    krediGrupHtml += borcSatirOlustur(b.isim, b.tutar, ekstra + krediButonlar, 'var(--blue)');
+});
         const krediGrupEl = document.getElementById('borc-grup-kredi');
         if (krediGrupEl) {
             krediGrupEl.style.display = krediGrupToplam > 0 ? 'block' : 'none';
