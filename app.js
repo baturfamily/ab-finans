@@ -50,6 +50,18 @@ function onayIste(btnId, mesaj, callback) {
     };
 }
 
+function parseTarihceDate(rawStr) {
+    if (!rawStr) return 0;
+    if (rawStr instanceof Date) return rawStr.getTime();
+    let s = rawStr.toString().trim();
+    if (s.includes('.')) {
+        let parts = s.split(' ')[0].split('.');
+        if (parts.length === 3) return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10)).getTime();
+    }
+    let t = new Date(s).getTime();
+    return isNaN(t) ? 0 : t;
+}
+
                 function switchTab(tabId, el) {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -158,17 +170,6 @@ function onayIste(btnId, mesaj, callback) {
             if(!window.tarihceData || window.tarihceData.length < 2) {
                 ids.forEach(id => { setHtml(id, `<span style="color:var(--text-muted); font-weight:500;">Veri yok</span>`); });
                 return;
-            }
-
-            function parseTarihceDate(rawStr) {
-                if (!rawStr) return 0;
-                if (rawStr instanceof Date) return rawStr.getTime();
-                let s = rawStr.toString().trim();
-                if (s.includes('.')) { 
-                    let parts = s.split(' ')[0].split('.'); 
-                    if (parts.length === 3) return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10)).getTime(); 
-                }
-                let t = new Date(s).getTime(); return isNaN(t) ? 0 : t;
             }
 
             const now = new Date(); 
@@ -3631,23 +3632,12 @@ function renderTarihceMiniGrafik(tarihce) {
     // Son 30 kaydı al
     const son30 = tarihce.slice(-30);
 
-    function parseTarihceDate(raw) {
-        if (!raw) return null;
-        if (raw instanceof Date) return raw;
-        let s = raw.toString().trim();
-        if (s.includes('.')) {
-            let p = s.split(' ')[0].split('.');
-            if (p.length === 3) return new Date(parseInt(p[2]), parseInt(p[1]) - 1, parseInt(p[0]));
-        }
-        let t = new Date(s);
-        return isNaN(t.getTime()) ? null : t;
-    }
-
     const etiketler = son30.map(r => {
-        const t = parseTarihceDate(r[0]);
-        if (!t) return '';
-        return (t.getDate()) + '/' + (t.getMonth() + 1);
-    });
+    const ts = parseTarihceDate(r[0]);
+    if (!ts) return '';
+    const t = new Date(ts);
+    return t.getDate() + '/' + (t.getMonth() + 1);
+});
 
     const netServetVerisi = son30.map(r => parseSaha(r[2]) || 0);
     const borcVerisi = son30.map(r => parseSaha(r[3]) || 0);
