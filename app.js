@@ -136,6 +136,29 @@ function seciYeniKartOdemeTipi(tip) {
     }
 }
 
+function seciOzelBorcTuru(tip) {
+    const hidden = document.getElementById('ozel-borc-turu');
+    const btnPlanli = document.getElementById('btn-ozel-planli');
+    const btnCanYakan = document.getElementById('btn-ozel-canyakan');
+    if (!hidden || !btnPlanli || !btnCanYakan) return;
+    hidden.value = tip;
+    if (tip === 'Planlı') {
+        btnPlanli.style.background = 'rgba(16,185,129,0.15)';
+        btnPlanli.style.border = '2px solid var(--emerald)';
+        btnPlanli.style.color = 'var(--emerald)';
+        btnCanYakan.style.background = 'rgba(255,255,255,0.05)';
+        btnCanYakan.style.border = '1px solid rgba(255,255,255,0.1)';
+        btnCanYakan.style.color = 'var(--text-muted)';
+    } else {
+        btnCanYakan.style.background = 'rgba(244,63,94,0.15)';
+        btnCanYakan.style.border = '2px solid var(--rose)';
+        btnCanYakan.style.color = 'var(--rose)';
+        btnPlanli.style.background = 'rgba(255,255,255,0.05)';
+        btnPlanli.style.border = '1px solid rgba(255,255,255,0.1)';
+        btnPlanli.style.color = 'var(--text-muted)';
+    }
+}
+
 function vibe() {}
 
         function initAccordions() { document.querySelectorAll('.accordion').forEach(el => { if (el.id && localStorage.getItem(el.id) === "1") el.classList.add("collapsed"); }); }
