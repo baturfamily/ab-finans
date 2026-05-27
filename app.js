@@ -130,11 +130,9 @@ function renderGelecekEkstreKartlar() {
 
     const toplamEl = document.getElementById('gelecek-toplam-cikis');
 if (toplamEl) {
-    const borcTaksitEl = document.getElementById('gelecek-borc-taksit');
-    const sabitNakitEl = document.getElementById('gelecek-sabit-gider');
-    const borcTaksit = borcTaksitEl ? (parseSaha(borcTaksitEl.innerText) || 0) : 0;
-    const sabitNakit = sabitNakitEl ? (parseSaha(sabitNakitEl.innerText) || 0) : 0;
-    toplamEl.innerHTML = formatTL(toplamEkstre + borcTaksit + sabitNakit);
+    const borcTaksit = window._gelecekBorcTaksit || 0;
+const sabitNakit = window._gelecekSabitNakit || 0;
+toplamEl.innerHTML = formatTL(toplamEkstre + borcTaksit + sabitNakit);
 }
 }
 
@@ -2281,7 +2279,9 @@ const toplamCikis = kartEkstre + borcTaksit + sabitNakit;
 window.kartlarDetayli = data.kartlarDetayli || [];
 window._kartDevredenMap = {};
 (data.kartlarDetayli || []).forEach(k => { window._kartDevredenMap[k.isim] = k.devreden || 0; });
-renderGelecekEkstreKartlar();       
+window._gelecekBorcTaksit = borcTaksit;
+window._gelecekSabitNakit = sabitNakit;
+renderGelecekEkstreKartlar();      
             if (elTaksit) elTaksit.innerHTML = formatTL(borcTaksit);
             if (elSabit) elSabit.innerHTML = formatTL(sabitNakit);
             if (elToplam) elToplam.innerHTML = formatTL(toplamCikis);
