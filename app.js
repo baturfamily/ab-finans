@@ -1,5 +1,6 @@
 const API_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_URL : "";
         let expenseChartInstance = null; window.tarihceData = []; window.currentStats = {};
+        let gelecekEkstreSecim = {};
         window.hesapOptions = ""; window.vadesizOptions = ""; window.hesapTurleri = { "Nakit": "Nakit" }; 
         window.sabitDataRaw = [];
         window.dinamikKategoriler = { gider: [], gelir: [], hareketTurleri: [], odemeTurleri: [], borcTurleri: [], varlikKategorileri: [] };
@@ -84,6 +85,54 @@ function formatTarihLog(dateInputValue) {
                 setTimeout(() => { expenseChartInstance.update(); }, 100);
             }
         }
+
+function renderGelecekEkstreKartlar() {
+    const kartlar = window.kartlarDetayli || [];
+    const container = document.getElementById('gelecek-ekstre-kartlar');
+    if (!container) return;
+
+    let html = '';
+    let toplamEkstre = 0;
+
+    kartlar.filter(k => parseFloat(k.borc) >= 0.01).forEach((k, i) => {
+        if (!gelecekEkstreSecim.hasOwnProperty(k.isim)) {
+            gelecekEkstreSecim[k.isim] = k.odemeTipi || 'Tam';
+        }
+        const isTam = gelecekEkstreSecim[k.isim] !== 'Asgari';
+        const kartToplam = k.donemIci + Math.abs(k.borc - k.donemIci) + (k.tahminiFaiz || 0);
+        const odeme = isTam ? kartToplam : kartToplam * 0.4;
+        toplamEkstre += odeme;
+
+        html += `<div style="padding:8px 0; ${i > 0 ? 'border-top:1px solid rgba(255,255,255,0.05);' : ''}">`;
+        html += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">`;
+        html += `<span style="font-size:12px; font-weight:700; color:#e2e8f0;">${k.isim}</span>`;
+        html += `<div style="display:flex; gap:4px;">`;
+        html += `<button onclick="gelecekEkstreSecim['${k.isim}']='Tam'; renderGelecekEkstreKartlar();" style="height:22px; padding:0 7px; font-size:10px; border-radius:5px; cursor:pointer; font-weight:${isTam?'700':'400'}; background:${isTam?'rgba(16,185,129,0.15)':'rgba(255,255,255,0.05)'}; color:${isTam?'var(--emerald)':'var(--text-muted)'}; border:1px solid ${isTam?'rgba(16,185,129,0.4)':'rgba(255,255,255,0.1)'};">Tam</button>`;
+        html += `<button onclick="gelecekEkstreSecim['${k.isim}']='Asgari'; renderGelecekEkstreKartlar();" style="height:22px; padding:0 7px; font-size:10px; border-radius:5px; cursor:pointer; font-weight:${!isTam?'700':'400'}; background:${!isTam?'rgba(245,158,11,0.15)':'rgba(255,255,255,0.05)'}; color:${!isTam?'var(--amber)':'var(--text-muted)'}; border:1px solid ${!isTam?'rgba(245,158,11,0.4)':'rgba(255,255,255,0.1)'};">Asgari</button>`;
+        html += `</div></div>`;
+        html += `<div style="font-size:11px; color:var(--text-muted); display:flex; flex-direction:column; gap:2px;">`;
+        html += `<div style="display:flex; justify-content:space-between;"><span>Dönem İçi</span><span>${formatTL(k.donemIci)}</span></div>`;
+        if (Math.abs(k.borc - k.donemIci) > 0.01) html += `<div style="display:flex; justify-content:space-between;"><span>Devreden</span><span style="color:var(--amber);">${formatTL(Math.abs(k.borc - k.donemIci))}</span></div>`;
+        if ((k.tahminiFaiz || 0) > 0.01) html += `<div style="display:flex; justify-content:space-between;"><span>Tahmini Faiz</span><span style="color:var(--amber);">~${formatTL(k.tahminiFaiz)}</span></div>`;
+        html += `<div style="display:flex; justify-content:space-between; border-top:1px dashed rgba(255,255,255,0.08); margin-top:3px; padding-top:3px;">`;
+        html += `<span style="font-weight:700; color:#e2e8f0;">${isTam ? 'Toplam' : 'Asgari Ödeme (%40)'}</span>`;
+        html += `<span style="font-weight:700; color:${isTam?'var(--rose)':'var(--amber)'};">${formatTL(odeme)}</span>`;
+        html += `</div></div></div>`;
+    });
+
+    container.innerHTML = html;
+    const tahminiEl = document.getElementById('gelecek-ekstre-tahmini-toplam');
+    if (tahminiEl) tahminiEl.innerHTML = formatTL(toplamEkstre);
+
+    const ekstreEl = document.getElementById('gelecek-kart-ekstre');
+    if (ekstreEl) ekstreEl.innerHTML = formatTL(toplamEkstre) + (toplamEkstre > (window._kartlarDetayliToplamDonemIci || 0) ? `<div style="font-size:10px; color:var(--amber); margin-top:2px;">Devreden + faiz dahil</div>` : '');
+
+    const toplamEl = document.getElementById('gelecek-toplam-cikis');
+    if (toplamEl) {
+        const borcTaksit = parseFloat(document.getElementById('gelecek-borc-taksit')?.innerText?.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+        const sabitNakit = parseFloat(document.getElementById('gelecek-sabit-gider')?.innerText?.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+    }
+}
 
         const setHtml = (id, html) => { const el = document.getElementById(id); if(el) el.innerHTML = html; };
         const setText = (id, text) => { const el = document.getElementById(id); if(el) el.innerText = text; };
@@ -2224,6 +2273,8 @@ const toplamCikis = kartEkstre + borcTaksit + sabitNakit;
             const elSabit = document.getElementById('gelecek-sabit-gider');
             const elToplam = document.getElementById('gelecek-toplam-cikis');
             if (elEkstre) elEkstre.innerHTML = formatTL(kartEkstre) + (toplamTahminiFaiz > 0 ? `<div style="font-size:11px; color:var(--amber); margin-top:3px;">~${formatTL(toplamTahminiFaiz)} tahmini faiz dahil değil</div>` : '');
+            window._kartlarDetayliToplamDonemIci = kartEkstre;
+            renderGelecekEkstreKartlar();        
             if (elTaksit) elTaksit.innerHTML = formatTL(borcTaksit);
             if (elSabit) elSabit.innerHTML = formatTL(sabitNakit);
             if (elToplam) elToplam.innerHTML = formatTL(toplamCikis);
