@@ -3677,15 +3677,28 @@ function resetAnlikForm() {
     });
 }
 
+function seciTarihcePeriod(gun, btn) {
+    window._tarihcePeriod = gun;
+    document.querySelectorAll('[id^="btn-period-"]').forEach(b => {
+        b.style.background = 'rgba(255,255,255,0.05)';
+        b.style.border = '1px solid rgba(255,255,255,0.1)';
+        b.style.color = 'var(--text-muted)';
+    });
+    btn.style.background = 'rgba(16,185,129,0.15)';
+    btn.style.border = '1px solid var(--emerald)';
+    btn.style.color = 'var(--emerald)';
+    renderTarihceMiniGrafik(window.tarihceData);
+}
+
 function renderTarihceMiniGrafik(tarihce) {
     const canvas = document.getElementById('tarihce-mini-grafik');
     if (!canvas || tarihce.length < 2) return;
 
-    // Son 30 kaydı al
-    const otuzGunOnce = new Date();
-otuzGunOnce.setDate(otuzGunOnce.getDate() - 30);
-const otuzGunOnceTs = otuzGunOnce.getTime();
-const son30 = tarihce.filter(r => parseTarihceDate(r[0]) >= otuzGunOnceTs);
+    const gun = window._tarihcePeriod || 30;
+    const baslangic = new Date();
+    baslangic.setDate(baslangic.getDate() - gun);
+    const baslangicTs = baslangic.getTime();
+    const son30 = tarihce.filter(r => parseTarihceDate(r[0]) >= baslangicTs);
 
     const etiketler = son30.map(r => {
     const ts = parseTarihceDate(r[0]);
