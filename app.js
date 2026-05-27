@@ -3232,18 +3232,40 @@ let _verileriCekAktif = false;
       // Eğer seçim 'hepsi' (Tüm Kartlar) ise göster, değilse gizle
       trendKartEl.style.display = (val === 'hepsi') ? 'block' : 'none';
   }
-        let cKullanilabilir = 0, cLimit = 0, cBorc = 0, cDonemIci = 0, cGelecek = 0;
-        
-        if (val === 'hepsi') {
-            window.kartlarDetayli.forEach(k => { cLimit += k.limit; cBorc += k.borc; cDonemIci += k.donemIci; cGelecek += k.gelecek; });
-            document.getElementById('val-kart-puan').style.display = 'none';
-        } else {
-            const k = window.kartlarDetayli[val];
-            if (!k) return;
-            cLimit = k.limit; cBorc = k.borc; cDonemIci = k.donemIci; cGelecek = k.gelecek;
-            document.getElementById('val-kart-puan').innerText = formatTLTam(k.puan) + ' Puan';
-            document.getElementById('val-kart-puan').style.display = k.puan > 0 ? 'inline-block' : 'none';
-        }
+        let cKullanilabilir = 0, cLimit = 0, cBorc = 0, cDonemIci = 0, cGelecek = 0, cDevreden = 0, cTahminiFaiz = 0;
+
+if (val === 'hepsi') {
+    window.kartlarDetayli.forEach(k => {
+        cLimit += k.limit;
+        cBorc += k.borc;
+        cDonemIci += k.donemIci;
+        cGelecek += k.gelecek;
+        cDevreden += Math.abs(k.borc - k.donemIci);
+        cTahminiFaiz += (k.tahminiFaiz || 0);
+    });
+    document.getElementById('val-kart-puan').style.display = 'none';
+    document.getElementById('satir-kart-odemetip').style.display = 'none';
+} else {
+    const k = window.kartlarDetayli[val];
+    if (!k) return;
+    cLimit = k.limit; cBorc = k.borc; cDonemIci = k.donemIci; cGelecek = k.gelecek;
+    cDevreden = Math.abs(k.borc - k.donemIci);
+    cTahminiFaiz = k.tahminiFaiz || 0;
+    document.getElementById('val-kart-puan').innerText = formatTLTam(k.puan) + ' Puan';
+    document.getElementById('val-kart-puan').style.display = k.puan > 0 ? 'inline-block' : 'none';
+    const odemetipEl = document.getElementById('val-kart-odemetip');
+    const satirEl = document.getElementById('satir-kart-odemetip');
+    satirEl.style.display = 'flex';
+    if (k.odemeTipi === 'Asgari') {
+        odemetipEl.innerText = 'ASGARİ';
+        odemetipEl.style.background = 'rgba(245,158,11,0.15)';
+        odemetipEl.style.color = 'var(--amber)';
+    } else {
+        odemetipEl.innerText = 'TAM';
+        odemetipEl.style.background = 'rgba(16,185,129,0.15)';
+        odemetipEl.style.color = 'var(--emerald)';
+    }
+}
         
         cKullanilabilir = Math.max(0, cLimit - cBorc);
         let doluluk = cLimit > 0 ? Math.round((cBorc / cLimit) * 100) : 0;
@@ -3253,6 +3275,8 @@ let _verileriCekAktif = false;
         animateValue('val-kart-toplam', cBorc, 600);
         animateValue('val-kart-donemici', cDonemIci, 600);
         animateValue('val-kart-gelecek', cGelecek, 600);
+        animateValue('val-kart-devreden', cDevreden, 600);
+        animateValue('val-kart-tahminifaiz', cTahminiFaiz, 600);
         
                 document.getElementById('bar-kart-limit').style.width = doluluk + '%';
         const dBadge = document.getElementById('val-kart-doluluk');
