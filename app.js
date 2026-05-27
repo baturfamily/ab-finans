@@ -78,7 +78,7 @@ function showToast(mesaj, tur = 'success') {
         }
         function formatUSD(sayi) { if (isNaN(sayi) || sayi === null || sayi === "") return `<span style="font-size:0.8em; opacity:0.7; font-weight:600; margin-right:2px;">$</span>0<span style="font-size:0.8em; opacity:0.7; font-weight:600;">,00</span>`; 
                                    let formatted = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(sayi); let parts = formatted.split(','); 
-                                   return `<span style="font-size:0.8em; opacity:0.7; font-weight:600; margin-right:2px;">$</span>${parts[0]}<span style="font-size:0.8em; opacity:0.7; font-weight:600;">,${parts[1]}</span>`; }
+                                   return `<span style="font-size:0.8em; opacity:0.7; font-weight:600; margin-right:4px;">$</span>${parts[0]}<span style="font-size:0.8em; opacity:0.7; font-weight:600;">,${parts[1]}</span>`; }
         const parseSaha = (val) => { 
     if (typeof val === 'number') return val; 
     if (!val) return 0; 
