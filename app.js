@@ -3069,8 +3069,10 @@ if (data.tarihce && data.tarihce.length > 0) {
         if(headDateEl) headDateEl.innerText = formatliTarih;
     }
 
-
+let _verileriCekAktif = false;
         async function verileriCek() {
+        if (_verileriCekAktif) return;
+        _verileriCekAktif = true;
         const durumEl = document.getElementById('baglanti-durumu');
         const hayaletVeri = localStorage.getItem('hayalet_veri');
 
@@ -3123,6 +3125,8 @@ if (data.tarihce && data.tarihce.length > 0) {
             durumEl.innerHTML = `ÇEVRİMDIŞI`;
             durumEl.style.color = "var(--rose)";
             console.error("Kritik Fetch Hatası (Backend Çöktü!):", error);
+        } finally {
+            _verileriCekAktif = false;
         }
     }
 
