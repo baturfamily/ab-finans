@@ -557,14 +557,16 @@
     max-width: 360px;
 }
 .toast {
-    background: #1e2330;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     color: #fff;
     padding: 13px 18px;
     border-radius: 14px;
     font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.15);
     opacity: 0;
     transform: translateY(-16px);
     transition: opacity 0.25s ease, transform 0.25s ease;
