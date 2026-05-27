@@ -774,10 +774,11 @@ return;
                 updateTransferOptions();
             }
             if(id === 'section-kart-borc-ode') {
-                document.getElementById('kbo-tarih').valueAsDate = new Date();
-                document.getElementById('kbo-odeme-sekli').value = 'tek';
-                toggleParcaliKartBorcOdeme(); refreshCustomSelect(document.getElementById('kbo-odeme-sekli'));
-            }
+    document.getElementById('kbo-tarih').valueAsDate = new Date();
+    document.getElementById('kbo-odeme-sekli').value = 'tek';
+    toggleParcaliKartBorcOdeme(); refreshCustomSelect(document.getElementById('kbo-odeme-sekli'));
+    seciOdemeTipi('Tam');
+}
             if(id === 'kredi-islemleri-screen') {
                 document.getElementById('kredi-secim').value = ''; 
                 document.getElementById('kredi-tarih').valueAsDate = new Date();
