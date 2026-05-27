@@ -239,7 +239,7 @@ function parseTarihceDate(rawStr) {
             const formattedDiff = new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.abs(diff));
             let color = (diff > 0) ? (isDebt ? "var(--rose)" : "var(--emerald)") : (isDebt ? "var(--emerald)" : "var(--rose)");
             let icon = (diff > 0) ? "▲" : "▼";
-            el.innerHTML = `<span style="color:${color}; background:color-mix(in srgb, ${color} 15%, transparent); padding: 3px 6px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border: 1px solid color-mix(in srgb, ${color} 30%, transparent);">${icon} ${symbol}${formattedDiff}</span>`;
+            el.innerHTML = `<span style="color:${color}; background:rgba(${color === 'var(--emerald)' ? '16,185,129' : color === 'var(--rose)' ? '244,63,94' : '245,158,11'}, 0.15); padding: 3px 6px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border: 1px solid rgba(${color === 'var(--emerald)' ? '16,185,129' : color === 'var(--rose)' ? '244,63,94' : '245,158,11'}, 0.3);">${icon} ${symbol}${formattedDiff}</span>`;
         }
 
         function getFormattedDateTime(inputId) {
