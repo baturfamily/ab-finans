@@ -111,6 +111,31 @@ function formatTarihLog(dateInputValue) {
     }
 }
 
+function seciYeniKartOdemeTipi(tip) {
+    document.getElementById('yk-odeme-tipi').value = tip;
+    const btnTam = document.getElementById('btn-yk-tam');
+    const btnAsgari = document.getElementById('btn-yk-asgari');
+    const asgariGrup = document.getElementById('yk-asgari-grup');
+    if (!btnTam || !btnAsgari || !asgariGrup) return;
+    if (tip === 'Tam') {
+        btnTam.style.background = 'rgba(16,185,129,0.15)';
+        btnTam.style.border = '2px solid var(--emerald)';
+        btnTam.style.color = 'var(--emerald)';
+        btnAsgari.style.background = 'rgba(255,255,255,0.05)';
+        btnAsgari.style.border = '1px solid rgba(255,255,255,0.1)';
+        btnAsgari.style.color = 'var(--text-muted)';
+        asgariGrup.style.display = 'none';
+    } else {
+        btnAsgari.style.background = 'rgba(245,158,11,0.15)';
+        btnAsgari.style.border = '2px solid var(--amber)';
+        btnAsgari.style.color = 'var(--amber)';
+        btnTam.style.background = 'rgba(255,255,255,0.05)';
+        btnTam.style.border = '1px solid rgba(255,255,255,0.1)';
+        btnTam.style.color = 'var(--text-muted)';
+        asgariGrup.style.display = 'block';
+    }
+}
+
 function vibe() {}
 
         function initAccordions() { document.querySelectorAll('.accordion').forEach(el => { if (el.id && localStorage.getItem(el.id) === "1") el.classList.add("collapsed"); }); }
@@ -1766,23 +1791,28 @@ function submitButceLimiti() {
     }
 
     function submitYeniKart() {
-        const isim = document.getElementById('yk-isim').value;
-        const limit = document.getElementById('yk-limit').value;
-        const ekstre = document.getElementById('yk-ekstre').value;
-        const borc = document.getElementById('yk-borc').value || 0;
+    const isim = document.getElementById('yk-isim').value;
+    const limit = document.getElementById('yk-limit').value;
+    const ekstre = document.getElementById('yk-ekstre').value;
+    const borc = document.getElementById('yk-borc').value || 0;
+    const odemeTipi = document.getElementById('yk-odeme-tipi').value;
+    const devreden = odemeTipi === 'Asgari' ? (document.getElementById('yk-devreden').value || 0) : 0;
 
-        if(!isim) return markError('yk-isim');
-        if(!limit) return markError('yk-limit');
-        if(!ekstre) return markError('yk-ekstre');
+    if(!isim) return markError('yk-isim');
+    if(!limit) return markError('yk-limit');
+    if(!ekstre) return markError('yk-ekstre');
+    if(odemeTipi === 'Asgari' && !devreden) return markError('yk-devreden');
 
-        apiIstekAt({
-            action: "yeni_kart_ekle",
-            hesap_adi: isim,
-            limit: limit,
-            ekstre_gunu: ekstre,
-            bakiye: borc
-        }, 'btn-submit-yeni-kart');
-    }
+    apiIstekAt({
+        action: "yeni_kart_ekle",
+        hesap_adi: isim,
+        limit: limit,
+        ekstre_gunu: ekstre,
+        bakiye: borc,
+        odeme_tipi: odemeTipi,
+        devreden_bakiye: devreden
+    }, 'btn-submit-yeni-kart');
+}
 
         function updateMevcutLimit() {
   const kartAdi = getCustomVal('kl-secim');
