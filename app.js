@@ -111,6 +111,8 @@ function formatTarihLog(dateInputValue) {
     }
 }
 
+function vibe() {}
+
         function initAccordions() { document.querySelectorAll('.accordion').forEach(el => { if (el.id && localStorage.getItem(el.id) === "1") el.classList.add("collapsed"); }); }
 
         document.addEventListener("DOMContentLoaded", () => { initAccordions(); });
