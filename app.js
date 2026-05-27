@@ -99,7 +99,8 @@ function renderGelecekEkstreKartlar() {
             gelecekEkstreSecim[k.isim] = k.odemeTipi || 'Tam';
         }
         const isTam = gelecekEkstreSecim[k.isim] !== 'Asgari';
-        const kartToplam = k.donemIci + Math.abs(k.borc - k.donemIci) + (k.tahminiFaiz || 0);
+        const kartDevreden = (window._kartDevredenMap && window._kartDevredenMap[k.isim]) || 0;
+        const kartToplam = k.donemIci + kartDevreden + (k.tahminiFaiz || 0);
         const odeme = isTam ? kartToplam : kartToplam * 0.4;
         toplamEkstre += odeme;
 
@@ -112,7 +113,7 @@ function renderGelecekEkstreKartlar() {
         html += `</div></div>`;
         html += `<div style="font-size:11px; color:var(--text-muted); display:flex; flex-direction:column; gap:2px;">`;
         html += `<div style="display:flex; justify-content:space-between;"><span>Dönem İçi</span><span>${formatTL(k.donemIci)}</span></div>`;
-        if (Math.abs(k.borc - k.donemIci) > 0.01) html += `<div style="display:flex; justify-content:space-between;"><span>Devreden</span><span style="color:var(--amber);">${formatTL(Math.abs(k.borc - k.donemIci))}</span></div>`;
+        if (kartDevreden > 0.01) html += `<div style="display:flex; justify-content:space-between;"><span>Devreden</span><span style="color:var(--amber);">${formatTL(kartDevreden)}</span></div>`;
         if ((k.tahminiFaiz || 0) > 0.01) html += `<div style="display:flex; justify-content:space-between;"><span>Tahmini Faiz</span><span style="color:var(--amber);">~${formatTL(k.tahminiFaiz)}</span></div>`;
         html += `<div style="display:flex; justify-content:space-between; border-top:1px dashed rgba(255,255,255,0.08); margin-top:3px; padding-top:3px;">`;
         html += `<span style="font-weight:700; color:#e2e8f0;">${isTam ? 'Toplam' : 'Asgari Ödeme (%40)'}</span>`;
@@ -2523,6 +2524,8 @@ bankaHtml += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;mar
 </div>`;
         bankaList.innerHTML = bankaHtml;
             window.kartlarDetayli = data.kartlarDetayli || [];
+            window._kartDevredenMap = {};
+(data.kartlarDetayli || []).forEach(k => { window._kartDevredenMap[k.isim] = k.devreden || 0; });
             
         const kSecim = document.getElementById('dashboard-kart-secim');
         if (kSecim) {
