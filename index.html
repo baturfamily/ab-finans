@@ -192,6 +192,12 @@
             </div>
             <div class="accordion-content">
                 <div style="position: relative; height: 180px;">
+                    <div style="display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;">
+    <button onclick="seciTarihcePeriod(30, this)" id="btn-period-30" style="padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; background:rgba(16,185,129,0.15); border:1px solid var(--emerald); color:var(--emerald);">30 Gün</button>
+    <button onclick="seciTarihcePeriod(90, this)" id="btn-period-90" style="padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-muted);">3 Ay</button>
+    <button onclick="seciTarihcePeriod(180, this)" id="btn-period-180" style="padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-muted);">6 Ay</button>
+    <button onclick="seciTarihcePeriod(365, this)" id="btn-period-365" style="padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-muted);">1 Yıl</button>
+</div>
                     <canvas id="tarihce-mini-grafik"></canvas>
                 </div>
             </div>
