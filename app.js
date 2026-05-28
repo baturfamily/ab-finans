@@ -3299,7 +3299,7 @@ if (val === 'hepsi') {
         cBorc += k.borc;
         cDonemIci += k.donemIci;
         cGelecek += k.gelecek;
-        cDevreden += Math.abs(k.borc - k.donemIci);
+        cDevreden += (window._kartDevredenMap && window._kartDevredenMap[k.isim]) || 0;
         cTahminiFaiz += (k.tahminiFaiz || 0);
     });
     document.getElementById('val-kart-puan').style.display = 'none';
@@ -3308,7 +3308,7 @@ if (val === 'hepsi') {
     const k = window.kartlarDetayli[val];
     if (!k) return;
     cLimit = k.limit; cBorc = k.borc; cDonemIci = k.donemIci; cGelecek = k.gelecek;
-    cDevreden = Math.abs(k.borc - k.donemIci);
+    cDevreden = (window._kartDevredenMap && window._kartDevredenMap[k.isim]) || 0;
     cTahminiFaiz = k.tahminiFaiz || 0;
     document.getElementById('val-kart-puan').innerText = formatTLTam(k.puan) + ' Puan';
     document.getElementById('val-kart-puan').style.display = k.puan > 0 ? 'inline-block' : 'none';
